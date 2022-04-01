@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "254913665476",
+    "project_id": "loantrack-42dc9",
+    "storage_bucket": "loantrack-42dc9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:254913665476:android:226aa266480e6e852c2c91",
+        "android_client_info": {
+          "package_name": "com.thelettercompany.loantrack"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "254913665476-v3200d27vmsii5sevv6noevpl5kk06q6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDRShHux88ZwQGjCilXmb_2k5zCuzI8ZCQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "254913665476-v3200d27vmsii5sevv6noevpl5kk06q6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
