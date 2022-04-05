@@ -1,7 +1,8 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:loantrack/helpers/colors.dart';
 
-import '../data/loan.dart';
+import '../models/loan.dart';
 
 class LoanProgressBar extends StatefulWidget {
   LoanProgressBar({Key? key, required this.loan}) : super(key: key);
@@ -41,15 +42,27 @@ class _LoanProgressBarState extends State<LoanProgressBar> {
             decoration: BoxDecoration(
               color: (progress >= 0.5)
                   ? LoanTrackColors.PrimaryOne
-                  : LoanTrackColors.PrimaryTwo,
+                  : LoanTrackColors.PrimaryTwoLight,
               borderRadius: BorderRadius.circular(5),
             ),
           ),
         ]),
         SizedBox(height: 5),
-        Text(
-          widget.loan.loanInfo('|'),
-          style: TextStyle(color: LoanTrackColors.PrimaryBlack, fontSize: 12),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              widget.loan.loanInfo('|'),
+              style: TextStyle(
+                  color: LoanTrackColors.PrimaryTwoLight, fontSize: 12),
+            ),
+            (widget.loan.amountRepaid == widget.loan.loanAmount)
+                ? Text(
+                    'PAID',
+                    style: TextStyle(color: LoanTrackColors.PrimaryOne),
+                  )
+                : Text(''),
+          ],
         )
       ],
     );

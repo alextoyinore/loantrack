@@ -1,5 +1,5 @@
-import 'package:loantrack/data/loaner.dart';
-import 'package:loantrack/data/loanerType.dart';
+import 'package:loantrack/models/loaner.dart';
+import 'package:loantrack/models/loanerType.dart';
 
 class Loan {
   double loanAmount;
@@ -27,6 +27,7 @@ class Loan {
         formatter +
         ' LOAN: ' +
         loanAmount.toString() +
+        ' ' +
         formatter +
         ' REPAID: ' +
         amountRepaid.toString();
