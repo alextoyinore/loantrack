@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:loantrack/data/local.dart';
 import 'package:loantrack/helpers/colors.dart';
-import 'package:loantrack/structures/data.dart';
 
 class LoanTrackAppsGridView extends StatefulWidget {
   const LoanTrackAppsGridView({Key? key}) : super(key: key);
@@ -14,8 +14,6 @@ class _LoanTrackAppsGridViewState extends State<LoanTrackAppsGridView> {
 
   @override
   Widget build(BuildContext context) {
-    double screenWidth = MediaQuery.of(context).size.width;
-    double screenHeight = MediaQuery.of(context).size.height;
     return GridView.extent(
         shrinkWrap: true,
         controller: _controller,
@@ -23,10 +21,11 @@ class _LoanTrackAppsGridViewState extends State<LoanTrackAppsGridView> {
         crossAxisSpacing: 16,
         mainAxisSpacing: 16,
         maxCrossAxisExtent: 100.0,
-        children: List.generate(Data.applicationList.length, (index) {
+        children: List.generate(LocalData.applicationList.length, (index) {
           return Container(
             decoration: BoxDecoration(
-              border: Border.all(width: 1.2, color: LoanTrackColors.PrimaryOne),
+              border:
+                  Border.all(width: 1.2, color: LoanTrackColors.PrimaryOneDark),
               borderRadius: BorderRadius.circular(10),
             ),
             child: Column(
@@ -34,20 +33,20 @@ class _LoanTrackAppsGridViewState extends State<LoanTrackAppsGridView> {
                 Padding(
                   padding: const EdgeInsets.all(4.0),
                   child: Icon(
-                    Data.applicationList[index].iconData,
+                    LocalData.applicationList[index].iconData,
                     size: 30,
-                    color: LoanTrackColors.PrimaryOne,
+                    color: LoanTrackColors.PrimaryOneDark,
                   ),
                 ),
                 Padding(
                   padding: const EdgeInsets.all(4.0),
                   child: Text(
-                    Data.applicationList[index].name.toUpperCase(),
+                    LocalData.applicationList[index].name.toUpperCase(),
                     textAlign: TextAlign.center,
                     style: const TextStyle(
                         fontWeight: FontWeight.w300,
                         fontSize: 12,
-                        color: LoanTrackColors.PrimaryOne),
+                        color: LoanTrackColors.PrimaryOneDark),
                   ),
                 ),
               ],

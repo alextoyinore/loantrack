@@ -4,61 +4,117 @@ import 'package:loantrack/models/loaner.dart';
 
 import 'apps.dart';
 
-class Data {
+class LocalData {
+  static final LoginInMessage = '';
+
   static final List<Loan> loans = [
     Loan(
       loanAmount: 25000,
       amountRepaid: 5000,
       loaner: Loaner(name: 'LCREDIT'),
       interestRate: 7,
+      applyDate: DateTime.utc(2022, DateTime.march, 15),
+      dueDate: DateTime.utc(2022, DateTime.march, 30),
+      lastPaymentDate: DateTime.utc(2022, DateTime.march, 6),
     ),
     Loan(
       loanAmount: 20000,
       amountRepaid: 12000,
       loaner: Loaner(name: 'CASHMALL'),
       interestRate: 10,
+      applyDate: DateTime(2022, 3, 10),
+      dueDate: DateTime(2022, 3, 25),
+      lastPaymentDate: DateTime(2022, 4, 1),
     ),
     Loan(
       loanAmount: 35000,
       amountRepaid: 12000,
       loaner: Loaner(name: '9CREDIT'),
       interestRate: 7,
+      applyDate: DateTime(2022, 3, 5),
+      dueDate: DateTime(2022, 3, 12),
+      lastPaymentDate: DateTime(2022, 3, 10),
     ),
     Loan(
       loanAmount: 32000,
       amountRepaid: 19000,
       loaner: Loaner(name: 'CASHCREDIT'),
       interestRate: 16,
+      applyDate: DateTime(2022, 3, 15),
+      dueDate: DateTime(2022, 3, 22),
+      lastPaymentDate: DateTime(2022, 3, 20),
     ),
     Loan(
       loanAmount: 8000,
       amountRepaid: 8000,
       loaner: Loaner(name: 'QUICKCREDIT'),
       interestRate: 10,
+      applyDate: DateTime(2022, 3, 15),
+      dueDate: DateTime(2022, 3, 22),
+      lastPaymentDate: DateTime(2022, 3, 21),
     ),
     Loan(
       loanAmount: 4000,
       amountRepaid: 2000,
       loaner: Loaner(name: 'NCREDIT'),
       interestRate: 10,
+      applyDate: DateTime(2022, 6, 15),
+      dueDate: DateTime(2022, 3, 15),
+      lastPaymentDate: DateTime(2022, 4, 6),
     ),
     Loan(
       loanAmount: 9000,
       amountRepaid: 2000,
       loaner: Loaner(name: 'CASHRAIN'),
       interestRate: 10,
+      applyDate: DateTime(2022, 2, 15),
+      dueDate: DateTime(2022, 2, 22),
+      lastPaymentDate: DateTime(2022, 2, 18),
     ),
     Loan(
       loanAmount: 4000,
       amountRepaid: 3000,
       loaner: Loaner(name: '9RALOAN'),
       interestRate: 10,
+      applyDate: DateTime(2022, 1, 15),
+      dueDate: DateTime(2022, 1, 22),
+      lastPaymentDate: DateTime(2022, 1, 22),
     ),
     Loan(
       loanAmount: 4000,
       amountRepaid: 4000,
       loaner: Loaner(name: 'HCASH'),
       interestRate: 10,
+      applyDate: DateTime(2022, 1, 15),
+      dueDate: DateTime(2022, 1, 22),
+      lastPaymentDate: DateTime(2022, 1, 22),
+    ),
+    Loan(
+      loanAmount: 8000,
+      amountRepaid: 6000,
+      loaner: Loaner(name: 'SNAPPYCREDIT'),
+      interestRate: 10,
+      applyDate: DateTime(2022, 1, 10),
+      dueDate: DateTime(2022, 1, 17),
+      lastPaymentDate: DateTime(2022, 1, 16),
+    ),
+    Loan(
+      loanAmount: 4000,
+      amountRepaid: 4000,
+      loaner: Loaner(name: 'PROCASH'),
+      interestRate: 10,
+      applyDate: DateTime(2022, 1, 15),
+      dueDate: DateTime(2022, 1, 22),
+      lastPaymentDate: DateTime(2022, 1, 22),
+    ),
+    Loan(
+      loanAmount: 4000,
+      amountRepaid: 4000,
+      loaner: Loaner(name: 'NCASH'),
+      interestRate: 10,
+      applyDate: DateTime(2022, 1, 15),
+      dueDate: DateTime(2022, 1, 22),
+      lastPaymentDate: DateTime(2022, 1, 22),
     ),
   ];
 

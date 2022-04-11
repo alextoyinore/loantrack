@@ -10,7 +10,7 @@ class LoanTrackColors {
   //Primary2
   static const PrimaryTwo = Color(0xFF222222);
   static const PrimaryTwoDark = Color(0xFF000000);
-  static const PrimaryTwoLight = Color(0xFF888888);
+  static const PrimaryTwoLight = Color(0xFF58595B);
   static const PrimaryTwoVeryLight = Color(0xFFEEEEEE);
 
   // Blacks

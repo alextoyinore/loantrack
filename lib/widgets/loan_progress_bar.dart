@@ -18,7 +18,6 @@ class _LoanProgressBarState extends State<LoanProgressBar> {
   Widget build(BuildContext context) {
     // Screensizes
     double screenWidth = MediaQuery.of(context).size.width;
-    double screenHeight = MediaQuery.of(context).size.height;
 
     // Progress
     double progress = (widget.loan.amountRepaid / widget.loan.loanAmount);
@@ -59,9 +58,13 @@ class _LoanProgressBarState extends State<LoanProgressBar> {
             (widget.loan.amountRepaid == widget.loan.loanAmount)
                 ? Text(
                     'PAID',
-                    style: TextStyle(color: LoanTrackColors.PrimaryOne),
+                    style: TextStyle(
+                        color: LoanTrackColors.PrimaryOne, fontSize: 12),
                   )
-                : Text(''),
+                : Text(widget.loan.lastPaymentDate.toString(),
+                    style: TextStyle(
+                        color: LoanTrackColors.PrimaryTwoLight, fontSize: 6),
+                    softWrap: true),
           ],
         )
       ],
