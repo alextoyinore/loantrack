@@ -5,7 +5,7 @@ import 'package:loantrack/helpers/colors.dart';
 void showErrorDialog(
     {required BuildContext context,
     required String title,
-    required Exception e,
+    Exception? e,
     String? errorMessage}) {
   showDialog<void>(
     context: context,
@@ -21,9 +21,9 @@ void showErrorDialog(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Text(
-                (errorMessage == '')
-                    ? errorMessage as String
-                    : '${(e as dynamic).message}',
+                (errorMessage == '' || errorMessage == null)
+                    ? '${(e as dynamic).message}'
+                    : errorMessage,
                 textAlign: TextAlign.left,
                 style: const TextStyle(
                     fontSize: 16, color: LoanTrackColors.PrimaryTwoLight),

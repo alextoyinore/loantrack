@@ -9,6 +9,7 @@ import 'package:loantrack/data/local.dart';
 import 'package:loantrack/helpers/colors.dart';
 import 'package:loantrack/widgets/dialogs.dart';
 import 'package:loantrack/widgets/loan_track_modal.dart';
+import 'package:loantrack/widgets/loan_track_textfield.dart';
 import 'package:provider/provider.dart';
 
 class LoanTackLogin extends StatefulWidget {
@@ -25,89 +26,136 @@ class _LoanTackLoginState extends State<LoanTackLogin> with ChangeNotifier {
   TextEditingController displayNameController = TextEditingController();
   //FirebaseAuthException e = FirebaseAuthException(code: 'network-not-found');
 
+  AuthService authService = AuthService();
+
   @override
   Widget build(BuildContext context) {
     States loginState = context.watch<LoginState>().loginState;
-    return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
+    return WillPopScope(
+      onWillPop: () async {
+        return false;
+      },
+      child: Scaffold(
         backgroundColor: Colors.white,
-        elevation: 0,
-        title: Padding(
-          padding: const EdgeInsets.only(left: 16.0),
-          child: Image.asset('assets/images/loantrack.png', height: 18),
+        /* appBar: AppBar(
+          backgroundColor: Colors.white,
+          elevation: 0,
+          title: Padding(
+            padding: const EdgeInsets.only(left: 16.0),
+            child: Image.asset('assets/images/loantrack.png', height: 18),
+          ),
+          //centerTitle: true,
+          actions: [
+            Padding(
+                padding: EdgeInsets.only(right: 32),
+                child: GestureDetector(
+                    onTap: () {
+                      LoanTrackModal.modal(context,
+                          content: const SingleChildScrollView(
+                            child: Text(LocalData.aboutLoanTrack,
+                                style: TextStyle(
+                                    color: LoanTrackColors.PrimaryTwoLight,
+                                    fontSize: 16,
+                                    height: 1.6)),
+                          ),
+                          title: 'About');
+                    },
+                    child: const Icon(
+                      Icons.info_outline,
+                      color: LoanTrackColors.PrimaryTwoLight,
+                    )))
+          ],
+        ),*/
+        body: Padding(
+          padding: const EdgeInsets.all(32.0),
+          child: SingleChildScrollView(
+            child: (loginState == States.loggedOut)
+                ? startLoginFlow(context)
+                : (loginState == States.verifyingEmail)
+                    ? emailVerifier(context)
+                    : (loginState == States.askingPassword)
+                        ? passwordRequest(context)
+                        : (loginState == States.creatingAccount)
+                            ? createAccount(context)
+                            : (loginState == States.sendingVerificationEmail)
+                                ? sendingEmailVerificationScreen(context)
+                                : emailVerifier(context),
+          ),
         ),
-        //centerTitle: true,
-        actions: [
-          Padding(
-              padding: EdgeInsets.only(right: 32),
-              child: GestureDetector(
-                  onTap: () {
-                    LoanTrackModal.modal(context,
-                        content: const SingleChildScrollView(
-                          child: Text(LocalData.aboutLoanTrack,
-                              style: TextStyle(
-                                  color: LoanTrackColors.PrimaryTwoLight,
-                                  fontSize: 16,
-                                  height: 1.6)),
-                        ),
-                        title: 'About');
-                  },
-                  child: const Icon(
-                    Icons.info_outline,
-                    color: LoanTrackColors.PrimaryTwoLight,
-                  )))
-        ],
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(32.0),
-        child: SingleChildScrollView(
-          child: (loginState == States.loggedOut)
-              ? startLoginFlow(context)
-              : (loginState == States.verifyingEmail)
-                  ? emailVerifier(context)
-                  : (loginState == States.askingPassword)
-                      ? passwordRequest(context)
-                      : (loginState == States.creatingAccount)
-                          ? createAccount(context)
-                          : (loginState == States.sendingVerificationEmail)
-                              ? sendingEmailVerificationScreen(context)
-                              : emailVerifier(context),
+    );
+  }
+
+  loginHeader({required BuildContext context, String? message}) {
+    return Column(
+      children: [
+        SizedBox(height: 80),
+        Image.asset('assets/images/icon.png', scale: 50),
+        SizedBox(height: 50),
+        Text(
+          (message != null) ? message : '',
+          style: TextStyle(color: LoanTrackColors.PrimaryTwoVeryLight),
+          softWrap: true,
+          textAlign: TextAlign.center,
         ),
-      ),
+        SizedBox(height: 20),
+      ],
     );
   }
 
   startLoginFlow(BuildContext context) {
     return Column(
       children: [
-        Text(LocalData.LoginInMessage),
+        loginHeader(context: context, message: LocalData.LoginInMessage),
         GestureDetector(
             onTap: () {
               context.read<LoginState>().emailVerification();
             },
-            child: LoanTrackButton.primary(context: context, label: 'Start'))
+            child: LoanTrackButton.primary(
+                context: context,
+                label: 'Start',
+                borderRadius: BorderRadius.circular(10))),
+        SizedBox(height: 50),
+        GestureDetector(
+            onTap: () {
+              LoanTrackModal.modal(context,
+                  content: const SingleChildScrollView(
+                    child: Text(LocalData.aboutLoanTrack,
+                        style: TextStyle(
+                            color: LoanTrackColors.PrimaryTwoLight,
+                            fontSize: 14,
+                            height: 1.6)),
+                  ),
+                  title: 'About');
+            },
+            child: Text(
+              'About',
+              style: TextStyle(
+                  color: LoanTrackColors.PrimaryTwoVeryLight,
+                  decoration: TextDecoration.underline),
+            ))
       ],
     );
   }
 
   emailVerifier(BuildContext context) {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        TextField(
+        loginHeader(
+            context: context,
+            message:
+                'Like our expenditures and investments, your loans tracked will give you peace of mind and help you live a more fulfilling life.'),
+        LoanTrackTextField(
           controller: emailController,
-          style: TextStyle(color: LoanTrackColors.PrimaryTwoLight),
-          decoration: const InputDecoration(
-            hintText: 'Email',
-            suffixIcon: Icon(Icons.email),
-            border: OutlineInputBorder(),
-          ),
+          label: 'Email',
+          color: LoanTrackColors.PrimaryOne,
+          icon: Icon(Icons.email, color: LoanTrackColors.PrimaryOne),
         ),
         SizedBox(height: 10),
         GestureDetector(
           onTap: () {
-            checkEmailExists(
+            authService.checkEmailExists(
               context: context,
               email: emailController.text,
               errorCallback: (e) => showErrorDialog(
@@ -120,6 +168,7 @@ class _LoanTackLoginState extends State<LoanTackLogin> with ChangeNotifier {
           child: LoanTrackButton.primary(
             context: context,
             label: 'Login',
+            borderRadius: BorderRadius.circular(10),
           ),
         )
         //SizedBox(height: 10),
@@ -132,30 +181,28 @@ class _LoanTackLoginState extends State<LoanTackLogin> with ChangeNotifier {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        TextField(
+        loginHeader(
+            context: context,
+            message:
+                'There is no shame in borrowing. Tracking your borrowings will keep them on top of your mind and in focus.'),
+        LoanTrackTextField(
           controller: emailController,
-          style: const TextStyle(color: LoanTrackColors.PrimaryTwoLight),
-          decoration: const InputDecoration(
-            hintText: 'Email',
-            suffixIcon: Icon(Icons.email),
-            border: OutlineInputBorder(),
-          ),
+          label: 'Email',
+          color: LoanTrackColors.PrimaryOne,
+          icon: Icon(Icons.email, color: LoanTrackColors.PrimaryOne),
         ),
         const SizedBox(height: 10),
-        TextField(
+        LoanTrackTextField(
           controller: passwordController,
-          obscureText: true,
-          style: const TextStyle(color: LoanTrackColors.PrimaryTwoLight),
-          decoration: const InputDecoration(
-            hintText: 'Password',
-            suffixIcon: Icon(Icons.lock),
-            border: OutlineInputBorder(),
-          ),
+          label: 'Password',
+          isHidden: true,
+          color: LoanTrackColors.PrimaryOne,
+          icon: Icon(Icons.lock, color: LoanTrackColors.PrimaryOne),
         ),
         const SizedBox(height: 10),
         GestureDetector(
           onTap: () async {
-            signInWithEmailAndPassword(
+            authService.signInWithEmailAndPassword(
                 context: context,
                 email: emailController.text,
                 password: passwordController.text,
@@ -164,7 +211,11 @@ class _LoanTackLoginState extends State<LoanTackLogin> with ChangeNotifier {
 
             //Navigator.pushNamed(context, '/home');
           },
-          child: LoanTrackButton.primary(context: context, label: 'Log In'),
+          child: LoanTrackButton.primary(
+            context: context,
+            label: 'Log In',
+            borderRadius: BorderRadius.circular(10),
+          ),
         ),
         const SizedBox(height: 10),
         Row(
@@ -172,19 +223,21 @@ class _LoanTackLoginState extends State<LoanTackLogin> with ChangeNotifier {
           children: [
             GestureDetector(
               onTap: () {
-                forgotPassword(
-                    context: context,
-                    email: emailController.text,
-                    errorCallback: (e) => showErrorDialog(
-                          context: context,
-                          title: 'Credential Error',
-                          e: e,
-                        )).whenComplete(() => showSuccessDialog(
-                    successMessage:
-                        'We sent you a password recovery link. Kindly follow the instruction in your email.',
-                    context: context,
-                    whenTapped: () => Navigator.of(context).pop(),
-                    title: 'Email sent'));
+                authService
+                    .forgotPassword(
+                        context: context,
+                        email: emailController.text,
+                        errorCallback: (e) => showErrorDialog(
+                              context: context,
+                              title: 'Credential Error',
+                              e: e,
+                            ))
+                    .whenComplete(() => showSuccessDialog(
+                        successMessage:
+                            'We sent you a password recovery link. Kindly follow the instruction in your email.',
+                        context: context,
+                        whenTapped: () => Navigator.of(context).pop(),
+                        title: 'Email sent'));
               },
               child: const Text(
                 'Forgot Password?',
@@ -210,40 +263,35 @@ class _LoanTackLoginState extends State<LoanTackLogin> with ChangeNotifier {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        TextField(
+        loginHeader(
+            context: context,
+            message:
+                'Start your journey now to a well-managed life. Whether it is living a loan-free life or just managing your loans properly, you\'ve come to the right place'),
+        LoanTrackTextField(
           controller: emailController,
-          style: TextStyle(color: LoanTrackColors.PrimaryTwoLight),
-          decoration: const InputDecoration(
-            hintText: 'Email',
-            suffixIcon: Icon(Icons.email),
-            border: OutlineInputBorder(),
-          ),
+          label: 'Email',
+          color: LoanTrackColors.PrimaryOne,
+          icon: Icon(Icons.email, color: LoanTrackColors.PrimaryOne),
         ),
         SizedBox(height: 10),
-        TextField(
+        LoanTrackTextField(
           controller: displayNameController,
-          style: TextStyle(color: LoanTrackColors.PrimaryTwoLight),
-          decoration: const InputDecoration(
-            hintText: 'Display Name',
-            suffixIcon: Icon(Icons.email),
-            border: OutlineInputBorder(),
-          ),
+          label: 'Display Name',
+          color: LoanTrackColors.PrimaryOne,
+          icon: Icon(Icons.person, color: LoanTrackColors.PrimaryOne),
         ),
         SizedBox(height: 10),
-        TextFormField(
+        LoanTrackTextField(
           controller: passwordController,
-          obscureText: true,
-          style: TextStyle(color: LoanTrackColors.PrimaryTwoLight),
-          decoration: const InputDecoration(
-            hintText: 'Password',
-            suffixIcon: Icon(Icons.lock),
-            border: OutlineInputBorder(),
-          ),
+          label: 'Password',
+          isHidden: true,
+          color: LoanTrackColors.PrimaryOne,
+          icon: Icon(Icons.lock, color: LoanTrackColors.PrimaryOne),
         ),
         SizedBox(height: 10),
         GestureDetector(
           onTap: () {
-            registerAccount(
+            authService.registerAccount(
                 context: context,
                 email: emailController.text,
                 displayName: displayNameController.text,
@@ -252,21 +300,21 @@ class _LoanTackLoginState extends State<LoanTackLogin> with ChangeNotifier {
                     context: context, title: 'Credential Error', e: e));
           },
           child: LoanTrackButton.primary(
-              context: context, label: 'Create Account'),
+            context: context,
+            label: 'Create Account',
+            borderRadius: BorderRadius.circular(10),
+          ),
         ),
         SizedBox(height: 10),
         GestureDetector(
           onTap: () {
-            registerAccount(
-                context: context,
-                email: emailController.text,
-                displayName: displayNameController.text,
-                password: passwordController.text,
-                errorCallback: (e) => showErrorDialog(
-                    context: context, title: 'Credential Error', e: e));
+            context.read<LoginState>().emailVerification();
           },
           child: LoanTrackButton.secondaryOutline(
-              context: context, label: 'Cancel'),
+            context: context,
+            label: 'Cancel',
+            borderRadius: BorderRadius.circular(10),
+          ),
         ),
       ],
     );
@@ -275,6 +323,7 @@ class _LoanTackLoginState extends State<LoanTackLogin> with ChangeNotifier {
   sendingEmailVerificationScreen(BuildContext context) {
     return Column(
       children: [
+        loginHeader(context: context),
         SizedBox(height: 20),
         const Text(
           'We will send you a verification link. Click \'Request Link\' to get the email now.',
@@ -301,7 +350,10 @@ class _LoanTackLoginState extends State<LoanTackLogin> with ChangeNotifier {
               //context.read<LoginState>().passwordCheck();
             },
             child: LoanTrackButton.primary(
-                context: context, label: 'Request Link')),
+              context: context,
+              label: 'Request Link',
+              borderRadius: BorderRadius.circular(10),
+            )),
         SizedBox(height: 20),
         GestureDetector(
           onTap: () {

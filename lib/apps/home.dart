@@ -1,12 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:loantrack/apps/app_settings.dart';
 import 'package:loantrack/apps/loan_history_app.dart';
 import 'package:loantrack/apps/widgets/homeview.dart';
 import 'package:loantrack/helpers/colors.dart';
 import 'package:loantrack/helpers/icons.dart';
 import 'package:loantrack/widgets/loan_track_modal.dart';
 
-import '../data/local.dart';
 import '../widgets/application_grid_view.dart';
 
 class LoanTrackHome extends StatefulWidget {
@@ -28,9 +28,7 @@ class _LoanTrackHomeState extends State<LoanTrackHome> {
     const Center(
       child: Text('Page under construction'),
     ),
-    const Center(
-      child: Text('Page under construction'),
-    ),
+    const AppSettings(),
   ];
 
   void _onItemTapped(int index) {
@@ -46,7 +44,7 @@ class _LoanTrackHomeState extends State<LoanTrackHome> {
         return false;
       },
       child: Scaffold(
-        //backgroundColor: LoanTrackColors.PrimaryTwoDark,
+        backgroundColor: Colors.white,
         appBar: AppBar(
             centerTitle: true,
             backgroundColor: Colors.white, //Colors.black12.withOpacity(0.03),
@@ -61,7 +59,7 @@ class _LoanTrackHomeState extends State<LoanTrackHome> {
                 child: LoanTrackIcons.ApplicationIcon),
             title: Image.asset(
               'assets/images/loantrack.png',
-              height: 20,
+              height: 17,
             ),
             /*Row(children: const [
               Text('LOAN', style: TextStyle(fontWeight: FontWeight.bold)),
@@ -72,27 +70,16 @@ class _LoanTrackHomeState extends State<LoanTrackHome> {
             ]),*/
             actions: [
               Padding(
-                padding: EdgeInsets.only(right: 16.0),
-                child: GestureDetector(
-                    onTap: () {
-                      LoanTrackModal.modal(context,
-                          content: const SingleChildScrollView(
-                              child: Text(LocalData.aboutLoanTrack,
-                                  style: TextStyle(
-                                      fontSize: 16,
-                                      height: 1.5,
-                                      color: LoanTrackColors.PrimaryTwoLight),
-                                  softWrap: true)),
-                          title: 'About');
-                    },
-                    child: Icon(Icons.info_outline)),
+                padding: EdgeInsets.only(right: 8.0),
+                child:
+                    GestureDetector(onTap: () {}, child: Icon(Icons.more_vert)),
               )
             ]),
         body: SafeArea(
           child: _widgetOptions.elementAt(_selectedIndex),
         ),
         bottomNavigationBar: BottomNavigationBar(
-          unselectedItemColor: LoanTrackColors.PrimaryBlackLight,
+          unselectedItemColor: LoanTrackColors.PrimaryTwoLight,
           selectedItemColor: LoanTrackColors.PrimaryOne,
           items: const [
             BottomNavigationBarItem(

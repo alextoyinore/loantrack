@@ -2,12 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:loantrack/apps/home.dart';
+import 'package:loantrack/apps/loan_record.dart';
 import 'package:loantrack/apps/login.dart';
 import 'package:loantrack/apps/providers/login_states.dart';
-import 'package:loantrack/helpers/colors.dart';
+import 'package:loantrack/apps/repayment_record.dart';
 import 'package:provider/provider.dart';
 
+import 'helpers/colors.dart';
+
 void main() {
+  SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+    statusBarBrightness: Brightness.light,
+    statusBarIconBrightness: Brightness.dark,
+    statusBarColor: Colors.transparent,
+  ));
   runApp(MultiProvider(
     providers: [
       ChangeNotifierProvider(create: (_) => LoginState()),
@@ -42,8 +50,10 @@ class _MainState extends State<Main> {
       ),
       initialRoute: '/',
       routes: {
-        '/': (context) => LoanTackLogin(),
-        '/home': (context) => LoanTrackHome(),
+        '/': (context) => const LoanTackLogin(),
+        '/home': (context) => const LoanTrackHome(),
+        '/loanRecord': (context) => const LoanRecord(),
+        '/repaymentRecord': (context) => const RepaymentRecord(),
       },
     );
   }

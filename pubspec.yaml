@@ -39,6 +39,8 @@ dependencies:
   # For example, to use Firebase Authentication and Cloud Firestore
   firebase_auth: ^3.3.12
   cloud_firestore: ^3.1.11
+  flutter_spinkit: ^5.1.0
+  dropdown_textfield: ^0.0.8
 
 
   # The following adds the Cupertino Icons font to your application.
