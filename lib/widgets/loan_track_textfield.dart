@@ -40,11 +40,11 @@ class _LoanTrackTextFieldState extends State<LoanTrackTextField> {
         style: TextStyle(fontSize: 16, color: widget.color),
         keyboardType: widget.keyboardType,
         decoration: InputDecoration(
-            filled: true,
-            focusColor: widget.color.withOpacity(.3),
+            //filled: true,
+            focusColor: widget.color.withOpacity(.1),
             enabledBorder: OutlineInputBorder(
-              //borderSide: BorderSide(color: widget.color),
-              borderSide: BorderSide.none,
+              borderSide: BorderSide(color: widget.color.withOpacity(.3)),
+              //borderSide: BorderSide.none,
               borderRadius: BorderRadius.circular(10),
             ),
             //hintText: widget.label,
@@ -55,7 +55,8 @@ class _LoanTrackTextFieldState extends State<LoanTrackTextField> {
             suffixIconColor: widget.color,
             fillColor: widget.color.withOpacity(.1),
             focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide.none, //BorderSide(color: widget.color),
+              borderRadius: BorderRadius.circular(10),
+              borderSide: BorderSide(color: widget.color.withOpacity(.3)),
             )));
   }
 }

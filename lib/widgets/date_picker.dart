@@ -6,6 +6,7 @@ class LoanTrackDatePicker extends StatefulWidget {
   LoanTrackDatePicker(
       {Key? key,
       required this.initialText,
+      required this.isPayment,
       this.controller,
       this.yearsInFuture})
       : super(key: key);
@@ -13,6 +14,7 @@ class LoanTrackDatePicker extends StatefulWidget {
   String initialText;
   int? yearsInFuture;
   TextEditingController? controller;
+  bool isPayment;
 
   @override
   State<LoanTrackDatePicker> createState() => _LoanTrackDatePickerState();
@@ -20,6 +22,8 @@ class LoanTrackDatePicker extends StatefulWidget {
 
 class _LoanTrackDatePickerState extends State<LoanTrackDatePicker> {
   DateTime? date;
+
+  String selectedDate = '';
 
   String getDate() {
     if (date == null) {
@@ -37,9 +41,11 @@ class _LoanTrackDatePickerState extends State<LoanTrackDatePicker> {
         },
         child: LoanTrackTextField(
             controller: widget.controller,
-            label: getDate(),
-            enable: true,
-            color: LoanTrackColors.PrimaryOne));
+            label: widget.initialText,
+            enable: false,
+            color: (widget.isPayment)
+                ? LoanTrackColors2.PrimaryOne
+                : LoanTrackColors.PrimaryOne));
   }
 
   // Pick Date
@@ -57,6 +63,7 @@ class _LoanTrackDatePickerState extends State<LoanTrackDatePicker> {
 
     setState(() {
       date = newDate;
+      widget.controller?.text = newDate.toString().substring(0, 10);
     });
   }
 }

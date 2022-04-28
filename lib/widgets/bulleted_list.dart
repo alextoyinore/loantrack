@@ -27,6 +27,7 @@ class _BulletedListState extends State<BulletedList> {
         Text(
           widget.text,
           style: widget.style,
+          softWrap: true,
         ),
       ],
     );

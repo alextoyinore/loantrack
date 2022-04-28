@@ -10,13 +10,13 @@ class LoanTrackButton {
       width: MediaQuery.of(context).size.width,
       padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
       decoration: BoxDecoration(
-          border: Border.all(color: LoanTrackColors.PrimaryOne),
+          border: Border.all(color: LoanTrackColors.PrimaryOne, width: .5),
           borderRadius: borderRadius,
           color: LoanTrackColors.PrimaryOne),
       child: Text(
         label,
         style: const TextStyle(
-            color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
+            color: Colors.white, fontSize: 14, fontWeight: FontWeight.w300),
         textAlign: TextAlign.center,
         softWrap: true,
       ),
@@ -33,13 +33,13 @@ class LoanTrackButton {
       decoration: BoxDecoration(
           borderRadius: borderRadius,
           color: Colors.white,
-          border: Border.all(color: LoanTrackColors.PrimaryOne)),
+          border: Border.all(color: LoanTrackColors.PrimaryOne, width: .5)),
       child: Text(
         label,
         style: const TextStyle(
             color: LoanTrackColors.PrimaryOne,
-            fontSize: 16,
-            fontWeight: FontWeight.bold),
+            fontSize: 14,
+            fontWeight: FontWeight.w300),
         textAlign: TextAlign.center,
         softWrap: true,
       ),
@@ -54,13 +54,13 @@ class LoanTrackButton {
       width: MediaQuery.of(context).size.width,
       padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
       decoration: BoxDecoration(
-          border: Border.all(color: LoanTrackColors.PrimaryTwo),
+          border: Border.all(color: LoanTrackColors.PrimaryTwo, width: .5),
           borderRadius: borderRadius,
           color: LoanTrackColors.PrimaryTwo),
       child: Text(
         label,
         style: const TextStyle(
-            color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
+            color: Colors.white, fontSize: 14, fontWeight: FontWeight.w300),
         textAlign: TextAlign.center,
         softWrap: true,
       ),
@@ -77,13 +77,14 @@ class LoanTrackButton {
       decoration: BoxDecoration(
           borderRadius: borderRadius,
           color: Colors.white,
-          border: Border.all(color: LoanTrackColors.PrimaryTwoVeryLight)),
+          border: Border.all(
+              color: LoanTrackColors.PrimaryTwoVeryLight, width: .5)),
       child: Text(
         label,
         style: const TextStyle(
             color: LoanTrackColors.PrimaryTwo,
-            fontSize: 16,
-            fontWeight: FontWeight.bold),
+            fontSize: 14,
+            fontWeight: FontWeight.w300),
         textAlign: TextAlign.center,
         softWrap: true,
       ),

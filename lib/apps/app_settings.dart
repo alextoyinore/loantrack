@@ -22,22 +22,24 @@ class _AppSettingsState extends State<AppSettings> {
         return false;
       },
       child: SingleChildScrollView(
-        child: SizedBox(
+        child: Container(
+          padding: const EdgeInsets.only(left: 16.0, right: 16, top: 16),
           height: MediaQuery.of(context).size.height,
           child: ListView(
+            padding: EdgeInsets.zero,
             children: [
-              const Padding(
-                padding: const EdgeInsets.all(16.0),
+              Container(
+                padding: const EdgeInsets.only(left: 16.0, right: 16),
                 child: Text(
                   'Adjust your app settings here. Manage your profile settings, app look and feel, and other settings.',
                   style: TextStyle(color: LoanTrackColors.PrimaryTwoVeryLight),
                 ),
               ),
               ListTile(
-                leading: Icon(Icons.info_outline,
-                    color: LoanTrackColors.PrimaryTwoLight),
+                leading:
+                    Icon(Icons.info_outline, color: LoanTrackColors.PrimaryOne),
                 title: Text('About',
-                    style: TextStyle(color: LoanTrackColors.PrimaryTwoLight)),
+                    style: TextStyle(color: LoanTrackColors.PrimaryOne)),
                 onTap: () {
                   LoanTrackModal.modal(context,
                       content: const SingleChildScrollView(
@@ -45,22 +47,22 @@ class _AppSettingsState extends State<AppSettings> {
                               style: TextStyle(
                                   //fontSize: 14,
                                   height: 1.5,
-                                  color: LoanTrackColors.PrimaryTwoLight),
+                                  color: LoanTrackColors.PrimaryOne),
                               softWrap: true)),
                       title: 'About');
                 },
               ),
               ListTile(
-                leading:
-                    Icon(Icons.person, color: LoanTrackColors.PrimaryTwoLight),
+                leading: Icon(Icons.person, color: LoanTrackColors.PrimaryOne),
                 title: Text('Profile Settings',
-                    style: TextStyle(color: LoanTrackColors.PrimaryTwoLight)),
+                    style: TextStyle(color: LoanTrackColors.PrimaryOne)),
                 onTap: () {},
               ),
               ListTile(
-                leading: Icon(Icons.logout, color: LoanTrackColors.TetiaryOne),
+                leading:
+                    Icon(Icons.logout, color: LoanTrackColors.PrimaryOneLight),
                 title: Text('Sign Out',
-                    style: TextStyle(color: LoanTrackColors.TetiaryOne)),
+                    style: TextStyle(color: LoanTrackColors.PrimaryOneLight)),
                 onTap: () {
                   AuthService auth = AuthService();
                   auth.signOut();

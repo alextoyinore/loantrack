@@ -37,35 +37,6 @@ class _LoanTackLoginState extends State<LoanTackLogin> with ChangeNotifier {
       },
       child: Scaffold(
         backgroundColor: Colors.white,
-        /* appBar: AppBar(
-          backgroundColor: Colors.white,
-          elevation: 0,
-          title: Padding(
-            padding: const EdgeInsets.only(left: 16.0),
-            child: Image.asset('assets/images/loantrack.png', height: 18),
-          ),
-          //centerTitle: true,
-          actions: [
-            Padding(
-                padding: EdgeInsets.only(right: 32),
-                child: GestureDetector(
-                    onTap: () {
-                      LoanTrackModal.modal(context,
-                          content: const SingleChildScrollView(
-                            child: Text(LocalData.aboutLoanTrack,
-                                style: TextStyle(
-                                    color: LoanTrackColors.PrimaryTwoLight,
-                                    fontSize: 16,
-                                    height: 1.6)),
-                          ),
-                          title: 'About');
-                    },
-                    child: const Icon(
-                      Icons.info_outline,
-                      color: LoanTrackColors.PrimaryTwoLight,
-                    )))
-          ],
-        ),*/
         body: Padding(
           padding: const EdgeInsets.all(32.0),
           child: SingleChildScrollView(
@@ -111,7 +82,7 @@ class _LoanTackLoginState extends State<LoanTackLogin> with ChangeNotifier {
             onTap: () {
               context.read<LoginState>().emailVerification();
             },
-            child: LoanTrackButton.primary(
+            child: LoanTrackButton.primaryOutline(
                 context: context,
                 label: 'Start',
                 borderRadius: BorderRadius.circular(10))),
@@ -161,11 +132,12 @@ class _LoanTackLoginState extends State<LoanTackLogin> with ChangeNotifier {
               errorCallback: (e) => showErrorDialog(
                 context: context,
                 title: 'Invalid Email',
-                e: e,
+                errorMessage:
+                    'This email does not exist in our system. Kindly create a new account',
               ),
             );
           },
-          child: LoanTrackButton.primary(
+          child: LoanTrackButton.primaryOutline(
             context: context,
             label: 'Login',
             borderRadius: BorderRadius.circular(10),
@@ -211,13 +183,13 @@ class _LoanTackLoginState extends State<LoanTackLogin> with ChangeNotifier {
 
             //Navigator.pushNamed(context, '/home');
           },
-          child: LoanTrackButton.primary(
+          child: LoanTrackButton.primaryOutline(
             context: context,
             label: 'Log In',
             borderRadius: BorderRadius.circular(10),
           ),
         ),
-        const SizedBox(height: 10),
+        const SizedBox(height: 20),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -299,7 +271,7 @@ class _LoanTackLoginState extends State<LoanTackLogin> with ChangeNotifier {
                 errorCallback: (e) => showErrorDialog(
                     context: context, title: 'Credential Error', e: e));
           },
-          child: LoanTrackButton.primary(
+          child: LoanTrackButton.primaryOutline(
             context: context,
             label: 'Create Account',
             borderRadius: BorderRadius.circular(10),
@@ -349,7 +321,7 @@ class _LoanTackLoginState extends State<LoanTackLogin> with ChangeNotifier {
               }
               //context.read<LoginState>().passwordCheck();
             },
-            child: LoanTrackButton.primary(
+            child: LoanTrackButton.primaryOutline(
               context: context,
               label: 'Request Link',
               borderRadius: BorderRadius.circular(10),

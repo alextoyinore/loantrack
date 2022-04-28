@@ -1,7 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:loantrack/apps/providers/login_states.dart';
-import 'package:loantrack/helpers/functions.dart';
 import 'package:provider/provider.dart';
 
 import 'database.dart';
@@ -78,16 +77,17 @@ class AuthService {
       await credential.user!.updateDisplayName(displayName);
       DatabaseService databaseService = DatabaseService();
       databaseService.updateLoanData(
-          loanAmount: '20',
-          amountRepaid: '10',
-          interestRate: '3.5',
-          applyWhen: todayToString(
-              date:
-                  DateTime.now()), //DateTime.now().toString().substring(0, 10),
-          dueWhen: todayToString(date: DateTime.now()),
-          lastPaidWhen: todayToString(date: DateTime.now()),
-          loanType: 'Dummy',
-          loaner: 'Dummy',
+          loanAmount: 20,
+          amountRepaid: 10,
+          interestRate: 3.5,
+          dailyOverdueCharge: 1,
+          applyWhen: DateTime.now()
+              .toString()
+              .substring(0, 10), //DateTime.now().toString().substring(0, 10),
+          dueWhen: DateTime.now().toString().substring(0, 10),
+          lastPaidWhen: DateTime.now().toString().substring(0, 10),
+          lenderType: 'Dummy',
+          lender: 'Dummy',
           loanPurpose: 'Dummy',
           note: 'Dummy');
 
