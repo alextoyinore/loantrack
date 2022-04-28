@@ -62,31 +62,31 @@ class DatabaseService with ChangeNotifier {
     }, SetOptions(merge: true));
   }
 
-  Future<Stream<QuerySnapshot<Map<String, dynamic>>>> getCollection(
-      String collection) async {
-    return FirebaseFirestore.instance.collection(collection).snapshots();
-  }
-
-  double totalRepayment(String loanId) {
-    double totalRepayments = 0;
+  getRepayments(DocumentSnapshot documentSnapshot) {
+    //Query Repayments
     StreamBuilder<QuerySnapshot>(
-      stream: repayments
-          .where('userId', isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+      stream: FirebaseFirestore.instance
+          .collection('repayments')
+          .where('userId', isEqualTo: userId)
+          .where('loanId', isEqualTo: documentSnapshot.id)
           .snapshots(),
-      builder: (context, snapshot) {
-        if (!snapshot.hasData) {
-          totalRepayments = 0;
+      builder: (context, rSnapshot) {
+        int len = 0;
+        if (rSnapshot.data?.docs.length != null) {
+          len = rSnapshot.data!.docs.length;
+        } else {
+          len = 0;
         }
-        int len = snapshot.data!.docs.length;
+        double totalRepayments = 0;
 
-        for (int i = 0; i < len; i++) {
-          if (snapshot.data!.docs[i].get('loanId') == loanId) {
-            totalRepayments += snapshot.data!.docs[i].get('loanId');
-          }
+        for (int j = 0; j < len; j++) {
+          DocumentSnapshot repaymentSnapshot = rSnapshot.data!.docs[j];
+
+          totalRepayments += repaymentSnapshot.get('amountRepaid');
         }
         return Container();
       },
     );
-    return totalRepayments;
+    //End of Repayment Query
   }
 }

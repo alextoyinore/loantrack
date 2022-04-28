@@ -32,7 +32,7 @@ class LoanTrackButton {
       padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
       decoration: BoxDecoration(
           borderRadius: borderRadius,
-          color: Colors.white,
+          //color: Colors.white,
           border: Border.all(color: LoanTrackColors.PrimaryOne, width: .5)),
       child: Text(
         label,
@@ -76,13 +76,12 @@ class LoanTrackButton {
       padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
       decoration: BoxDecoration(
           borderRadius: borderRadius,
-          color: Colors.white,
-          border: Border.all(
-              color: LoanTrackColors.PrimaryTwoVeryLight, width: .5)),
+          //color: Colors.white,
+          border: Border.all(color: LoanTrackColors2.PrimaryOne, width: .5)),
       child: Text(
         label,
         style: const TextStyle(
-            color: LoanTrackColors.PrimaryTwo,
+            color: LoanTrackColors2.PrimaryOne,
             fontSize: 14,
             fontWeight: FontWeight.w300),
         textAlign: TextAlign.center,

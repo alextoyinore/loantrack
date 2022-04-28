@@ -69,46 +69,46 @@ class _NewRepaymentRecordState extends State<NewRepaymentRecord> {
         return true;
       },
       child: Scaffold(
-        backgroundColor: Colors.white,
-        appBar: AppBar(
-            centerTitle: true,
-            backgroundColor: Colors.white, //Colors.black12.withOpacity(0.03),
-            elevation: 0,
-            foregroundColor: LoanTrackColors.PrimaryOne,
-            leading: Padding(
-              padding: const EdgeInsets.only(left: 24.0),
-              child: GestureDetector(
-                  onTap: () {
-                    LoanTrackModal.modal(context,
-                        content: const LoanTrackAppsGridView(),
-                        title: 'Applications');
-                  },
-                  child: LoanTrackIcons.ApplicationIcon),
-            ),
-            title: const Text('New Repayment Record'),
-            actions: [
-              Padding(
-                padding: EdgeInsets.only(right: 32.0),
-                child: GestureDetector(
-                    onTap: () {
-                      Navigator.pop(context);
-                    },
-                    child: Icon(Icons.close)),
-              )
-            ]),
+        backgroundColor: Colors.black,
         body: (widget.documentSnapshot != null)
             ? Stack(children: [
                 SingleChildScrollView(
                     child: Padding(
                   padding:
-                      const EdgeInsets.only(left: 32.0, top: 20, right: 32),
+                      const EdgeInsets.only(left: 16.0, top: 20, right: 16),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      SizedBox(height: 20),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          GestureDetector(
+                              onTap: () {
+                                LoanTrackModal.modal(context,
+                                    content: const LoanTrackAppsGridView(),
+                                    title: 'Applications');
+                              },
+                              child: LoanTrackIcons.ApplicationIcon),
+                          const Text(
+                            'New Repayment Record',
+                            style: TextStyle(color: LoanTrackColors.PrimaryOne),
+                          ),
+                          GestureDetector(
+                              onTap: () {
+                                Navigator.pop(context);
+                              },
+                              child: Icon(
+                                Icons.close,
+                                color: LoanTrackColors.PrimaryOne,
+                              )),
+                        ],
+                      ),
+                      SizedBox(height: 20),
                       const Text(
                         'Add a new loan record here by filling this form. All fields except \'Note\' are required.',
                         style: TextStyle(
-                          color: LoanTrackColors.PrimaryTwoVeryLight,
+                          color: LoanTrackColors.PrimaryTwoLight,
                         ),
                       ),
                       SizedBox(height: 20),
@@ -318,12 +318,44 @@ class _NewRepaymentRecordState extends State<NewRepaymentRecord> {
               ])
             : Column(
                 children: [
+                  SizedBox(height: 20),
                   Padding(
-                    padding: const EdgeInsets.only(left: 32.0, right: 32.0),
+                    padding:
+                        const EdgeInsets.only(left: 16.0, top: 20, right: 16),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        GestureDetector(
+                            onTap: () {
+                              LoanTrackModal.modal(context,
+                                  content: const LoanTrackAppsGridView(),
+                                  title: 'Applications');
+                            },
+                            child: LoanTrackIcons.ApplicationIcon),
+                        const Text(
+                          'New Repayment Record',
+                          style: TextStyle(color: LoanTrackColors.PrimaryOne),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(right: 16.0),
+                          child: GestureDetector(
+                              onTap: () {
+                                Navigator.pop(context);
+                              },
+                              child: Icon(
+                                Icons.close,
+                                color: LoanTrackColors.PrimaryOne,
+                              )),
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: 20),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 16.0, right: 16.0),
                     child: Text(
                       'Select one loan record to repay. You may sort by \'Date\', \'Lender\', \'Amount\' or \'Repaid\'',
-                      style:
-                          TextStyle(color: LoanTrackColors.PrimaryTwoVeryLight),
+                      style: TextStyle(color: LoanTrackColors.PrimaryTwoLight),
                     ),
                   ),
                   LoanTrackingPage(

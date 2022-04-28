@@ -23,7 +23,7 @@ class _LoanTrackHomeState extends State<LoanTrackHome> {
 
     List<Widget> _widgetOptions = <Widget>[
       const HomeView(),
-      LoanTrackingPage(isHome: true, loanListHeight: screenHeight / 1.76),
+      LoanTrackingPage(isHome: true, loanListHeight: screenHeight / 1.55),
       const Center(
         child: News(),
       ),
@@ -44,7 +44,7 @@ class _LoanTrackHomeState extends State<LoanTrackHome> {
         return false;
       },
       child: Scaffold(
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.black,
         body: SafeArea(
           child: _widgetOptions.elementAt(_selectedIndex),
         ),
@@ -56,27 +56,27 @@ class _LoanTrackHomeState extends State<LoanTrackHome> {
             BottomNavigationBarItem(
                 icon: Icon(Icons.home_outlined),
                 label: 'Home',
-                backgroundColor: Colors.white //LoanTrackColors.PrimaryTwoDark,
+                backgroundColor: Colors.black //LoanTrackColors.PrimaryTwoDark,
                 ),
             BottomNavigationBarItem(
               icon: Icon(Icons.history_edu),
               label: 'History',
-              backgroundColor: Colors.white, //LoanTrackColors.PrimaryTwoDark,
+              backgroundColor: Colors.black, //LoanTrackColors.PrimaryTwoDark,
             ),
             BottomNavigationBarItem(
                 icon: Icon(Icons.newspaper_outlined),
                 label: 'News',
-                backgroundColor: Colors.white //LoanTrackColors.PrimaryTwoDark,
+                backgroundColor: Colors.black //LoanTrackColors.PrimaryTwoDark,
                 ),
             BottomNavigationBarItem(
                 icon: Icon(Icons.person_outline),
                 label: 'Profile',
-                backgroundColor: Colors.white //LoanTrackColors.PrimaryTwoDark,
+                backgroundColor: Colors.black //LoanTrackColors.PrimaryTwoDark,
                 ),
             BottomNavigationBarItem(
               icon: Icon(Icons.settings_outlined),
               label: 'Setting',
-              backgroundColor: Colors.white,
+              backgroundColor: Colors.black,
             ),
           ],
           currentIndex: _selectedIndex,

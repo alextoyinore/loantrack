@@ -85,7 +85,7 @@ class _HomeViewState extends State<HomeView> {
                 border: Border.all(
                     color: LoanTrackColors2.PrimaryOne,
                     width: .5), //LoanTrackColors.PrimaryBlack,
-                borderRadius: BorderRadius.circular(20),
+                //borderRadius: BorderRadius.circular(20),
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -116,6 +116,7 @@ class _HomeViewState extends State<HomeView> {
                               } else {
                                 len = 0;
                               }
+
                               for (int i = 0; i < len; i++) {
                                 DocumentSnapshot documentSnapshot =
                                     snapshot.data!.docs[i];
@@ -155,7 +156,7 @@ class _HomeViewState extends State<HomeView> {
                       ],
                     ),
                   ),
-                  Divider(color: LoanTrackColors2.PrimaryOne, thickness: .5),
+                  Divider(color: LoanTrackColors2.PrimaryOne, thickness: 1),
                   Padding(
                     padding:
                         const EdgeInsets.only(top: 8.0, left: 16, right: 16),
@@ -212,9 +213,9 @@ class _HomeViewState extends State<HomeView> {
                   child: Container(
                       width: screenWidth / 2.4,
                       child: LoanTrackButton.primaryOutline(
-                          context: context,
-                          label: 'New Payment Record',
-                          borderRadius: BorderRadius.circular(5))),
+                        context: context,
+                        label: 'New Payment Record',
+                      )),
                 ),
                 GestureDetector(
                   onTap: () {
@@ -223,9 +224,9 @@ class _HomeViewState extends State<HomeView> {
                   child: Container(
                     width: screenWidth / 2.4,
                     child: LoanTrackButton.secondaryOutline(
-                        context: context,
-                        label: 'New Loan Record',
-                        borderRadius: BorderRadius.circular(5)),
+                      context: context,
+                      label: 'New Loan Record',
+                    ),
                   ),
                 )
               ],

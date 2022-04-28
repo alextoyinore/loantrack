@@ -45,44 +45,7 @@ class _LoanDetailState extends State<LoanDetail> {
       );
     }
     return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        centerTitle: true,
-        elevation: 0,
-        backgroundColor: Colors.white,
-        leading: const Padding(
-            padding: const EdgeInsets.only(left: 24),
-            child: Icon(
-              Icons.archive_outlined,
-              color: LoanTrackColors2.PrimaryOne,
-            )),
-        title: Column(
-          children: [
-            Text(
-              '${widget.document!.get('lender').toString().toUpperCase()} - ${((widget.document!.get('loanAmount') - widget.document!.get('amountRepaid')) + (widget.document!.get('dailyOverdueCharge') * due)).toString()}',
-              style: TextStyle(color: LoanTrackColors.PrimaryTwoLight),
-            ),
-          ],
-        ),
-        actions: [
-          Padding(
-            padding: EdgeInsets.only(top: 0, right: 24),
-            child: GestureDetector(
-              onTap: () {
-                FirebaseFirestore.instance
-                    .collection('loans')
-                    .doc(widget.document!.id)
-                    .delete();
-                Navigator.pop(context);
-              },
-              child: Icon(
-                Icons.delete_outline,
-                color: LoanTrackColors.PrimaryOneLight,
-              ),
-            ),
-          )
-        ],
-      ),
+      backgroundColor: Colors.black,
       body: Stack(children: [
         Container(
           height: screenHeight,
@@ -99,197 +62,305 @@ class _LoanDetailState extends State<LoanDetail> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
+                    SizedBox(height: 20),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Icon(
+                          Icons.archive_outlined,
+                          color: LoanTrackColors2.PrimaryOne,
+                        ),
+                        Text(
+                          '${widget.document!.get('lender').toString().toUpperCase()} - ${((widget.document!.get('loanAmount') - widget.document!.get('amountRepaid')) + (widget.document!.get('dailyOverdueCharge') * due)).toString()}',
+                          style:
+                              TextStyle(color: LoanTrackColors.PrimaryTwoLight),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            FirebaseFirestore.instance
+                                .collection('loans')
+                                .doc(widget.document!.id)
+                                .delete();
+                            Navigator.pop(context);
+                          },
+                          child: Icon(
+                            Icons.delete_outline,
+                            color: LoanTrackColors.PrimaryOneLight,
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 20),
                     Container(
                       width: MediaQuery.of(context).size.width,
                       height: 40,
-                      padding: EdgeInsets.only(top: 10),
+                      padding: EdgeInsets.symmetric(vertical: 10),
                       decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: (due > 0)
-                              ? LoanTrackColors.PrimaryOneLight
-                              : LoanTrackColors2.PrimaryOne),
+                        //borderRadius: BorderRadius.circular(10),
+                        border: Border.all(
+                            color: (due > 0)
+                                ? LoanTrackColors.PrimaryOneLight
+                                : LoanTrackColors2.PrimaryOne),
+                      ),
                       child: Text(
                         (due > 0) ? '${due} DAY(S) OVERDUE' : 'SAFE',
-                        style: TextStyle(color: Colors.white),
+                        style: TextStyle(
+                            color: (due > 0)
+                                ? LoanTrackColors.PrimaryOneLight
+                                : LoanTrackColors2.PrimaryOne),
                         textAlign: TextAlign.center,
                       ),
                     ),
-                    Container(
-                      padding: EdgeInsets.all(15),
-                      child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text('Loan Amount',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold, fontSize: 14)),
-                            Text(widget.document!.get('loanAmount').toString(),
-                                style: TextStyle(
-                                    fontSize: 14,
-                                    color: LoanTrackColors.PrimaryTwoVeryLight,
-                                    fontWeight: FontWeight.bold))
-                          ]),
+
+                    SizedBox(height: 20),
+
+                    //Loan Amount
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text('Loan Amount',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 14,
+                                color: LoanTrackColors.PrimaryTwoLight)),
+                        Text(widget.document!.get('loanAmount').toString(),
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: LoanTrackColors.PrimaryTwoLight,
+                            ))
+                      ],
                     ),
-                    Container(
-                      padding: EdgeInsets.all(15),
-                      child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text('Amount Repaid',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold, fontSize: 14)),
-                            Text(
-                                widget.document!.get('amountRepaid').toString(),
-                                style: TextStyle(
-                                    fontSize: 14,
-                                    color: LoanTrackColors.PrimaryTwoVeryLight,
-                                    fontWeight: FontWeight.bold))
-                          ]),
+
+                    Divider(
+                        thickness: .5, color: LoanTrackColors.PrimaryTwoLight),
+
+                    // Amount Repaid
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text('Amount Repaid',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 14,
+                                color: LoanTrackColors.PrimaryTwoLight)),
+                        Text(widget.document!.get('amountRepaid').toString(),
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: LoanTrackColors.PrimaryTwoLight,
+                            ))
+                      ],
                     ),
-                    Container(
-                      padding: EdgeInsets.all(15),
-                      child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text('Interest Rate',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold, fontSize: 14)),
-                            Text(
-                                widget.document!.get('interestRate').toString(),
-                                style: TextStyle(
-                                    fontSize: 14,
-                                    color: LoanTrackColors.PrimaryTwoVeryLight,
-                                    fontWeight: FontWeight.bold))
-                          ]),
+                    Divider(
+                        thickness: .5, color: LoanTrackColors.PrimaryTwoLight),
+
+                    // Interest Rate
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text('Interest Rate',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 14,
+                                color: LoanTrackColors.PrimaryTwoLight)),
+                        Text(widget.document!.get('interestRate').toString(),
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: LoanTrackColors.PrimaryTwoLight,
+                            ))
+                      ],
                     ),
-                    Container(
-                      padding: EdgeInsets.all(15),
-                      child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text('Daily Overdue Charge',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold, fontSize: 14)),
-                            Text(
-                                widget.document!
-                                    .get('dailyOverdueCharge')
-                                    .toString(),
-                                style: TextStyle(
-                                    fontSize: 14,
-                                    color: LoanTrackColors.PrimaryTwoVeryLight,
-                                    fontWeight: FontWeight.bold))
-                          ]),
+                    Divider(
+                        thickness: .5, color: LoanTrackColors.PrimaryTwoLight),
+
+                    // Daily Overdue Charge
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text('Daily Overdue Charge',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 14,
+                                color: LoanTrackColors.PrimaryTwoLight)),
+                        Text(
+                            widget.document!
+                                .get('dailyOverdueCharge')
+                                .toString(),
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: LoanTrackColors.PrimaryTwoLight,
+                            ))
+                      ],
                     ),
-                    Container(
-                      padding: EdgeInsets.all(15),
-                      child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text('Apply When',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold, fontSize: 14)),
-                            Text(widget.document!.get('applyWhen').toString(),
-                                style: TextStyle(
-                                    fontSize: 14,
-                                    color: LoanTrackColors.PrimaryTwoVeryLight,
-                                    fontWeight: FontWeight.bold))
-                          ]),
+                    Divider(
+                        thickness: .5, color: LoanTrackColors.PrimaryTwoLight),
+
+                    //Apply When
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text('Apply When',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 14,
+                                color: LoanTrackColors.PrimaryTwoLight)),
+                        Text(widget.document!.get('applyWhen').toString(),
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: LoanTrackColors.PrimaryTwoLight,
+                            ))
+                      ],
                     ),
-                    Container(
-                      padding: EdgeInsets.all(15),
-                      child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text('Due When',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold, fontSize: 14)),
-                            Text(widget.document!.get('dueWhen').toString(),
-                                style: TextStyle(
-                                    fontSize: 14,
-                                    color: LoanTrackColors.PrimaryTwoVeryLight,
-                                    fontWeight: FontWeight.bold))
-                          ]),
+
+                    Divider(
+                        thickness: .5, color: LoanTrackColors.PrimaryTwoLight),
+
+                    // Due When
+
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text('Due When',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 14,
+                                color: LoanTrackColors.PrimaryTwoLight)),
+                        Text(widget.document!.get('dueWhen').toString(),
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: LoanTrackColors.PrimaryTwoLight,
+                            ))
+                      ],
                     ),
-                    Container(
-                      padding: EdgeInsets.all(15),
-                      child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text('Last Repayment Date',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold, fontSize: 14)),
-                            Text(
-                                widget.document!.get('lastPaidWhen').toString(),
-                                style: TextStyle(
-                                    fontSize: 14,
-                                    color: LoanTrackColors.PrimaryTwoVeryLight,
-                                    fontWeight: FontWeight.bold))
-                          ]),
+                    Divider(
+                        thickness: .5, color: LoanTrackColors.PrimaryTwoLight),
+
+                    // Last Repayment Date
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text('Last Repayment Date',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 14,
+                                color: LoanTrackColors.PrimaryTwoLight)),
+                        Text(widget.document!.get('lastPaidWhen').toString(),
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: LoanTrackColors.PrimaryTwoLight,
+                            ))
+                      ],
                     ),
-                    Container(
-                      padding: EdgeInsets.all(15),
-                      child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text('Lender Type',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold, fontSize: 14)),
-                            Text(widget.document!.get('lenderType').toString(),
-                                style: TextStyle(
-                                    fontSize: 14,
-                                    color: LoanTrackColors.PrimaryTwoVeryLight,
-                                    fontWeight: FontWeight.bold))
-                          ]),
+
+                    Divider(
+                        thickness: .5, color: LoanTrackColors.PrimaryTwoLight),
+
+                    // Lender Type
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text('Lender Type',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 14,
+                                color: LoanTrackColors.PrimaryTwoLight)),
+                        Text(widget.document!.get('lenderType').toString(),
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: LoanTrackColors.PrimaryTwoLight,
+                            ))
+                      ],
                     ),
-                    Container(
-                      padding: EdgeInsets.all(15),
-                      child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text('Lender',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold, fontSize: 14)),
-                            Text(widget.document!.get('lender').toString(),
-                                style: TextStyle(
-                                    fontSize: 14,
-                                    color: LoanTrackColors.PrimaryTwoVeryLight,
-                                    fontWeight: FontWeight.bold))
-                          ]),
+
+                    Divider(
+                        thickness: .5, color: LoanTrackColors.PrimaryTwoLight),
+
+                    // Lender
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text('Lender',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 14,
+                                color: LoanTrackColors.PrimaryTwoLight)),
+                        Text(widget.document!.get('lender').toString(),
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: LoanTrackColors.PrimaryTwoLight,
+                            ))
+                      ],
                     ),
-                    Container(
-                      padding: EdgeInsets.all(15),
-                      child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text('Loan Purpose',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold, fontSize: 14)),
-                            Text(widget.document!.get('loanPurpose').toString(),
-                                style: TextStyle(
-                                    fontSize: 14,
-                                    color: LoanTrackColors.PrimaryTwoVeryLight,
-                                    fontWeight: FontWeight.bold))
-                          ]),
+                    Divider(
+                        thickness: .5, color: LoanTrackColors.PrimaryTwoLight),
+
+                    // Loan Purpose
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text('Loan Purpose',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 14,
+                                color: LoanTrackColors.PrimaryTwoLight)),
+                        Text(widget.document!.get('loanPurpose').toString(),
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: LoanTrackColors.PrimaryTwoLight,
+                            ))
+                      ],
                     ),
-                    Container(
-                      padding: EdgeInsets.all(15),
-                      child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text('Note',
+                    Divider(
+                        thickness: .5, color: LoanTrackColors.PrimaryTwoLight),
+
+                    //Note
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('Note',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 14,
+                                color: LoanTrackColors.PrimaryTwoLight)),
+                        Container(
+                            width: MediaQuery.of(context).size.width / 2.25,
+                            child: Text(widget.document!.get('note').toString(),
+                                textAlign: TextAlign.right,
                                 style: TextStyle(
-                                    fontWeight: FontWeight.bold, fontSize: 14)),
-                            Container(
-                                width: MediaQuery.of(context).size.width / 2.25,
-                                child: Text(
-                                    widget.document!.get('note').toString(),
-                                    textAlign: TextAlign.right,
-                                    style: TextStyle(
-                                        fontSize: 14,
-                                        color:
-                                            LoanTrackColors.PrimaryTwoVeryLight,
-                                        fontWeight: FontWeight.bold)))
-                          ]),
+                                  fontSize: 14,
+                                  color: LoanTrackColors.PrimaryTwoLight,
+                                )))
+                      ],
+                    ),
+                    SizedBox(height: 50),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => NewRepaymentRecord(
+                                          documentSnapshot: widget.document,
+                                        )));
+                          },
+                          child: Container(
+                              width: screenWidth / 2.5,
+                              child: LoanTrackButton.primaryOutline(
+                                  context: context, label: 'Add Repayment')),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.pushNamed(context, '/loanRecord');
+                          },
+                          child: Container(
+                            width: screenWidth / 2.5,
+                            child: LoanTrackButton.secondaryOutline(
+                                context: context, label: 'Edit'),
+                          ),
+                        )
+                      ],
                     ),
                   ],
                 ),
@@ -298,38 +369,6 @@ class _LoanDetailState extends State<LoanDetail> {
             ]),
           ),
         ),
-        Positioned(
-          bottom: 0,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => NewRepaymentRecord(
-                                documentSnapshot: widget.document,
-                              )));
-                },
-                child: Container(
-                    width: screenWidth / 2,
-                    child: LoanTrackButton.primary(
-                        context: context, label: 'Add Repayment')),
-              ),
-              GestureDetector(
-                onTap: () {
-                  Navigator.pushNamed(context, '/loanRecord');
-                },
-                child: Container(
-                  width: screenWidth / 2,
-                  child: LoanTrackButton.secondaryOutline(
-                      context: context, label: 'Edit'),
-                ),
-              )
-            ],
-          ),
-        )
       ]),
     );
   }

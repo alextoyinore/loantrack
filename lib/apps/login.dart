@@ -36,7 +36,7 @@ class _LoanTackLoginState extends State<LoanTackLogin> with ChangeNotifier {
         return false;
       },
       child: Scaffold(
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.black,
         body: Padding(
           padding: const EdgeInsets.all(32.0),
           child: SingleChildScrollView(
@@ -83,9 +83,9 @@ class _LoanTackLoginState extends State<LoanTackLogin> with ChangeNotifier {
               context.read<LoginState>().emailVerification();
             },
             child: LoanTrackButton.primaryOutline(
-                context: context,
-                label: 'Start',
-                borderRadius: BorderRadius.circular(10))),
+              context: context,
+              label: 'Start',
+            )),
         SizedBox(height: 50),
         GestureDetector(
             onTap: () {
@@ -137,10 +137,9 @@ class _LoanTackLoginState extends State<LoanTackLogin> with ChangeNotifier {
               ),
             );
           },
-          child: LoanTrackButton.primaryOutline(
+          child: LoanTrackButton.primary(
             context: context,
             label: 'Login',
-            borderRadius: BorderRadius.circular(10),
           ),
         )
         //SizedBox(height: 10),
@@ -183,10 +182,9 @@ class _LoanTackLoginState extends State<LoanTackLogin> with ChangeNotifier {
 
             //Navigator.pushNamed(context, '/home');
           },
-          child: LoanTrackButton.primaryOutline(
+          child: LoanTrackButton.primary(
             context: context,
             label: 'Log In',
-            borderRadius: BorderRadius.circular(10),
           ),
         ),
         const SizedBox(height: 20),
@@ -271,10 +269,9 @@ class _LoanTackLoginState extends State<LoanTackLogin> with ChangeNotifier {
                 errorCallback: (e) => showErrorDialog(
                     context: context, title: 'Credential Error', e: e));
           },
-          child: LoanTrackButton.primaryOutline(
+          child: LoanTrackButton.primary(
             context: context,
             label: 'Create Account',
-            borderRadius: BorderRadius.circular(10),
           ),
         ),
         SizedBox(height: 10),
@@ -321,10 +318,9 @@ class _LoanTackLoginState extends State<LoanTackLogin> with ChangeNotifier {
               }
               //context.read<LoginState>().passwordCheck();
             },
-            child: LoanTrackButton.primaryOutline(
+            child: LoanTrackButton.primary(
               context: context,
               label: 'Request Link',
-              borderRadius: BorderRadius.circular(10),
             )),
         SizedBox(height: 20),
         GestureDetector(

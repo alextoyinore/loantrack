@@ -23,7 +23,7 @@ class _AppSettingsState extends State<AppSettings> {
       },
       child: SingleChildScrollView(
         child: Container(
-          padding: const EdgeInsets.only(left: 16.0, right: 16, top: 16),
+          padding: const EdgeInsets.only(left: 16.0, right: 16, top: 32),
           height: MediaQuery.of(context).size.height,
           child: ListView(
             padding: EdgeInsets.zero,
@@ -35,6 +35,7 @@ class _AppSettingsState extends State<AppSettings> {
                   style: TextStyle(color: LoanTrackColors.PrimaryTwoVeryLight),
                 ),
               ),
+              SizedBox(height: 10),
               ListTile(
                 leading:
                     Icon(Icons.info_outline, color: LoanTrackColors.PrimaryOne),
@@ -52,12 +53,14 @@ class _AppSettingsState extends State<AppSettings> {
                       title: 'About');
                 },
               ),
+              Divider(thickness: .5, color: LoanTrackColors.PrimaryTwo),
               ListTile(
                 leading: Icon(Icons.person, color: LoanTrackColors.PrimaryOne),
                 title: Text('Profile Settings',
                     style: TextStyle(color: LoanTrackColors.PrimaryOne)),
                 onTap: () {},
               ),
+              Divider(thickness: .5, color: LoanTrackColors.PrimaryTwo),
               ListTile(
                 leading:
                     Icon(Icons.logout, color: LoanTrackColors.PrimaryOneLight),

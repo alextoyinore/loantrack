@@ -45,7 +45,7 @@ class _LoanTrackTextFieldState extends State<LoanTrackTextField> {
             enabledBorder: OutlineInputBorder(
               borderSide: BorderSide(color: widget.color.withOpacity(.3)),
               //borderSide: BorderSide.none,
-              borderRadius: BorderRadius.circular(10),
+              //borderRadius: BorderRadius.circular(10),
             ),
             //hintText: widget.label,
             enabled: widget.enable,
@@ -55,7 +55,7 @@ class _LoanTrackTextFieldState extends State<LoanTrackTextField> {
             suffixIconColor: widget.color,
             fillColor: widget.color.withOpacity(.1),
             focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10),
+              //borderRadius: BorderRadius.circular(10),
               borderSide: BorderSide(color: widget.color.withOpacity(.3)),
             )));
   }

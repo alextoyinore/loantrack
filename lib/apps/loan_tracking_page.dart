@@ -35,7 +35,7 @@ class _LoanTrackingPageState extends State<LoanTrackingPage> {
     double screenHeight = MediaQuery.of(context).size.height;
 
     return Container(
-      padding: const EdgeInsets.only(top: 16.0, left: 32, right: 32),
+      padding: const EdgeInsets.only(top: 32.0, left: 16, right: 16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -47,7 +47,7 @@ class _LoanTrackingPageState extends State<LoanTrackingPage> {
             children: [
               // Total repaid Box
               Container(
-                width: screenWidth / 2.5,
+                width: screenWidth / 2.25,
                 height: 65,
                 padding: EdgeInsets.symmetric(vertical: 10, horizontal: 0),
                 decoration: BoxDecoration(
@@ -94,7 +94,7 @@ class _LoanTrackingPageState extends State<LoanTrackingPage> {
 
               //Total Loan owed Box
               Container(
-                width: screenWidth / 2.5,
+                width: screenWidth / 2.25,
                 padding: EdgeInsets.symmetric(vertical: 10, horizontal: 0),
                 height: 65,
                 decoration: BoxDecoration(
