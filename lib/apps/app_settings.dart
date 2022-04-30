@@ -53,19 +53,23 @@ class _AppSettingsState extends State<AppSettings> {
                       title: 'About');
                 },
               ),
-              Divider(thickness: .5, color: LoanTrackColors.PrimaryTwo),
+              Divider(
+                  thickness: .5,
+                  color: LoanTrackColors.PrimaryTwo.withOpacity(.2)),
               ListTile(
                 leading: Icon(Icons.person, color: LoanTrackColors.PrimaryOne),
                 title: Text('Profile Settings',
                     style: TextStyle(color: LoanTrackColors.PrimaryOne)),
                 onTap: () {},
               ),
-              Divider(thickness: .5, color: LoanTrackColors.PrimaryTwo),
+              Divider(
+                  thickness: .5,
+                  color: LoanTrackColors.PrimaryTwo.withOpacity(.2)),
               ListTile(
                 leading:
-                    Icon(Icons.logout, color: LoanTrackColors.PrimaryOneLight),
+                    Icon(Icons.logout, color: LoanTrackColors2.PrimaryOneLight),
                 title: Text('Sign Out',
-                    style: TextStyle(color: LoanTrackColors.PrimaryOneLight)),
+                    style: TextStyle(color: LoanTrackColors2.PrimaryOneLight)),
                 onTap: () {
                   AuthService auth = AuthService();
                   auth.signOut();

@@ -18,8 +18,8 @@ class LoanTrackModal {
             width: screenWidth,
             height: screenHeight * 2,
             decoration: BoxDecoration(
-                color: !isError ? Colors.white : Colors.redAccent,
-                borderRadius: BorderRadius.only(
+                color: !isError ? Colors.black : Colors.redAccent,
+                borderRadius: const BorderRadius.only(
                     topLeft: Radius.circular(20),
                     topRight: Radius.circular(20))),
             child: Column(
@@ -33,15 +33,15 @@ class LoanTrackModal {
                   height: 50,
                   decoration: BoxDecoration(
                       color: !isError
-                          ? Colors.white //LoanTrackColors.PrimaryTwo
+                          ? Colors.black //LoanTrackColors.PrimaryTwo
                           : Colors.redAccent,
-                      borderRadius: BorderRadius.only(
+                      borderRadius: const BorderRadius.only(
                           topLeft: Radius.circular(20),
                           topRight: Radius.circular(20))),
                   child: Text(title.toUpperCase(),
-                      style: TextStyle(
+                      style: const TextStyle(
                           fontSize: 20,
-                          color: LoanTrackColors.PrimaryTwo //Colors.white,
+                          color: LoanTrackColors.PrimaryTwoLight //Colors.white,
                           )),
                 ),
                 SizedBox(height: 5),

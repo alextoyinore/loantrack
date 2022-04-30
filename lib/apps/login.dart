@@ -36,21 +36,23 @@ class _LoanTackLoginState extends State<LoanTackLogin> with ChangeNotifier {
         return false;
       },
       child: Scaffold(
-        backgroundColor: Colors.black,
-        body: Padding(
-          padding: const EdgeInsets.all(32.0),
-          child: SingleChildScrollView(
-            child: (loginState == States.loggedOut)
-                ? startLoginFlow(context)
-                : (loginState == States.verifyingEmail)
-                    ? emailVerifier(context)
-                    : (loginState == States.askingPassword)
-                        ? passwordRequest(context)
-                        : (loginState == States.creatingAccount)
-                            ? createAccount(context)
-                            : (loginState == States.sendingVerificationEmail)
-                                ? sendingEmailVerificationScreen(context)
-                                : emailVerifier(context),
+        backgroundColor: Colors.white,
+        body: Center(
+          child: Padding(
+            padding: const EdgeInsets.all(32.0),
+            child: SingleChildScrollView(
+              child: (loginState == States.loggedOut)
+                  ? startLoginFlow(context)
+                  : (loginState == States.verifyingEmail)
+                      ? emailVerifier(context)
+                      : (loginState == States.askingPassword)
+                          ? passwordRequest(context)
+                          : (loginState == States.creatingAccount)
+                              ? createAccount(context)
+                              : (loginState == States.sendingVerificationEmail)
+                                  ? sendingEmailVerificationScreen(context)
+                                  : emailVerifier(context),
+            ),
           ),
         ),
       ),
@@ -137,7 +139,7 @@ class _LoanTackLoginState extends State<LoanTackLogin> with ChangeNotifier {
               ),
             );
           },
-          child: LoanTrackButton.primary(
+          child: LoanTrackButton.primaryOutline(
             context: context,
             label: 'Login',
           ),
@@ -182,7 +184,7 @@ class _LoanTackLoginState extends State<LoanTackLogin> with ChangeNotifier {
 
             //Navigator.pushNamed(context, '/home');
           },
-          child: LoanTrackButton.primary(
+          child: LoanTrackButton.primaryOutline(
             context: context,
             label: 'Log In',
           ),
@@ -269,7 +271,7 @@ class _LoanTackLoginState extends State<LoanTackLogin> with ChangeNotifier {
                 errorCallback: (e) => showErrorDialog(
                     context: context, title: 'Credential Error', e: e));
           },
-          child: LoanTrackButton.primary(
+          child: LoanTrackButton.primaryOutline(
             context: context,
             label: 'Create Account',
           ),
@@ -318,7 +320,7 @@ class _LoanTackLoginState extends State<LoanTackLogin> with ChangeNotifier {
               }
               //context.read<LoginState>().passwordCheck();
             },
-            child: LoanTrackButton.primary(
+            child: LoanTrackButton.primaryOutline(
               context: context,
               label: 'Request Link',
             )),

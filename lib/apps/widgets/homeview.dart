@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:loantrack/apps/loan_tracking_page.dart';
 import 'package:loantrack/helpers/colors.dart';
 
 import '../../helpers/functions.dart';
@@ -31,6 +32,7 @@ class _HomeViewState extends State<HomeView> {
           padding: EdgeInsets.only(left: 24, top: 16, right: 24),
           height: screenHeight * .92,
           child: Column(children: [
+            //SizedBox(height: 20),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -83,15 +85,16 @@ class _HomeViewState extends State<HomeView> {
               padding: EdgeInsets.only(top: 16, bottom: 16),
               decoration: BoxDecoration(
                 border: Border.all(
-                    color: LoanTrackColors2.PrimaryOne,
+                    color: LoanTrackColors.PrimaryOne,
                     width: .5), //LoanTrackColors.PrimaryBlack,
-                //borderRadius: BorderRadius.circular(20),
+                borderRadius: BorderRadius.circular(10),
+                //color: LoanTrackColors2.TetiaryOneLight,
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
-                    height: screenHeight / 12,
+                    height: screenHeight / 14,
                     padding: const EdgeInsets.only(left: 16, right: 16),
                     child: ListView(
                       //crossAxisAlignment: CrossAxisAlignment.start,
@@ -156,7 +159,7 @@ class _HomeViewState extends State<HomeView> {
                       ],
                     ),
                   ),
-                  Divider(color: LoanTrackColors2.PrimaryOne, thickness: 1),
+                  Divider(color: LoanTrackColors.PrimaryOne, thickness: .5),
                   Padding(
                     padding:
                         const EdgeInsets.only(top: 8.0, left: 16, right: 16),
@@ -203,33 +206,33 @@ class _HomeViewState extends State<HomeView> {
             //SizedBox(height: 10),
 
             //BEGIN ACTION BUTTONS
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                GestureDetector(
-                  onTap: () {
-                    Navigator.pushNamed(context, '/repaymentRecord');
-                  },
-                  child: Container(
-                      width: screenWidth / 2.4,
-                      child: LoanTrackButton.primaryOutline(
-                        context: context,
-                        label: 'New Payment Record',
-                      )),
+            GestureDetector(
+              onTap: () {
+                Navigator.pushNamed(context, '/loanRecord');
+              },
+              child: Container(
+                child: LoanTrackButton.secondary(
+                  context: context,
+                  label: 'Add New Record',
                 ),
-                GestureDetector(
-                  onTap: () {
-                    Navigator.pushNamed(context, '/loanRecord');
-                  },
-                  child: Container(
-                    width: screenWidth / 2.4,
-                    child: LoanTrackButton.secondaryOutline(
-                      context: context,
-                      label: 'New Loan Record',
-                    ),
-                  ),
-                )
-              ],
+              ),
+            ),
+            SizedBox(height: 20),
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => LoanTrackingPage(
+                              isHome: false,
+                              loanListHeight: screenHeight * .7,
+                            )));
+              },
+              child: Container(
+                  child: LoanTrackButton.primary(
+                context: context,
+                label: 'Make Repayment',
+              )),
             ),
 
             //END ACTION BUTTONS
@@ -283,7 +286,8 @@ class _HomeViewState extends State<HomeView> {
                         size: 25, color: LoanTrackColors.PrimaryOneLight),
                     label: const Text('LOAN HEALTH',
                         style: TextStyle(
-                            color: LoanTrackColors.PrimaryOne, fontSize: 11),
+                            color: LoanTrackColors.PrimaryOneLight,
+                            fontSize: 11),
                         textAlign: TextAlign.center,
                         softWrap: true),
                     backgroundColor: LoanTrackColors.PrimaryOneVeryLight,
@@ -355,7 +359,7 @@ class _HomeViewState extends State<HomeView> {
             // BEGIN LOAN PROGRESS
             LoanList(
                 width: screenWidth,
-                height: screenHeight / 4,
+                height: screenHeight / 7,
                 userId: userId,
                 numberOfItems: 5),
             //SizedBox(height: 50),

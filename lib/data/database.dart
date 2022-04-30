@@ -47,6 +47,23 @@ class DatabaseService with ChangeNotifier {
         ));
   }
 
+  Future updateSingleLoanData({
+    required double amountRepaid,
+    required String lastPaidWhen,
+    required String note,
+    required String id,
+  }) async {
+    return await loans.doc(id).set(
+        {
+          'amountRepaid': amountRepaid,
+          'lastPaidWhen': lastPaidWhen,
+          'note': note
+        },
+        SetOptions(
+          merge: true,
+        ));
+  }
+
   Future updateRepaymentData({
     required String loanId,
     required double amountRepaid,
@@ -60,33 +77,5 @@ class DatabaseService with ChangeNotifier {
       'dateOfRepayment': dateOfRepayment,
       'note': note,
     }, SetOptions(merge: true));
-  }
-
-  getRepayments(DocumentSnapshot documentSnapshot) {
-    //Query Repayments
-    StreamBuilder<QuerySnapshot>(
-      stream: FirebaseFirestore.instance
-          .collection('repayments')
-          .where('userId', isEqualTo: userId)
-          .where('loanId', isEqualTo: documentSnapshot.id)
-          .snapshots(),
-      builder: (context, rSnapshot) {
-        int len = 0;
-        if (rSnapshot.data?.docs.length != null) {
-          len = rSnapshot.data!.docs.length;
-        } else {
-          len = 0;
-        }
-        double totalRepayments = 0;
-
-        for (int j = 0; j < len; j++) {
-          DocumentSnapshot repaymentSnapshot = rSnapshot.data!.docs[j];
-
-          totalRepayments += repaymentSnapshot.get('amountRepaid');
-        }
-        return Container();
-      },
-    );
-    //End of Repayment Query
   }
 }

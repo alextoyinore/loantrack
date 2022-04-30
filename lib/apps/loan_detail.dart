@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:loantrack/apps/new_repayment_record.dart';
+import 'package:loantrack/apps/loan_record.dart';
 import 'package:loantrack/apps/widgets/button.dart';
 import 'package:loantrack/helpers/colors.dart';
 
@@ -45,7 +45,7 @@ class _LoanDetailState extends State<LoanDetail> {
       );
     }
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: Colors.white,
       body: Stack(children: [
         Container(
           height: screenHeight,
@@ -56,13 +56,13 @@ class _LoanDetailState extends State<LoanDetail> {
                 //height: screenHeight * .7,
                 //padding: EdgeInsets.only(left: 16, right: 16),
                 decoration: BoxDecoration(
-                  color: LoanTrackColors.PrimaryTwoLight.withOpacity(.05),
+                  //color: LoanTrackColors.PrimaryTwoLight.withOpacity(.05),
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    SizedBox(height: 20),
+                    SizedBox(height: screenHeight / 25),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -85,12 +85,12 @@ class _LoanDetailState extends State<LoanDetail> {
                           },
                           child: Icon(
                             Icons.delete_outline,
-                            color: LoanTrackColors.PrimaryOneLight,
+                            color: LoanTrackColors2.PrimaryOneLight,
                           ),
                         ),
                       ],
                     ),
-                    SizedBox(height: 20),
+                    SizedBox(height: 40),
                     Container(
                       width: MediaQuery.of(context).size.width,
                       height: 40,
@@ -99,15 +99,15 @@ class _LoanDetailState extends State<LoanDetail> {
                         //borderRadius: BorderRadius.circular(10),
                         border: Border.all(
                             color: (due > 0)
-                                ? LoanTrackColors.PrimaryOneLight
-                                : LoanTrackColors2.PrimaryOne),
+                                ? LoanTrackColors2.PrimaryOneLight
+                                : LoanTrackColors.PrimaryOne),
                       ),
                       child: Text(
                         (due > 0) ? '${due} DAY(S) OVERDUE' : 'SAFE',
                         style: TextStyle(
                             color: (due > 0)
-                                ? LoanTrackColors.PrimaryOneLight
-                                : LoanTrackColors2.PrimaryOne),
+                                ? LoanTrackColors2.PrimaryOneLight
+                                : LoanTrackColors.PrimaryOne),
                         textAlign: TextAlign.center,
                       ),
                     ),
@@ -120,11 +120,12 @@ class _LoanDetailState extends State<LoanDetail> {
                       children: [
                         Text('Loan Amount',
                             style: TextStyle(
-                                fontWeight: FontWeight.bold,
+                                fontWeight: FontWeight.w300,
                                 fontSize: 14,
                                 color: LoanTrackColors.PrimaryTwoLight)),
                         Text(widget.document!.get('loanAmount').toString(),
                             style: TextStyle(
+                              fontWeight: FontWeight.w300,
                               fontSize: 14,
                               color: LoanTrackColors.PrimaryTwoLight,
                             ))
@@ -140,11 +141,12 @@ class _LoanDetailState extends State<LoanDetail> {
                       children: [
                         Text('Amount Repaid',
                             style: TextStyle(
-                                fontWeight: FontWeight.bold,
+                                fontWeight: FontWeight.w300,
                                 fontSize: 14,
                                 color: LoanTrackColors.PrimaryTwoLight)),
                         Text(widget.document!.get('amountRepaid').toString(),
                             style: TextStyle(
+                              fontWeight: FontWeight.w300,
                               fontSize: 14,
                               color: LoanTrackColors.PrimaryTwoLight,
                             ))
@@ -159,11 +161,12 @@ class _LoanDetailState extends State<LoanDetail> {
                       children: [
                         Text('Interest Rate',
                             style: TextStyle(
-                                fontWeight: FontWeight.bold,
+                                fontWeight: FontWeight.w300,
                                 fontSize: 14,
                                 color: LoanTrackColors.PrimaryTwoLight)),
                         Text(widget.document!.get('interestRate').toString(),
                             style: TextStyle(
+                              fontWeight: FontWeight.w300,
                               fontSize: 14,
                               color: LoanTrackColors.PrimaryTwoLight,
                             ))
@@ -178,7 +181,7 @@ class _LoanDetailState extends State<LoanDetail> {
                       children: [
                         Text('Daily Overdue Charge',
                             style: TextStyle(
-                                fontWeight: FontWeight.bold,
+                                fontWeight: FontWeight.w300,
                                 fontSize: 14,
                                 color: LoanTrackColors.PrimaryTwoLight)),
                         Text(
@@ -186,6 +189,7 @@ class _LoanDetailState extends State<LoanDetail> {
                                 .get('dailyOverdueCharge')
                                 .toString(),
                             style: TextStyle(
+                              fontWeight: FontWeight.w300,
                               fontSize: 14,
                               color: LoanTrackColors.PrimaryTwoLight,
                             ))
@@ -200,11 +204,12 @@ class _LoanDetailState extends State<LoanDetail> {
                       children: [
                         Text('Apply When',
                             style: TextStyle(
-                                fontWeight: FontWeight.bold,
+                                fontWeight: FontWeight.w300,
                                 fontSize: 14,
                                 color: LoanTrackColors.PrimaryTwoLight)),
                         Text(widget.document!.get('applyWhen').toString(),
                             style: TextStyle(
+                              fontWeight: FontWeight.w300,
                               fontSize: 14,
                               color: LoanTrackColors.PrimaryTwoLight,
                             ))
@@ -221,11 +226,12 @@ class _LoanDetailState extends State<LoanDetail> {
                       children: [
                         Text('Due When',
                             style: TextStyle(
-                                fontWeight: FontWeight.bold,
+                                fontWeight: FontWeight.w300,
                                 fontSize: 14,
                                 color: LoanTrackColors.PrimaryTwoLight)),
                         Text(widget.document!.get('dueWhen').toString(),
                             style: TextStyle(
+                              fontWeight: FontWeight.w300,
                               fontSize: 14,
                               color: LoanTrackColors.PrimaryTwoLight,
                             ))
@@ -240,11 +246,12 @@ class _LoanDetailState extends State<LoanDetail> {
                       children: [
                         Text('Last Repayment Date',
                             style: TextStyle(
-                                fontWeight: FontWeight.bold,
+                                fontWeight: FontWeight.w300,
                                 fontSize: 14,
                                 color: LoanTrackColors.PrimaryTwoLight)),
                         Text(widget.document!.get('lastPaidWhen').toString(),
                             style: TextStyle(
+                              fontWeight: FontWeight.w300,
                               fontSize: 14,
                               color: LoanTrackColors.PrimaryTwoLight,
                             ))
@@ -260,11 +267,12 @@ class _LoanDetailState extends State<LoanDetail> {
                       children: [
                         Text('Lender Type',
                             style: TextStyle(
-                                fontWeight: FontWeight.bold,
+                                fontWeight: FontWeight.w300,
                                 fontSize: 14,
                                 color: LoanTrackColors.PrimaryTwoLight)),
                         Text(widget.document!.get('lenderType').toString(),
                             style: TextStyle(
+                              fontWeight: FontWeight.w300,
                               fontSize: 14,
                               color: LoanTrackColors.PrimaryTwoLight,
                             ))
@@ -280,11 +288,12 @@ class _LoanDetailState extends State<LoanDetail> {
                       children: [
                         Text('Lender',
                             style: TextStyle(
-                                fontWeight: FontWeight.bold,
+                                fontWeight: FontWeight.w300,
                                 fontSize: 14,
                                 color: LoanTrackColors.PrimaryTwoLight)),
                         Text(widget.document!.get('lender').toString(),
                             style: TextStyle(
+                              fontWeight: FontWeight.w300,
                               fontSize: 14,
                               color: LoanTrackColors.PrimaryTwoLight,
                             ))
@@ -299,11 +308,12 @@ class _LoanDetailState extends State<LoanDetail> {
                       children: [
                         Text('Loan Purpose',
                             style: TextStyle(
-                                fontWeight: FontWeight.bold,
+                                fontWeight: FontWeight.w300,
                                 fontSize: 14,
                                 color: LoanTrackColors.PrimaryTwoLight)),
                         Text(widget.document!.get('loanPurpose').toString(),
                             style: TextStyle(
+                              fontWeight: FontWeight.w300,
                               fontSize: 14,
                               color: LoanTrackColors.PrimaryTwoLight,
                             ))
@@ -319,7 +329,7 @@ class _LoanDetailState extends State<LoanDetail> {
                       children: [
                         Text('Note',
                             style: TextStyle(
-                                fontWeight: FontWeight.bold,
+                                fontWeight: FontWeight.w300,
                                 fontSize: 14,
                                 color: LoanTrackColors.PrimaryTwoLight)),
                         Container(
@@ -327,13 +337,44 @@ class _LoanDetailState extends State<LoanDetail> {
                             child: Text(widget.document!.get('note').toString(),
                                 textAlign: TextAlign.right,
                                 style: TextStyle(
+                                  fontWeight: FontWeight.w300,
                                   fontSize: 14,
                                   color: LoanTrackColors.PrimaryTwoLight,
                                 )))
                       ],
                     ),
                     SizedBox(height: 50),
-                    Row(
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => NewLoanRecord(
+                                      documentSnapshot: widget.document,
+                                    )));
+                      },
+                      child: Container(
+                          //width: screenWidth,
+                          child: LoanTrackButton.primary(
+                              context: context, label: 'Repay')),
+                    ),
+                    SizedBox(height: 20),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => NewLoanRecord(
+                                      documentSnapshot: widget.document,
+                                      edit: true,
+                                    )));
+                      },
+                      child: Container(
+                          //width: screenWidth,
+                          child: LoanTrackButton.secondary(
+                              context: context, label: 'Edit')),
+                    ),
+                    /* Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         GestureDetector(
@@ -346,8 +387,8 @@ class _LoanDetailState extends State<LoanDetail> {
                                         )));
                           },
                           child: Container(
-                              width: screenWidth / 2.5,
-                              child: LoanTrackButton.primaryOutline(
+                              //width: screenWidth,
+                              child: LoanTrackButton.secondaryOutline(
                                   context: context, label: 'Add Repayment')),
                         ),
                         GestureDetector(
@@ -361,7 +402,7 @@ class _LoanDetailState extends State<LoanDetail> {
                           ),
                         )
                       ],
-                    ),
+                    ),*/
                   ],
                 ),
               ),

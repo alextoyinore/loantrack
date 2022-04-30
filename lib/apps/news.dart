@@ -12,17 +12,17 @@ class _NewsState extends State<News> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 32),
+      padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 24),
       child: Column(
         children: [
           Row(
             children: const [
-              Icon(Icons.newspaper, color: LoanTrackColors2.TetiaryOne),
+              Icon(Icons.newspaper, color: LoanTrackColors.PrimaryOne),
               SizedBox(width: 10),
               Text(
                 'NEWS',
                 style:
-                    TextStyle(color: LoanTrackColors2.TetiaryOne, fontSize: 20),
+                    TextStyle(color: LoanTrackColors.PrimaryOne, fontSize: 20),
               )
             ],
           ),

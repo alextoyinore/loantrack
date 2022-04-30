@@ -7,7 +7,9 @@ import 'package:loantrack/apps/widgets/homeview.dart';
 import 'package:loantrack/helpers/colors.dart';
 
 class LoanTrackHome extends StatefulWidget {
-  const LoanTrackHome({Key? key}) : super(key: key);
+  LoanTrackHome({Key? key, this.selectedIndex}) : super(key: key);
+
+  int? selectedIndex;
 
   @override
   _LoanTrackHomeState createState() => _LoanTrackHomeState();
@@ -23,7 +25,7 @@ class _LoanTrackHomeState extends State<LoanTrackHome> {
 
     List<Widget> _widgetOptions = <Widget>[
       const HomeView(),
-      LoanTrackingPage(isHome: true, loanListHeight: screenHeight / 1.55),
+      LoanTrackingPage(isHome: true, loanListHeight: screenHeight / 1.546),
       const Center(
         child: News(),
       ),
@@ -44,7 +46,7 @@ class _LoanTrackHomeState extends State<LoanTrackHome> {
         return false;
       },
       child: Scaffold(
-        backgroundColor: Colors.black,
+        backgroundColor: Colors.white,
         body: SafeArea(
           child: _widgetOptions.elementAt(_selectedIndex),
         ),
@@ -56,27 +58,27 @@ class _LoanTrackHomeState extends State<LoanTrackHome> {
             BottomNavigationBarItem(
                 icon: Icon(Icons.home_outlined),
                 label: 'Home',
-                backgroundColor: Colors.black //LoanTrackColors.PrimaryTwoDark,
+                backgroundColor: Colors.white //LoanTrackColors.PrimaryTwoDark,
                 ),
             BottomNavigationBarItem(
               icon: Icon(Icons.history_edu),
               label: 'History',
-              backgroundColor: Colors.black, //LoanTrackColors.PrimaryTwoDark,
+              backgroundColor: Colors.white, //LoanTrackColors.PrimaryTwoDark,
             ),
             BottomNavigationBarItem(
                 icon: Icon(Icons.newspaper_outlined),
                 label: 'News',
-                backgroundColor: Colors.black //LoanTrackColors.PrimaryTwoDark,
+                backgroundColor: Colors.white //LoanTrackColors.PrimaryTwoDark,
                 ),
             BottomNavigationBarItem(
                 icon: Icon(Icons.person_outline),
                 label: 'Profile',
-                backgroundColor: Colors.black //LoanTrackColors.PrimaryTwoDark,
+                backgroundColor: Colors.white //LoanTrackColors.PrimaryTwoDark,
                 ),
             BottomNavigationBarItem(
               icon: Icon(Icons.settings_outlined),
               label: 'Setting',
-              backgroundColor: Colors.black,
+              backgroundColor: Colors.white,
             ),
           ],
           currentIndex: _selectedIndex,

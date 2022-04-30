@@ -211,3 +211,35 @@ Container LoanBulletedList(
     ),
   );
 }
+
+double totalRepayments = 0;
+
+Container repaymentList(
+    {required DocumentSnapshot documentSnapshot,
+    required BuildContext context}) {
+  //Query Repayments
+  return Container(
+    height: MediaQuery.of(context).size.height,
+    child: StreamBuilder<QuerySnapshot>(
+      stream: FirebaseFirestore.instance
+          .collection('repayments')
+          .where('userId', isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+          .where('loanId', isEqualTo: documentSnapshot.id)
+          .snapshots(),
+      builder: (context, rSnapshot) {
+        int len = 0;
+        if (rSnapshot.data?.docs.length != null) {
+          len = rSnapshot.data!.docs.length;
+        } else {
+          len = 0;
+        }
+        for (int j = 0; j < len; j++) {
+          DocumentSnapshot repaymentSnapshot = rSnapshot.data!.docs[j];
+          totalRepayments += repaymentSnapshot.get('amountRepaid');
+        }
+        return Container();
+      },
+    ),
+  );
+  //End of Repayment Query
+}
