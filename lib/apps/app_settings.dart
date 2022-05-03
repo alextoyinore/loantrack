@@ -48,7 +48,7 @@ class _AppSettingsState extends State<AppSettings> {
                               style: TextStyle(
                                   //fontSize: 14,
                                   height: 1.5,
-                                  color: LoanTrackColors.PrimaryOne),
+                                  color: LoanTrackColors.PrimaryTwoLight),
                               softWrap: true)),
                       title: 'About');
                 },

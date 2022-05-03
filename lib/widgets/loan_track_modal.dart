@@ -16,9 +16,9 @@ class LoanTrackModal {
         builder: (context) {
           return Container(
             width: screenWidth,
-            height: screenHeight * 2,
+            //height: screenHeight * 2,
             decoration: BoxDecoration(
-                color: !isError ? Colors.black : Colors.redAccent,
+                color: !isError ? Colors.white : Colors.redAccent,
                 borderRadius: const BorderRadius.only(
                     topLeft: Radius.circular(20),
                     topRight: Radius.circular(20))),
@@ -33,7 +33,7 @@ class LoanTrackModal {
                   height: 50,
                   decoration: BoxDecoration(
                       color: !isError
-                          ? Colors.black //LoanTrackColors.PrimaryTwo
+                          ? Colors.white //LoanTrackColors.PrimaryTwo
                           : Colors.redAccent,
                       borderRadius: const BorderRadius.only(
                           topLeft: Radius.circular(20),

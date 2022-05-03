@@ -1,11 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:loantrack/apps/loan_tracking_page.dart';
 import 'package:loantrack/helpers/colors.dart';
+import 'package:loantrack/helpers/common_widgets.dart';
 
 import '../../helpers/functions.dart';
+import '../../widgets/application_grid_view.dart';
+import '../../widgets/loan_track_modal.dart';
 import 'button.dart';
 
 class HomeView extends StatefulWidget {
@@ -16,7 +18,7 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
-  ScrollController _controller = ScrollController();
+  final ScrollController _controller = ScrollController();
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
@@ -29,7 +31,7 @@ class _HomeViewState extends State<HomeView> {
     return Stack(children: [
       SingleChildScrollView(
         child: Container(
-          padding: EdgeInsets.only(left: 24, top: 16, right: 24),
+          padding: const EdgeInsets.only(left: 24, top: 16, right: 24),
           height: screenHeight * .92,
           child: Column(children: [
             //SizedBox(height: 20),
@@ -46,7 +48,7 @@ class _HomeViewState extends State<HomeView> {
                             style: TextStyle(
                                 fontSize: 16,
                                 color: LoanTrackColors.PrimaryTwoLight)),
-                        SizedBox(width: 5),
+                        separatorSpace5,
                         Text(
                             FirebaseAuth.instance.currentUser!.displayName
                                 .toString(),
@@ -57,7 +59,7 @@ class _HomeViewState extends State<HomeView> {
                                 color: LoanTrackColors.PrimaryTwoLight)),
                       ],
                     ),
-                    SizedBox(height: 5),
+                    separatorSpace5,
                     Text(
                         Timestamp.now()
                             .toDate()
@@ -70,19 +72,19 @@ class _HomeViewState extends State<HomeView> {
                         )),
                   ],
                 ),
-                CircleAvatar(
+                const CircleAvatar(
                   radius: 20,
                   backgroundImage: AssetImage('assets/images/user_profile.png'),
                 ),
               ],
             ),
-            SizedBox(height: 20),
+            separatorSpace20,
 
             // BEGIN LOAN CARD
             Container(
               width: screenWidth,
               //height: screenHeight / 2.9,
-              padding: EdgeInsets.only(top: 16, bottom: 16),
+              padding: const EdgeInsets.only(top: 16, bottom: 16),
               decoration: BoxDecoration(
                 border: Border.all(
                     color: LoanTrackColors.PrimaryOne,
@@ -99,10 +101,10 @@ class _HomeViewState extends State<HomeView> {
                     child: ListView(
                       //crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('CURRENT LOAN TOTAL',
-                            style: const TextStyle(
-                                color: LoanTrackColors.PrimaryOne)),
-                        SizedBox(height: 5),
+                        const Text('CURRENT LOAN TOTAL',
+                            style:
+                                TextStyle(color: LoanTrackColors.PrimaryOne)),
+                        separatorSpace5,
 
                         // LOAN TOTAL STREAM
 
@@ -145,7 +147,7 @@ class _HomeViewState extends State<HomeView> {
                                 }
                               }
                               return (totalLoans > 0)
-                                  ? Text('${totalLoans.toString()}',
+                                  ? Text(totalLoans.toString(),
                                       style: const TextStyle(
                                           fontSize: 36,
                                           color: LoanTrackColors.PrimaryOne))
@@ -159,7 +161,8 @@ class _HomeViewState extends State<HomeView> {
                       ],
                     ),
                   ),
-                  Divider(color: LoanTrackColors.PrimaryOne, thickness: .5),
+                  const Divider(
+                      color: LoanTrackColors.PrimaryOne, thickness: .5),
                   Padding(
                     padding:
                         const EdgeInsets.only(top: 8.0, left: 16, right: 16),
@@ -172,9 +175,9 @@ class _HomeViewState extends State<HomeView> {
                               fontWeight: FontWeight.w300,
                               color: LoanTrackColors
                                   .PrimaryOne, //LoanTrackColors.PrimaryOneVeryLight,
-                              fontSize: 16),
+                              fontSize: 12),
                         ),
-                        SizedBox(height: 5),
+                        separatorSpace5,
                         LoanBulletedList(
                             height: 25, numberOfItems: 5, userId: userId),
                       ],
@@ -184,7 +187,7 @@ class _HomeViewState extends State<HomeView> {
               ),
             ),
 
-            SizedBox(height: 10),
+            separatorSpace10,
 
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 16.0),
@@ -217,7 +220,7 @@ class _HomeViewState extends State<HomeView> {
                 ),
               ),
             ),
-            SizedBox(height: 20),
+            separatorSpace10,
             GestureDetector(
               onTap: () {
                 Navigator.push(
@@ -237,26 +240,68 @@ class _HomeViewState extends State<HomeView> {
 
             //END ACTION BUTTONS
 
+            // BEGIN LOAN PROGRESS
+
+            separatorSpace20,
+
+            // Progress header
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text(
+                    'TRACKING',
+                    style: TextStyle(color: LoanTrackColors.PrimaryTwoLight),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => LoanTrackingPage(
+                                    isHome: false,
+                                    loanListHeight: screenHeight * .7,
+                                  )));
+                    },
+                    child: const Text(
+                      'SEE ALL',
+                      style: TextStyle(color: LoanTrackColors.PrimaryOne),
+                    ),
+                  )
+                ],
+              ),
+            ),
+
+            LoanList(
+                width: screenWidth,
+                height: screenHeight / 7,
+                userId: userId,
+                numberOfItems: 5),
+            //END LOAN PROGRESS
+
             // BEGIN PRODUCT SLIDER
 
-            SizedBox(height: 10),
-            /*const Text(
-              'Follow all your loans and track their progress here. Below is an overview of all your most recent loans.',
-              style: TextStyle(
-                  color: LoanTrackColors.PrimaryTwoVeryLight, fontSize: 12),
-            ),*/
+            separatorSpace10,
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 16.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: const [
-                  Text(
+                children: [
+                  const Text(
                     'POPULAR APPS',
                     style: TextStyle(color: LoanTrackColors.PrimaryTwoLight),
                   ),
-                  Text(
-                    'SEE ALL',
-                    style: TextStyle(color: LoanTrackColors.PrimaryOne),
+                  GestureDetector(
+                    onTap: () {
+                      LoanTrackModal.modal(context,
+                          content: const LoanTrackAppsGridView(),
+                          title: 'Applications');
+                    },
+                    child: const Text(
+                      'SEE ALL',
+                      style: TextStyle(color: LoanTrackColors.PrimaryOne),
+                    ),
                   )
                 ],
               ),
@@ -280,7 +325,7 @@ class _HomeViewState extends State<HomeView> {
                         softWrap: true),
                     backgroundColor: LoanTrackColors2.PrimaryOneVeryLight,
                   ),
-                  SizedBox(width: 10),
+                  separatorSpace10,
                   LoanTrackProductLinkBox(
                     icon: const Icon(Icons.health_and_safety,
                         size: 25, color: LoanTrackColors.PrimaryOneLight),
@@ -292,7 +337,7 @@ class _HomeViewState extends State<HomeView> {
                         softWrap: true),
                     backgroundColor: LoanTrackColors.PrimaryOneVeryLight,
                   ),
-                  SizedBox(width: 10),
+                  separatorSpace10,
                   GestureDetector(
                     onTap: () {
                       Navigator.pushNamed(context, '/news');
@@ -308,7 +353,7 @@ class _HomeViewState extends State<HomeView> {
                       backgroundColor: LoanTrackColors2.TetiaryOne,
                     ),
                   ),
-                  SizedBox(width: 10),
+                  separatorSpace10,
                   LoanTrackProductLinkBox(
                     icon: const Icon(Icons.pattern,
                         size: 25, color: LoanTrackColors.PrimaryOne),
@@ -319,7 +364,7 @@ class _HomeViewState extends State<HomeView> {
                         softWrap: true),
                     backgroundColor: LoanTrackColors.PrimaryOne,
                   ),
-                  SizedBox(width: 10),
+                  separatorSpace10,
                   LoanTrackProductLinkBox(
                     icon: const Icon(Icons.numbers,
                         size: 25, color: LoanTrackColors2.PrimaryOne),
@@ -335,33 +380,6 @@ class _HomeViewState extends State<HomeView> {
             ),
 
             //END PRODUCT SLIDER
-
-            SizedBox(height: 20),
-
-            // Tracking header
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: const [
-                  Text(
-                    'TRACKING',
-                    style: TextStyle(color: LoanTrackColors.PrimaryTwoLight),
-                  ),
-                  Text(
-                    'SEE ALL',
-                    style: TextStyle(color: LoanTrackColors.PrimaryOne),
-                  )
-                ],
-              ),
-            ),
-
-            // BEGIN LOAN PROGRESS
-            LoanList(
-                width: screenWidth,
-                height: screenHeight / 7,
-                userId: userId,
-                numberOfItems: 5),
             //SizedBox(height: 50),
           ]),
         ),
@@ -396,7 +414,7 @@ class LoanTrackProductLinkBox extends StatelessWidget {
       child: Container(
         width: screenHeight / 8,
         height: screenHeight / 10,
-        padding: EdgeInsets.all(10),
+        padding: const EdgeInsets.all(10),
         decoration: BoxDecoration(
             color: backgroundColor.withOpacity(.1),
             borderRadius: BorderRadius.circular(10),
@@ -410,7 +428,7 @@ class LoanTrackProductLinkBox extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 icon,
-                SizedBox(height: 5),
+                separatorSpace5,
                 label,
               ],
             ),

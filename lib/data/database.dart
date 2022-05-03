@@ -22,6 +22,8 @@ class DatabaseService with ChangeNotifier {
     required String applyWhen,
     required String dueWhen,
     required String lastPaidWhen,
+    required String entryDate,
+    required String modifiedWhen,
     required String lenderType,
     required String lender,
     required String loanPurpose,
@@ -37,6 +39,8 @@ class DatabaseService with ChangeNotifier {
           'applyWhen': applyWhen,
           'dueWhen': dueWhen,
           'lastPaidWhen': lastPaidWhen,
+          'entryDate': entryDate,
+          'modifiedWhen': modifiedWhen,
           'lenderType': lenderType,
           'lender': lender,
           'loanPurpose': loanPurpose,
@@ -48,15 +52,36 @@ class DatabaseService with ChangeNotifier {
   }
 
   Future updateSingleLoanData({
+    required double loanAmount,
     required double amountRepaid,
+    required double interestRate,
+    required double dailyOverdueCharge,
+    required String applyWhen,
+    required String dueWhen,
     required String lastPaidWhen,
+    required String entryDate,
+    required String modifiedWhen,
+    required String lenderType,
+    required String lender,
+    required String loanPurpose,
     required String note,
     required String id,
   }) async {
     return await loans.doc(id).set(
         {
+          'userId': FirebaseAuth.instance.currentUser!.uid,
+          'loanAmount': loanAmount,
           'amountRepaid': amountRepaid,
+          'interestRate': interestRate,
+          'dailyOverdueCharge': dailyOverdueCharge,
+          'applyWhen': applyWhen,
+          'dueWhen': dueWhen,
           'lastPaidWhen': lastPaidWhen,
+          'entryDate': DateTime.now().toString().substring(0, 10),
+          'modifiedWhen': modifiedWhen,
+          'lenderType': lenderType,
+          'lender': lender,
+          'loanPurpose': loanPurpose,
           'note': note
         },
         SetOptions(

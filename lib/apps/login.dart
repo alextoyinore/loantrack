@@ -30,10 +30,22 @@ class _LoanTackLoginState extends State<LoanTackLogin> with ChangeNotifier {
 
   @override
   Widget build(BuildContext context) {
+    var currentTime;
     States loginState = context.watch<LoginState>().loginState;
     return WillPopScope(
       onWillPop: () async {
-        return false;
+        DateTime now = DateTime.now();
+        if (currentTime == null ||
+            now.difference(currentTime) > Duration(seconds: 2)) {
+          //add duration of press gap
+          currentTime = now;
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              content: Text(
+                  'Press the Back Button again to Exit'))); //scaffold message, you can show Toast message too.
+          return Future.value(false);
+        }
+
+        return Future.value(true);
       },
       child: Scaffold(
         backgroundColor: Colors.white,
@@ -63,7 +75,7 @@ class _LoanTackLoginState extends State<LoanTackLogin> with ChangeNotifier {
     return Column(
       children: [
         SizedBox(height: 80),
-        Image.asset('assets/images/icon.png', scale: 50),
+        Image.asset('assets/images/icon.png', scale: 10),
         SizedBox(height: 50),
         Text(
           (message != null) ? message : '',
@@ -84,7 +96,7 @@ class _LoanTackLoginState extends State<LoanTackLogin> with ChangeNotifier {
             onTap: () {
               context.read<LoginState>().emailVerification();
             },
-            child: LoanTrackButton.primaryOutline(
+            child: LoanTrackButton.primary(
               context: context,
               label: 'Start',
             )),
@@ -101,7 +113,7 @@ class _LoanTackLoginState extends State<LoanTackLogin> with ChangeNotifier {
                   ),
                   title: 'About');
             },
-            child: Text(
+            child: const Text(
               'About',
               style: TextStyle(
                   color: LoanTrackColors.PrimaryTwoVeryLight,
@@ -139,7 +151,7 @@ class _LoanTackLoginState extends State<LoanTackLogin> with ChangeNotifier {
               ),
             );
           },
-          child: LoanTrackButton.primaryOutline(
+          child: LoanTrackButton.primary(
             context: context,
             label: 'Login',
           ),
@@ -184,7 +196,7 @@ class _LoanTackLoginState extends State<LoanTackLogin> with ChangeNotifier {
 
             //Navigator.pushNamed(context, '/home');
           },
-          child: LoanTrackButton.primaryOutline(
+          child: LoanTrackButton.primary(
             context: context,
             label: 'Log In',
           ),
@@ -271,7 +283,7 @@ class _LoanTackLoginState extends State<LoanTackLogin> with ChangeNotifier {
                 errorCallback: (e) => showErrorDialog(
                     context: context, title: 'Credential Error', e: e));
           },
-          child: LoanTrackButton.primaryOutline(
+          child: LoanTrackButton.primary(
             context: context,
             label: 'Create Account',
           ),
@@ -320,7 +332,7 @@ class _LoanTackLoginState extends State<LoanTackLogin> with ChangeNotifier {
               }
               //context.read<LoginState>().passwordCheck();
             },
-            child: LoanTrackButton.primaryOutline(
+            child: LoanTrackButton.primary(
               context: context,
               label: 'Request Link',
             )),

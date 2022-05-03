@@ -15,17 +15,18 @@ import 'package:loantrack/widgets/loan_track_textfield.dart';
 import '../widgets/bulleted_list.dart';
 import '../widgets/loan_progress_bar.dart';
 
-class NewLoanRecord extends StatefulWidget {
-  NewLoanRecord({Key? key, this.documentSnapshot, this.edit}) : super(key: key);
+class LoanRecord extends StatefulWidget {
+  LoanRecord({Key? key, this.documentSnapshot, required this.edit})
+      : super(key: key);
 
   DocumentSnapshot? documentSnapshot;
-  bool? edit;
+  bool edit;
 
   @override
-  State<NewLoanRecord> createState() => _NewLoanRecordState();
+  State<LoanRecord> createState() => _LoanRecordState();
 }
 
-class _NewLoanRecordState extends State<NewLoanRecord> {
+class _LoanRecordState extends State<LoanRecord> {
   final _userUID = FirebaseAuth.instance.currentUser!.uid;
 
   // Controllers
@@ -64,7 +65,7 @@ class _NewLoanRecordState extends State<NewLoanRecord> {
     int due = 0;
     double currentAmount = 0;
 
-    if (widget.documentSnapshot != null) {
+    if (widget.documentSnapshot != null && !widget.edit) {
       // DUE
       DateTime dueWhen =
           DateTime.parse(widget.documentSnapshot!.get('dueWhen').toString());
@@ -103,12 +104,12 @@ class _NewLoanRecordState extends State<NewLoanRecord> {
                     title: 'Applications');
               },
               child: LoanTrackIcons.ApplicationIcon),
-          title: (widget.documentSnapshot != null)
-              ? Text(
+          title: (widget.documentSnapshot != null && widget.edit == true)
+              ? const Text(
                   'New Repayment Record',
                   style: TextStyle(color: LoanTrackColors.PrimaryOne),
                 )
-              : Text(
+              : const Text(
                   'New Loan Record',
                   style: TextStyle(color: LoanTrackColors.PrimaryOne),
                 ),
@@ -118,7 +119,7 @@ class _NewLoanRecordState extends State<NewLoanRecord> {
                 Navigator.pop(context);
               },
               child: const Padding(
-                padding: const EdgeInsets.only(right: 16.0),
+                padding: EdgeInsets.only(right: 16.0),
                 child: Icon(
                   Icons.close,
                   color: LoanTrackColors.PrimaryOne,
@@ -132,20 +133,20 @@ class _NewLoanRecordState extends State<NewLoanRecord> {
           SingleChildScrollView(
             child: Padding(
               padding: const EdgeInsets.only(left: 24.0, top: 20, right: 24),
-              child: (widget.documentSnapshot != null)
+              child: (widget.documentSnapshot != null && !widget.edit)
                   ? Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const Text(
-                          'Add a new loan record here by filling this form. All fields except \'Note\' are required.',
+                          'Repay a loan record here by filling this form. All fields are required.',
                           style: TextStyle(
                             color: LoanTrackColors.PrimaryTwoLight,
                           ),
                         ),
-                        SizedBox(height: 20),
+                        const SizedBox(height: 20),
                         //The Money Section Title
-                        Text('THE MONEY'),
-                        SizedBox(height: 20),
+                        const Text('THE MONEY'),
+                        const SizedBox(height: 20),
 
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -157,10 +158,11 @@ class _NewLoanRecordState extends State<NewLoanRecord> {
                                 label: 'The Loan',
                                 enable: false,
                                 color: LoanTrackColors.PrimaryOne,
-                                keyboardType: TextInputType.numberWithOptions(),
+                                keyboardType:
+                                    const TextInputType.numberWithOptions(),
                               ),
                             ),
-                            SizedBox(height: 5),
+                            const SizedBox(height: 5),
                             const Text('The loan you have to repay',
                                 style: TextStyle(
                                     fontSize: 12,
@@ -168,7 +170,7 @@ class _NewLoanRecordState extends State<NewLoanRecord> {
                                         LoanTrackColors.PrimaryTwoVeryLight)),
                           ],
                         ),
-                        SizedBox(height: 20),
+                        const SizedBox(height: 20),
 
                         //Amount Repaid Field
                         Column(
@@ -180,10 +182,11 @@ class _NewLoanRecordState extends State<NewLoanRecord> {
                                 controller: amountRepaidController,
                                 label: 'Amount You Repaid',
                                 color: LoanTrackColors.PrimaryOne,
-                                keyboardType: TextInputType.numberWithOptions(),
+                                keyboardType:
+                                    const TextInputType.numberWithOptions(),
                               ),
                             ),
-                            SizedBox(height: 5),
+                            const SizedBox(height: 5),
                             const Text('The amount you paid against this loan',
                                 style: TextStyle(
                                     fontSize: 12,
@@ -191,7 +194,7 @@ class _NewLoanRecordState extends State<NewLoanRecord> {
                                         LoanTrackColors.PrimaryTwoVeryLight)),
                           ],
                         ),
-                        SizedBox(height: 20),
+                        const SizedBox(height: 20),
 
                         //Application Date and Due Date field
                         Column(
@@ -206,7 +209,7 @@ class _NewLoanRecordState extends State<NewLoanRecord> {
                                 yearsInFuture: 0,
                               ),
                             ),
-                            SizedBox(height: 5),
+                            const SizedBox(height: 5),
                             const Text('Format: YYYY-MM-DD',
                                 style: TextStyle(
                                     fontSize: 12,
@@ -215,7 +218,7 @@ class _NewLoanRecordState extends State<NewLoanRecord> {
                           ],
                         ),
 
-                        SizedBox(height: 20),
+                        const SizedBox(height: 20),
 
                         //Last payment date
                         Container(
@@ -229,9 +232,9 @@ class _NewLoanRecordState extends State<NewLoanRecord> {
                           ),
                         ),
 
-                        SizedBox(height: 20),
-                        Text('NOTE'),
-                        SizedBox(height: 20),
+                        const SizedBox(height: 20),
+                        const Text('NOTE'),
+                        const SizedBox(height: 20),
 
                         //Short Note
                         Container(
@@ -243,7 +246,7 @@ class _NewLoanRecordState extends State<NewLoanRecord> {
                           ),
                         ),
 
-                        SizedBox(height: 20),
+                        const SizedBox(height: 20),
 
                         GestureDetector(
                           onTap: () {
@@ -301,13 +304,40 @@ class _NewLoanRecordState extends State<NewLoanRecord> {
                                       dateOfRepayment: dateOfPayment.text)
                                   .whenComplete(() {
                                 //UPDATING LOAN COLLECTION
+                                double remainder = loanAmount - amountRepaid;
                                 db.updateSingleLoanData(
+                                    entryDate: widget.documentSnapshot!
+                                            .get('entryDate') ??
+                                        '',
+                                    modifiedWhen: widget.documentSnapshot!
+                                            .get('modifiedWhen') ??
+                                        '',
+                                    applyWhen: widget.documentSnapshot!
+                                        .get('applyWhen'),
+                                    interestRate: widget.documentSnapshot!
+                                        .get('interestRate'),
+                                    loanAmount: widget.documentSnapshot!
+                                        .get('loanAmount'),
                                     amountRepaid: amountRepaid +
                                         double.parse(
                                             amountRepaidController.text),
+                                    dailyOverdueCharge:
+                                        (remainder - amountRepaid <= 0)
+                                            ? 0
+                                            : dailyOverdueCharges,
                                     lastPaidWhen: dateOfPayment.text,
                                     note: note,
-                                    id: id);
+                                    id: id,
+                                    dueWhen:
+                                        widget.documentSnapshot!.get('dueWhen'),
+                                    loanPurpose: widget.documentSnapshot!
+                                        .get('loanPurpose'),
+                                    lender: widget.documentSnapshot!.get(
+                                      'lender',
+                                    ),
+                                    lenderType: widget.documentSnapshot!.get(
+                                      'lenderType',
+                                    ));
                                 //END OF UPDATING COLLECTION
                                 showSuccessDialog(
                                     context: context,
@@ -332,7 +362,7 @@ class _NewLoanRecordState extends State<NewLoanRecord> {
                                 context: context, label: 'Add Loan Record'),
                           ),
                         ),
-                        SizedBox(height: 30),
+                        const SizedBox(height: 30),
 
                         Container(
                           padding: EdgeInsets.all(16),
@@ -351,140 +381,194 @@ class _NewLoanRecordState extends State<NewLoanRecord> {
                               ),
                               //SizedBox(height: 20),
 
-                              SizedBox(height: 10),
+                              const SizedBox(height: 10),
                               BulletedList(
                                   text: 'LCREDIT - 3000 - 2022-03-02, Noon',
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                       color: LoanTrackColors.PrimaryOne)),
-                              SizedBox(height: 5),
+                              const SizedBox(height: 5),
                               BulletedList(
                                   text: 'CASHBUS - 4000 - 2022-03-05, Night',
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                       color: LoanTrackColors.PrimaryOne)),
-                              SizedBox(height: 5),
+                              const SizedBox(height: 5),
                               BulletedList(
                                   text: '9CREDIT - 3500 - 2022-04-07, Morning',
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                       color: LoanTrackColors.PrimaryOne))
                             ],
                           ),
                         ),
 
-                        SizedBox(height: 20),
-                        Text('PROGRESS'),
-                        SizedBox(height: 20),
+                        const SizedBox(height: 20),
+                        const Text('PROGRESS'),
+                        const SizedBox(height: 20),
 
                         LoanProgressBar(
                           snapshot: widget.documentSnapshot,
                         ),
 
-                        SizedBox(height: 30),
+                        const SizedBox(height: 30),
                       ],
                     )
                   // BEGIN NEW LOAN RECORD VIEW
-                  : Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text(
-                          'Add a new loan record here by filling this form. All fields except \'Note\' are required.',
-                          style: TextStyle(
-                            color: LoanTrackColors.PrimaryTwoLight,
-                          ),
-                        ),
-                        SizedBox(height: 20),
-                        //The Money Section Title
-                        Text(
-                          'THE MONEY',
-                          style: TextStyle(
-                              color: LoanTrackColors.PrimaryTwoVeryLight),
-                        ),
-                        SizedBox(height: 20),
-
-                        //Amount Field
-                        Column(
+                  : (widget.documentSnapshot != null && widget.edit)
+                      ?
+                      // BEGIN EDIT VIEW
+                      Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Container(
-                              //width: MediaQuery.of(context).size.width / 2.25,
-                              child: LoanTrackTextField(
-                                controller: loanAmountController,
-                                label: 'Loan Amount',
-                                color: LoanTrackColors.PrimaryOne,
-                                keyboardType: TextInputType.numberWithOptions(),
-                              ),
-                            ),
-                            SizedBox(height: 5),
-                            const Text('Total remitted + Service Charge',
-                                style: TextStyle(
-                                    fontSize: 12,
-                                    color:
-                                        LoanTrackColors.PrimaryTwoVeryLight)),
-                          ],
-                        ),
-                        SizedBox(height: 20),
-
-                        // Repaid Amount and Rate field
-
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Container(
-                              //width: MediaQuery.of(context).size.width / 2.25,
-                              child: LoanTrackTextField(
-                                controller: repaidController,
-                                label: 'Amount Repaid',
-                                color: LoanTrackColors.PrimaryOne,
-                                keyboardType: TextInputType.numberWithOptions(),
-                              ),
-                            ),
-                            SizedBox(height: 5),
                             const Text(
-                                'Total amount you have repaid to the loaner before creating this record. Enter Zero(0) if inapplicable',
-                                style: TextStyle(
-                                    fontSize: 12,
-                                    color:
-                                        LoanTrackColors.PrimaryTwoVeryLight)),
-                          ],
-                        ),
-                        SizedBox(height: 20),
-                        // Rate
-                        Container(
-                          //width: MediaQuery.of(context).size.width / 3,
-                          child: LoanTrackTextField(
-                            controller: rateController,
-                            label: 'Initial Interest Rate',
-                            color: LoanTrackColors.PrimaryOne,
-                            keyboardType:
-                                TextInputType.numberWithOptions(decimal: true),
-                          ),
-                        ),
+                              'Edit this loan record here by filling this form. All fields are optional. Only edit the fields you desire to update',
+                              style: TextStyle(
+                                color: LoanTrackColors.PrimaryTwoLight,
+                              ),
+                            ),
+                            const SizedBox(height: 20),
+                            //The Money Section Title
+                            const Text(
+                              'THE MONEY',
+                              style: TextStyle(
+                                  color: LoanTrackColors.PrimaryTwoVeryLight),
+                            ),
+                            const SizedBox(height: 20),
 
-                        SizedBox(height: 20),
-                        // Rate
-                        Container(
-                          //width: MediaQuery.of(context).size.width / 3,
-                          child: LoanTrackTextField(
-                            controller: overdueController,
-                            label: 'Daily Overdue Charge',
-                            color: LoanTrackColors.PrimaryOne,
-                            keyboardType:
-                                TextInputType.numberWithOptions(decimal: true),
-                          ),
-                        ),
+                            //Amount Field
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                  //width: MediaQuery.of(context).size.width / 2.25,
+                                  child: LoanTrackTextField(
+                                    controller: loanAmountController,
+                                    label: 'Loan Amount',
+                                    color: LoanTrackColors.PrimaryOne,
+                                    keyboardType:
+                                        TextInputType.numberWithOptions(),
+                                  ),
+                                ),
+                                const SizedBox(height: 5),
+                                const Text('Total remitted + Service Charge',
+                                    style: TextStyle(
+                                        fontSize: 12,
+                                        color: LoanTrackColors
+                                            .PrimaryTwoVeryLight)),
+                              ],
+                            ),
+                            const SizedBox(height: 20),
 
-                        SizedBox(height: 20),
-                        Text(
-                          'DATES',
-                          style: TextStyle(
-                              color: LoanTrackColors.PrimaryTwoVeryLight),
-                        ),
-                        SizedBox(height: 20),
+                            // Repaid Amount and Rate field
 
-                        //Application Date and Due Date field
-                        Column(
-                          //mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            // Apply when
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                  //width: MediaQuery.of(context).size.width / 2.25,
+                                  child: LoanTrackTextField(
+                                    controller: repaidController,
+                                    label: 'Amount Repaid',
+                                    color: LoanTrackColors.PrimaryOne,
+                                    keyboardType:
+                                        TextInputType.numberWithOptions(),
+                                  ),
+                                ),
+                                SizedBox(height: 5),
+                                const Text(
+                                    'Total amount you have repaid to the loaner before creating this record. Enter Zero(0) if inapplicable',
+                                    style: TextStyle(
+                                        fontSize: 12,
+                                        color: LoanTrackColors
+                                            .PrimaryTwoVeryLight)),
+                              ],
+                            ),
+                            const SizedBox(height: 20),
+                            // Rate
+                            Container(
+                              //width: MediaQuery.of(context).size.width / 3,
+                              child: LoanTrackTextField(
+                                controller: rateController,
+                                label: 'Initial Interest Rate',
+                                color: LoanTrackColors.PrimaryOne,
+                                keyboardType:
+                                    const TextInputType.numberWithOptions(
+                                        decimal: true),
+                              ),
+                            ),
+
+                            const SizedBox(height: 20),
+                            // Rate
+                            Container(
+                              //width: MediaQuery.of(context).size.width / 3,
+                              child: LoanTrackTextField(
+                                controller: overdueController,
+                                label: 'Daily Overdue Charge',
+                                color: LoanTrackColors.PrimaryOne,
+                                keyboardType:
+                                    const TextInputType.numberWithOptions(
+                                        decimal: true),
+                              ),
+                            ),
+
+                            const SizedBox(height: 20),
+                            const Text(
+                              'DATES',
+                              style: TextStyle(
+                                  color: LoanTrackColors.PrimaryTwoVeryLight),
+                            ),
+                            const SizedBox(height: 20),
+
+                            //Application Date and Due Date field
+                            Column(
+                              //mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                // Apply when
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Container(
+                                      //width: MediaQuery.of(context).size.width / 2.25,
+                                      child: LoanTrackDatePicker(
+                                        isPayment: false,
+                                        controller: applyWhenController,
+                                        initialText: 'Apply When',
+                                        yearsInFuture: 0,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 5),
+                                    const Text('Format: YYYY-MM-DD',
+                                        style: TextStyle(
+                                            fontSize: 12,
+                                            color: LoanTrackColors
+                                                .PrimaryTwoVeryLight)),
+                                  ],
+                                ),
+                                const SizedBox(height: 20),
+                                // Due when
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Container(
+                                      //width: MediaQuery.of(context).size.width / 2.25,
+                                      child: LoanTrackDatePicker(
+                                        isPayment: false,
+                                        controller: dueWhenController,
+                                        initialText: 'Due When',
+                                        yearsInFuture: 10,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 5),
+                                    const Text('Format: YYYY-MM-DD',
+                                        style: TextStyle(
+                                            fontSize: 12,
+                                            color: LoanTrackColors
+                                                .PrimaryTwoVeryLight)),
+                                  ],
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 20),
+
+                            //Last payment date
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -492,12 +576,12 @@ class _NewLoanRecordState extends State<NewLoanRecord> {
                                   //width: MediaQuery.of(context).size.width / 2.25,
                                   child: LoanTrackDatePicker(
                                     isPayment: false,
-                                    controller: applyWhenController,
-                                    initialText: 'Apply When',
+                                    controller: lastPaidWhenController,
+                                    initialText: 'Last Paid When',
                                     yearsInFuture: 0,
                                   ),
                                 ),
-                                SizedBox(height: 5),
+                                const SizedBox(height: 5),
                                 const Text('Format: YYYY-MM-DD',
                                     style: TextStyle(
                                         fontSize: 12,
@@ -505,8 +589,343 @@ class _NewLoanRecordState extends State<NewLoanRecord> {
                                             .PrimaryTwoVeryLight)),
                               ],
                             ),
-                            SizedBox(height: 20),
-                            // Due when
+                            const SizedBox(height: 20),
+                            const Text(
+                              'LOANER INFORMATION',
+                              style: TextStyle(
+                                  color: LoanTrackColors.PrimaryTwoVeryLight),
+                            ),
+                            const SizedBox(height: 20),
+
+                            //LOaner information
+                            Column(
+                              //crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                //Loaner Type
+                                Container(
+                                  //width: MediaQuery.of(context).size.width / 2.25,
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Container(
+                                        child: LoanTrackTextField(
+                                          controller: lenderTypeController,
+                                          label: 'Lender Type',
+                                          color: LoanTrackColors.PrimaryOne,
+                                          //icon: Icon(Icons.note),
+                                        ),
+                                      ),
+                                      const SizedBox(height: 5),
+                                      const Text(
+                                          'Online App, Family & Friends, Bank & MFB',
+                                          style: TextStyle(
+                                              fontSize: 12,
+                                              color: LoanTrackColors
+                                                  .PrimaryTwoVeryLight)),
+                                    ],
+                                  ),
+                                ),
+                                const SizedBox(height: 20),
+                                // Loaner
+                                Container(
+                                  //width: MediaQuery.of(context).size.width / 2.25,
+                                  child: Column(
+                                    children: [
+                                      Container(
+                                        child: LoanTrackTextField(
+                                          controller: lenderController,
+                                          label: 'Lender',
+                                          color: LoanTrackColors.PrimaryOne,
+                                          //icon: Icon(Icons.note),
+                                        ),
+                                      ),
+                                      const SizedBox(height: 5),
+                                      const Text(
+                                          'Enter Lender name or select one from the  list if available and applicable',
+                                          style: TextStyle(
+                                              fontSize: 12,
+                                              color: LoanTrackColors
+                                                  .PrimaryTwoVeryLight)),
+                                    ],
+                                  ),
+                                )
+                              ],
+                            ),
+
+                            // Loan purpose
+
+                            const SizedBox(height: 20),
+                            LoanTrackTextField(
+                              controller: loanPurposeController,
+                              label: 'Loan Purpose',
+                              color: LoanTrackColors.PrimaryOne,
+                              //icon: Icon(Icons.note),
+                            ),
+
+                            const SizedBox(height: 20),
+                            const Text('NOTE'),
+                            const SizedBox(height: 20),
+
+                            // Loan Note
+                            LoanTrackTextField(
+                              label: 'Note',
+                              controller: noteController,
+                              color: LoanTrackColors.PrimaryOne,
+                            ),
+
+                            const SizedBox(height: 20),
+
+                            GestureDetector(
+                              onTap: () {
+                                DatabaseService db = DatabaseService();
+
+                                db
+                                    .updateSingleLoanData(
+                                  entryDate: widget.documentSnapshot!
+                                          .get('entryDate') ??
+                                      '',
+                                  modifiedWhen: DateTime.now()
+                                      .toString()
+                                      .substring(0, 10),
+                                  //LOAN ID EDIT FIELD
+                                  id: widget.documentSnapshot!.id,
+                                  // LOAN AMOUNT EDIT FIELD
+                                  loanAmount: (loanAmountController
+                                          .text.isNotEmpty)
+                                      ? double.parse(loanAmountController.text)
+                                      : widget.documentSnapshot!
+                                          .get('loanAmount'),
+                                  // REPAID AMOUNT EDIT FIELD
+                                  amountRepaid:
+                                      (repaidController.text.isNotEmpty)
+                                          ? double.parse(repaidController.text)
+                                          : widget.documentSnapshot!
+                                              .get('amountRepaid'),
+                                  //INTEREST RATE EDIT FIELD
+                                  interestRate: (rateController.text.isNotEmpty)
+                                      ? double.parse(rateController.text)
+                                      : widget.documentSnapshot!
+                                          .get('interestRate'),
+                                  // DAILY OVERDUE CHARGE EDIT FIELD
+                                  dailyOverdueCharge:
+                                      (overdueController.text.isNotEmpty)
+                                          ? double.parse(overdueController.text)
+                                          : widget.documentSnapshot!
+                                              .get('dailyOverdueCharge'),
+                                  applyWhen:
+                                      (applyWhenController.text.isNotEmpty)
+                                          ? applyWhenController.text
+                                          : widget.documentSnapshot!
+                                              .get('applyWhen'),
+                                  dueWhen: (dueWhenController.text.isNotEmpty)
+                                      ? dueWhenController.text
+                                      : widget.documentSnapshot!.get('dueWhen'),
+                                  lastPaidWhen:
+                                      (lastPaidWhenController.text.isNotEmpty)
+                                          ? lastPaidWhenController.text
+                                          : widget.documentSnapshot!
+                                              .get('lastPaidWhen'),
+                                  lenderType:
+                                      (lenderTypeController.text.isNotEmpty)
+                                          ? lenderTypeController.text
+                                          : widget.documentSnapshot!
+                                              .get('lenderType'),
+                                  lender: (lenderController.text.isNotEmpty)
+                                      ? lenderController.text
+                                      : widget.documentSnapshot!.get('lender'),
+                                  loanPurpose:
+                                      (loanPurposeController.text.isNotEmpty)
+                                          ? loanPurposeController.text
+                                          : widget.documentSnapshot!
+                                              .get('loanPurpose'),
+                                  note: (noteController.text.isNotEmpty)
+                                      ? noteController.text
+                                      : widget.documentSnapshot!.get('note'),
+                                )
+                                    .whenComplete(() {
+                                  showSuccessDialog(
+                                      context: context,
+                                      title: 'Success',
+                                      successMessage:
+                                          'You have successfully edited record - ${widget.documentSnapshot!.get('lender')} loan',
+                                      whenTapped: () {
+                                        Navigator.pushNamed(context, '/home');
+                                      });
+                                }).onError((error, stackTrace) {
+                                  showErrorDialog(
+                                      context: context,
+                                      title: 'Error',
+                                      errorMessage:
+                                          'An error has occurred while creating your loan record');
+                                });
+                              },
+                              child: Container(
+                                width: MediaQuery.of(context).size.width,
+                                child: LoanTrackButton.secondary(
+                                    context: context,
+                                    label: 'Edit Loan Record'),
+                              ),
+                            ),
+
+                            const SizedBox(height: 20),
+                          ],
+                        )
+                      // NEW LOAN RECORD
+                      : Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              'Add a new loan record here by filling this form. All fields except \'Note\' are required.',
+                              style: TextStyle(
+                                color: LoanTrackColors.PrimaryTwoLight,
+                              ),
+                            ),
+                            const SizedBox(height: 20),
+                            //The Money Section Title
+                            const Text(
+                              'THE MONEY',
+                              style: TextStyle(
+                                  color: LoanTrackColors.PrimaryTwoVeryLight),
+                            ),
+                            const SizedBox(height: 20),
+
+                            //Amount Field
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                  //width: MediaQuery.of(context).size.width / 2.25,
+                                  child: LoanTrackTextField(
+                                    controller: loanAmountController,
+                                    label: 'Loan Amount',
+                                    color: LoanTrackColors.PrimaryOne,
+                                    keyboardType:
+                                        const TextInputType.numberWithOptions(),
+                                  ),
+                                ),
+                                const SizedBox(height: 5),
+                                const Text('Total remitted + Service Charge',
+                                    style: TextStyle(
+                                        fontSize: 12,
+                                        color: LoanTrackColors
+                                            .PrimaryTwoVeryLight)),
+                              ],
+                            ),
+                            const SizedBox(height: 20),
+
+                            // Repaid Amount and Rate field
+
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                  //width: MediaQuery.of(context).size.width / 2.25,
+                                  child: LoanTrackTextField(
+                                    controller: repaidController,
+                                    label: 'Amount Repaid',
+                                    color: LoanTrackColors.PrimaryOne,
+                                    keyboardType:
+                                        const TextInputType.numberWithOptions(),
+                                  ),
+                                ),
+                                const SizedBox(height: 5),
+                                const Text(
+                                    'Total amount you have repaid to the loaner before creating this record. Enter Zero(0) if inapplicable',
+                                    style: TextStyle(
+                                        fontSize: 12,
+                                        color: LoanTrackColors
+                                            .PrimaryTwoVeryLight)),
+                              ],
+                            ),
+                            const SizedBox(height: 20),
+                            // Rate
+                            Container(
+                              //width: MediaQuery.of(context).size.width / 3,
+                              child: LoanTrackTextField(
+                                controller: rateController,
+                                label: 'Initial Interest Rate',
+                                color: LoanTrackColors.PrimaryOne,
+                                keyboardType:
+                                    const TextInputType.numberWithOptions(
+                                        decimal: true),
+                              ),
+                            ),
+
+                            const SizedBox(height: 20),
+                            // Rate
+                            Container(
+                              //width: MediaQuery.of(context).size.width / 3,
+                              child: LoanTrackTextField(
+                                controller: overdueController,
+                                label: 'Daily Overdue Charge',
+                                color: LoanTrackColors.PrimaryOne,
+                                keyboardType:
+                                    const TextInputType.numberWithOptions(
+                                        decimal: true),
+                              ),
+                            ),
+
+                            const SizedBox(height: 20),
+                            const Text(
+                              'DATES',
+                              style: TextStyle(
+                                  color: LoanTrackColors.PrimaryTwoVeryLight),
+                            ),
+                            const SizedBox(height: 20),
+
+                            //Application Date and Due Date field
+                            Column(
+                              //mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                // Apply when
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Container(
+                                      //width: MediaQuery.of(context).size.width / 2.25,
+                                      child: LoanTrackDatePicker(
+                                        isPayment: false,
+                                        controller: applyWhenController,
+                                        initialText: 'Apply When',
+                                        yearsInFuture: 0,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 5),
+                                    const Text('Format: YYYY-MM-DD',
+                                        style: TextStyle(
+                                            fontSize: 12,
+                                            color: LoanTrackColors
+                                                .PrimaryTwoVeryLight)),
+                                  ],
+                                ),
+                                const SizedBox(height: 20),
+                                // Due when
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Container(
+                                      //width: MediaQuery.of(context).size.width / 2.25,
+                                      child: LoanTrackDatePicker(
+                                        isPayment: false,
+                                        controller: dueWhenController,
+                                        initialText: 'Due When',
+                                        yearsInFuture: 10,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 5),
+                                    const Text('Format: YYYY-MM-DD',
+                                        style: TextStyle(
+                                            fontSize: 12,
+                                            color: LoanTrackColors
+                                                .PrimaryTwoVeryLight)),
+                                  ],
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 20),
+
+                            //Last payment date
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -514,12 +933,12 @@ class _NewLoanRecordState extends State<NewLoanRecord> {
                                   //width: MediaQuery.of(context).size.width / 2.25,
                                   child: LoanTrackDatePicker(
                                     isPayment: false,
-                                    controller: dueWhenController,
-                                    initialText: 'Due When',
-                                    yearsInFuture: 10,
+                                    controller: lastPaidWhenController,
+                                    initialText: 'Last Paid When',
+                                    yearsInFuture: 0,
                                   ),
                                 ),
-                                SizedBox(height: 5),
+                                const SizedBox(height: 5),
                                 const Text('Format: YYYY-MM-DD',
                                     style: TextStyle(
                                         fontSize: 12,
@@ -527,213 +946,198 @@ class _NewLoanRecordState extends State<NewLoanRecord> {
                                             .PrimaryTwoVeryLight)),
                               ],
                             ),
-                          ],
-                        ),
-                        SizedBox(height: 20),
+                            const SizedBox(height: 20),
+                            const Text(
+                              'LOANER INFORMATION',
+                              style: TextStyle(
+                                  color: LoanTrackColors.PrimaryTwoVeryLight),
+                            ),
+                            const SizedBox(height: 20),
 
-                        //Last payment date
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Container(
-                              //width: MediaQuery.of(context).size.width / 2.25,
-                              child: LoanTrackDatePicker(
-                                isPayment: false,
-                                controller: lastPaidWhenController,
-                                initialText: 'Last Paid When',
-                                yearsInFuture: 0,
+                            //LOaner information
+                            Column(
+                              //crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                //Loaner Type
+                                Container(
+                                  //width: MediaQuery.of(context).size.width / 2.25,
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Container(
+                                        child: LoanTrackTextField(
+                                          controller: lenderTypeController,
+                                          label: 'Lender Type',
+                                          color: LoanTrackColors.PrimaryOne,
+                                          //icon: Icon(Icons.note),
+                                        ),
+                                      ),
+                                      const SizedBox(height: 5),
+                                      const Text(
+                                          'Online App, Family & Friends, Bank & MFB',
+                                          style: TextStyle(
+                                              fontSize: 12,
+                                              color: LoanTrackColors
+                                                  .PrimaryTwoVeryLight)),
+                                    ],
+                                  ),
+                                ),
+                                const SizedBox(height: 20),
+                                // Loaner
+                                Container(
+                                  //width: MediaQuery.of(context).size.width / 2.25,
+                                  child: Column(
+                                    children: [
+                                      Container(
+                                        child: LoanTrackTextField(
+                                          controller: lenderController,
+                                          label: 'Lender',
+                                          color: LoanTrackColors.PrimaryOne,
+                                          //icon: Icon(Icons.note),
+                                        ),
+                                      ),
+                                      const SizedBox(height: 5),
+                                      const Text(
+                                          'Enter Lender name or select one from the  list if available and applicable',
+                                          style: TextStyle(
+                                              fontSize: 12,
+                                              color: LoanTrackColors
+                                                  .PrimaryTwoVeryLight)),
+                                    ],
+                                  ),
+                                )
+                              ],
+                            ),
+
+                            // Loan purpose
+
+                            const SizedBox(height: 20),
+                            LoanTrackTextField(
+                              controller: loanPurposeController,
+                              label: 'Loan Purpose',
+                              color: LoanTrackColors.PrimaryOne,
+                              //icon: Icon(Icons.note),
+                            ),
+
+                            const SizedBox(height: 20),
+                            const Text('NOTE'),
+                            const SizedBox(height: 20),
+
+                            // Loan Note
+                            LoanTrackTextField(
+                              label: 'Note',
+                              controller: noteController,
+                              color: LoanTrackColors.PrimaryOne,
+                            ),
+
+                            const SizedBox(height: 20),
+
+                            GestureDetector(
+                              onTap: () {
+                                String error = '';
+
+                                if (loanAmountController.text == '' ||
+                                    loanAmountController.text == '0') {
+                                  error +=
+                                      'Loan Amount cannot be empty or zero (0)\n';
+                                } else if (repaidController.text == '') {
+                                  error +=
+                                      'Repaid Amount field cannot be empty. If no repayments have been made, enter zero (0)\n';
+                                } else if (rateController.text == '') {
+                                  error +=
+                                      'Rate Amount field cannot be empty. If no Interests are required, enter zero (0)';
+                                } else if (applyWhenController.text == '' ||
+                                    !applyWhenController.text.contains('-') ||
+                                    applyWhenController.text.length < 10) {
+                                  error +=
+                                      'Apply When field cannot be empty. Also, check that the format is of YYYY-MM-DD e.g 2022-04-05.\n';
+                                } else if (dueWhenController.text == '' ||
+                                    !dueWhenController.text.contains('-') ||
+                                    dueWhenController.text.length < 10) {
+                                  error +=
+                                      'Due When field cannot be empty. Also, check that the format is of YYYY-MM-DD e.g 2022-04-05.\n';
+                                } else if (lastPaidWhenController.text == '' ||
+                                    !lastPaidWhenController.text
+                                        .contains('-') ||
+                                    lastPaidWhenController.text.length < 10) {
+                                  error +=
+                                      'Last Paid When field cannot be empty. Also, check that the format is of YYYY-MM-DD e.g 2022-04-05.\n\nEnter Zero(0) if no payments have been made.\n';
+                                } else if (lenderTypeController.text == '') {
+                                  error +=
+                                      'Loan Type cannot be empty. It\'s something like \'Online App\', \'Friend, Family or Other\', \'MFBs\'\n';
+                                } else if (lenderController.text == '') {
+                                  error +=
+                                      'Loaner cannot be empty. You need to know who you took the loan from or loaned your money out to.\n';
+                                } else if (loanPurposeController.text == '') {
+                                  error +=
+                                      'Knowing why you took the loan in the first place may help keep things in perspective. Purpose field cannot be empty. E.g. \'Education\', \'Medical\', \'Business\', or \'Offset Loan\'.\n';
+                                } else if (noteController.text == '') {
+                                  error +=
+                                      'Note field cannot be empty. Remembering the fine details of the loan can save you should things go south.\n';
+                                }
+
+                                if (error.isNotEmpty) {
+                                  showErrorDialog(
+                                      context: context,
+                                      title: 'Field Error',
+                                      errorMessage: error);
+                                } else {
+                                  DatabaseService db = DatabaseService();
+
+                                  db
+                                      .updateLoanData(
+                                          entryDate: DateTime.now()
+                                              .toString()
+                                              .substring(0, 10),
+                                          modifiedWhen: DateTime.now()
+                                              .toString()
+                                              .substring(0, 10),
+                                          loanAmount: double.parse(
+                                              loanAmountController.text),
+                                          amountRepaid: double.parse(
+                                              repaidController.text),
+                                          interestRate:
+                                              double.parse(rateController.text),
+                                          dailyOverdueCharge: double.parse(
+                                              overdueController.text),
+                                          applyWhen: applyWhenController.text,
+                                          dueWhen: dueWhenController.text,
+                                          lastPaidWhen:
+                                              lastPaidWhenController.text,
+                                          lenderType: lenderTypeController.text,
+                                          lender: lenderController.text,
+                                          loanPurpose:
+                                              loanPurposeController.text,
+                                          note: noteController.text)
+                                      .whenComplete(() {
+                                    showSuccessDialog(
+                                        context: context,
+                                        title: 'Success',
+                                        successMessage:
+                                            'You have successfully added a repayment record to your ${widget.documentSnapshot!.get('lender')} loan',
+                                        whenTapped: () {
+                                          Navigator.pushNamed(context, '/home');
+                                        });
+                                  }).onError((error, stackTrace) {
+                                    showErrorDialog(
+                                        context: context,
+                                        title: 'Error',
+                                        errorMessage:
+                                            'An error has occurred while creating your loan record');
+                                  });
+                                }
+                              },
+                              child: Container(
+                                width: MediaQuery.of(context).size.width,
+                                child: LoanTrackButton.secondary(
+                                    context: context, label: 'Add Loan Record'),
                               ),
                             ),
-                            SizedBox(height: 5),
-                            const Text('Format: YYYY-MM-DD',
-                                style: TextStyle(
-                                    fontSize: 12,
-                                    color:
-                                        LoanTrackColors.PrimaryTwoVeryLight)),
+
+                            const SizedBox(height: 20),
                           ],
                         ),
-                        SizedBox(height: 20),
-                        Text(
-                          'LOANER INFORMATION',
-                          style: TextStyle(
-                              color: LoanTrackColors.PrimaryTwoVeryLight),
-                        ),
-                        SizedBox(height: 20),
-
-                        //LOaner information
-                        Column(
-                          //crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            //Loaner Type
-                            Container(
-                              //width: MediaQuery.of(context).size.width / 2.25,
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Container(
-                                    child: LoanTrackTextField(
-                                      controller: lenderTypeController,
-                                      label: 'Lender Type',
-                                      color: LoanTrackColors.PrimaryOne,
-                                      //icon: Icon(Icons.note),
-                                    ),
-                                  ),
-                                  SizedBox(height: 5),
-                                  const Text(
-                                      'Online App, Family & Friends, Bank & MFB',
-                                      style: TextStyle(
-                                          fontSize: 12,
-                                          color: LoanTrackColors
-                                              .PrimaryTwoVeryLight)),
-                                ],
-                              ),
-                            ),
-                            SizedBox(height: 20),
-                            // Loaner
-                            Container(
-                              //width: MediaQuery.of(context).size.width / 2.25,
-                              child: Column(
-                                children: [
-                                  Container(
-                                    child: LoanTrackTextField(
-                                      controller: lenderController,
-                                      label: 'Lender',
-                                      color: LoanTrackColors.PrimaryOne,
-                                      //icon: Icon(Icons.note),
-                                    ),
-                                  ),
-                                  SizedBox(height: 5),
-                                  const Text(
-                                      'Enter Lender name or select one from the  list if available and applicable',
-                                      style: TextStyle(
-                                          fontSize: 12,
-                                          color: LoanTrackColors
-                                              .PrimaryTwoVeryLight)),
-                                ],
-                              ),
-                            )
-                          ],
-                        ),
-
-                        // Loan purpose
-
-                        SizedBox(height: 20),
-                        LoanTrackTextField(
-                          controller: loanPurposeController,
-                          label: 'Loan Purpose',
-                          color: LoanTrackColors.PrimaryOne,
-                          //icon: Icon(Icons.note),
-                        ),
-
-                        SizedBox(height: 20),
-                        Text('NOTE'),
-                        SizedBox(height: 20),
-
-                        // Loan Note
-                        LoanTrackTextField(
-                          label: 'Note',
-                          controller: noteController,
-                          color: LoanTrackColors.PrimaryOne,
-                        ),
-
-                        SizedBox(height: 20),
-
-                        GestureDetector(
-                          onTap: () {
-                            String error = '';
-
-                            if (loanAmountController.text == '' ||
-                                loanAmountController.text == '0') {
-                              error +=
-                                  'Loan Amount cannot be empty or zero (0)\n';
-                            } else if (repaidController.text == '') {
-                              error +=
-                                  'Repaid Amount field cannot be empty. If no repayments have been made, enter zero (0)\n';
-                            } else if (rateController.text == '') {
-                              error +=
-                                  'Rate Amount field cannot be empty. If no Interests are required, enter zero (0)';
-                            } else if (applyWhenController.text == '' ||
-                                !applyWhenController.text.contains('-') ||
-                                applyWhenController.text.length < 10) {
-                              error +=
-                                  'Apply When field cannot be empty. Also, check that the format is of YYYY-MM-DD e.g 2022-04-05.\n';
-                            } else if (dueWhenController.text == '' ||
-                                !dueWhenController.text.contains('-') ||
-                                dueWhenController.text.length < 10) {
-                              error +=
-                                  'Due When field cannot be empty. Also, check that the format is of YYYY-MM-DD e.g 2022-04-05.\n';
-                            } else if (lastPaidWhenController.text == '' ||
-                                !lastPaidWhenController.text.contains('-') ||
-                                lastPaidWhenController.text.length < 10) {
-                              error +=
-                                  'Last Paid When field cannot be empty. Also, check that the format is of YYYY-MM-DD e.g 2022-04-05.\n\nEnter Zero(0) if no payments have been made.\n';
-                            } else if (lenderTypeController.text == '') {
-                              error +=
-                                  'Loan Type cannot be empty. It\'s something like \'Online App\', \'Friend, Family or Other\', \'MFBs\'\n';
-                            } else if (lenderController.text == '') {
-                              error +=
-                                  'Loaner cannot be empty. You need to know who you took the loan from or loaned your money out to.\n';
-                            } else if (loanPurposeController.text == '') {
-                              error +=
-                                  'Knowing why you took the loan in the first place may help keep things in perspective. Purpose field cannot be empty. E.g. \'Education\', \'Medical\', \'Business\', or \'Offset Loan\'.\n';
-                            } else if (noteController.text == '') {
-                              error +=
-                                  'Note field cannot be empty. Remembering the fine details of the loan can save you should things go south.\n';
-                            }
-
-                            if (error.isNotEmpty) {
-                              showErrorDialog(
-                                  context: context,
-                                  title: 'Field Error',
-                                  errorMessage: error);
-                            } else {
-                              DatabaseService db = DatabaseService();
-
-                              db
-                                  .updateLoanData(
-                                      loanAmount: double.parse(
-                                          loanAmountController.text),
-                                      amountRepaid:
-                                          double.parse(repaidController.text),
-                                      interestRate:
-                                          double.parse(rateController.text),
-                                      dailyOverdueCharge:
-                                          double.parse(overdueController.text),
-                                      applyWhen: applyWhenController.text,
-                                      dueWhen: dueWhenController.text,
-                                      lastPaidWhen: lastPaidWhenController.text,
-                                      lenderType: lenderTypeController.text,
-                                      lender: lenderController.text,
-                                      loanPurpose: loanPurposeController.text,
-                                      note: noteController.text)
-                                  .whenComplete(() {
-                                showSuccessDialog(
-                                    context: context,
-                                    title: 'Success',
-                                    successMessage:
-                                        'You have successfully added a repayment record to your ${widget.documentSnapshot!.get('lender')} loan',
-                                    whenTapped: () {
-                                      Navigator.pushNamed(context, '/home');
-                                    });
-                              }).onError((error, stackTrace) {
-                                showErrorDialog(
-                                    context: context,
-                                    title: 'Error',
-                                    errorMessage:
-                                        'An error has occurred while creating your loan record');
-                              });
-                            }
-                          },
-                          child: Container(
-                            width: MediaQuery.of(context).size.width,
-                            child: LoanTrackButton.secondary(
-                                context: context, label: 'Add Loan Record'),
-                          ),
-                        ),
-
-                        SizedBox(height: 20),
-                      ],
-                    ),
             ),
           ),
         ]),

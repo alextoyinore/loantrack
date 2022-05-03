@@ -6,6 +6,8 @@ import 'package:loantrack/apps/news.dart';
 import 'package:loantrack/apps/widgets/homeview.dart';
 import 'package:loantrack/helpers/colors.dart';
 
+import '../data/authentications.dart';
+
 class LoanTrackHome extends StatefulWidget {
   LoanTrackHome({Key? key, this.selectedIndex}) : super(key: key);
 
@@ -25,7 +27,7 @@ class _LoanTrackHomeState extends State<LoanTrackHome> {
 
     List<Widget> _widgetOptions = <Widget>[
       const HomeView(),
-      LoanTrackingPage(isHome: true, loanListHeight: screenHeight / 1.546),
+      LoanTrackingPage(isHome: true, loanListHeight: screenHeight / 1.6),
       const Center(
         child: News(),
       ),
@@ -41,9 +43,24 @@ class _LoanTrackHomeState extends State<LoanTrackHome> {
       });
     }
 
+    var currentTime;
+
     return WillPopScope(
       onWillPop: () async {
-        return false;
+        DateTime now = DateTime.now();
+        if (currentTime == null ||
+            now.difference(currentTime) > Duration(seconds: 2)) {
+          //add duration of press gap
+          currentTime = now;
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+              content: Text('Press Back Button again to Logout')));
+          AuthService auth = AuthService();
+          auth.signOut();
+          //scaffold message, you can show Toast message too.
+          return Future.value(false);
+        }
+
+        return Future.value(true);
       },
       child: Scaffold(
         backgroundColor: Colors.white,

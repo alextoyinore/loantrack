@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:loantrack/apps/repayment_history.dart';
 import 'package:loantrack/apps/home.dart';
 import 'package:loantrack/apps/loan_detail.dart';
+import 'package:loantrack/apps/loan_tracking_page.dart';
 import 'package:loantrack/apps/login.dart';
 import 'package:loantrack/apps/news.dart';
 import 'package:loantrack/apps/providers/login_states.dart';
@@ -53,9 +55,13 @@ class _MainState extends State<Main> {
       routes: {
         '/': (context) => const LoanTackLogin(),
         '/home': (context) => LoanTrackHome(),
-        '/loanRecord': (context) => NewLoanRecord(),
+        '/loanRecord': (context) => LoanRecord(edit: false),
+        'loanHistory': (context) => LoanTrackingPage(
+            loanListHeight: MediaQuery.of(context).size.height * .8,
+            isHome: false),
         '/loanDetail': (context) => LoanDetail(),
-        '/news': (context) => News(),
+        '/repaymentHistory': (context) => const RepaymentHistory(),
+        '/news': (context) => const News(),
       },
     );
   }

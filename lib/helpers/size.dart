@@ -1,4 +1,11 @@
+import 'package:flutter/material.dart';
+
 class LoanTrackSize {
-  static const ScreenWidth = double.infinity;
-  static const ScreenHeight = double.infinity;
+  static screenWidth(BuildContext context) {
+    return MediaQuery.of(context).size.width;
+  }
+
+  static screenHeight(BuildContext context) {
+    return MediaQuery.of(context).size.height;
+  }
 }

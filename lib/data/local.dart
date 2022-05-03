@@ -1,141 +1,65 @@
 import 'package:flutter/material.dart';
-import 'package:loantrack/models/loan.dart';
-import 'package:loantrack/models/loaner.dart';
+import 'package:loantrack/apps/borrowing_pattern.dart';
+import 'package:loantrack/apps/credit_score.dart';
+import 'package:loantrack/apps/loan_advisor.dart';
+import 'package:loantrack/apps/loan_record.dart';
+import 'package:loantrack/apps/loan_tracking_page.dart';
+import 'package:loantrack/apps/mail_and_messages.dart';
+import 'package:loantrack/apps/news.dart';
+import 'package:loantrack/apps/notifications.dart';
+import 'package:loantrack/apps/repayment_history.dart';
 
+import '../apps/loan_health.dart';
 import 'apps.dart';
 
 class LocalData {
-  static final LoginInMessage =
+  static const LoginInMessage =
       'Welcome to LoanTrack. We are your premier loan tracking and credit score company. Track your loans and repayments.Get loan advice, Credit Score and more.';
 
-  static final List<Loan> loans = [
-    Loan(
-      loanAmount: 25000,
-      amountRepaid: 5000,
-      loaner: Loaner(name: 'LCREDIT'),
-      interestRate: 7,
-      applyDate: DateTime.utc(2022, DateTime.march, 15),
-      dueDate: DateTime.utc(2022, DateTime.march, 30),
-      lastPaymentDate: DateTime.utc(2022, DateTime.march, 6),
-    ),
-    Loan(
-      loanAmount: 20000,
-      amountRepaid: 12000,
-      loaner: Loaner(name: 'CASHMALL'),
-      interestRate: 10,
-      applyDate: DateTime(2022, 3, 10),
-      dueDate: DateTime(2022, 3, 25),
-      lastPaymentDate: DateTime(2022, 4, 1),
-    ),
-    Loan(
-      loanAmount: 35000,
-      amountRepaid: 12000,
-      loaner: Loaner(name: '9CREDIT'),
-      interestRate: 7,
-      applyDate: DateTime(2022, 3, 5),
-      dueDate: DateTime(2022, 3, 12),
-      lastPaymentDate: DateTime(2022, 3, 10),
-    ),
-    Loan(
-      loanAmount: 32000,
-      amountRepaid: 19000,
-      loaner: Loaner(name: 'CASHCREDIT'),
-      interestRate: 16,
-      applyDate: DateTime(2022, 3, 15),
-      dueDate: DateTime(2022, 3, 22),
-      lastPaymentDate: DateTime(2022, 3, 20),
-    ),
-    Loan(
-      loanAmount: 8000,
-      amountRepaid: 8000,
-      loaner: Loaner(name: 'QUICKCREDIT'),
-      interestRate: 10,
-      applyDate: DateTime(2022, 3, 15),
-      dueDate: DateTime(2022, 3, 22),
-      lastPaymentDate: DateTime(2022, 3, 21),
-    ),
-    Loan(
-      loanAmount: 4000,
-      amountRepaid: 2000,
-      loaner: Loaner(name: 'NCREDIT'),
-      interestRate: 10,
-      applyDate: DateTime(2022, 6, 15),
-      dueDate: DateTime(2022, 3, 15),
-      lastPaymentDate: DateTime(2022, 4, 6),
-    ),
-    Loan(
-      loanAmount: 9000,
-      amountRepaid: 2000,
-      loaner: Loaner(name: 'CASHRAIN'),
-      interestRate: 10,
-      applyDate: DateTime(2022, 2, 15),
-      dueDate: DateTime(2022, 2, 22),
-      lastPaymentDate: DateTime(2022, 2, 18),
-    ),
-    Loan(
-      loanAmount: 4000,
-      amountRepaid: 3000,
-      loaner: Loaner(name: '9RALOAN'),
-      interestRate: 10,
-      applyDate: DateTime(2022, 1, 15),
-      dueDate: DateTime(2022, 1, 22),
-      lastPaymentDate: DateTime(2022, 1, 22),
-    ),
-    Loan(
-      loanAmount: 4000,
-      amountRepaid: 4000,
-      loaner: Loaner(name: 'HCASH'),
-      interestRate: 10,
-      applyDate: DateTime(2022, 1, 15),
-      dueDate: DateTime(2022, 1, 22),
-      lastPaymentDate: DateTime(2022, 1, 22),
-    ),
-    Loan(
-      loanAmount: 8000,
-      amountRepaid: 6000,
-      loaner: Loaner(name: 'SNAPPYCREDIT'),
-      interestRate: 10,
-      applyDate: DateTime(2022, 1, 10),
-      dueDate: DateTime(2022, 1, 17),
-      lastPaymentDate: DateTime(2022, 1, 16),
-    ),
-    Loan(
-      loanAmount: 4000,
-      amountRepaid: 4000,
-      loaner: Loaner(name: 'PROCASH'),
-      interestRate: 10,
-      applyDate: DateTime(2022, 1, 15),
-      dueDate: DateTime(2022, 1, 22),
-      lastPaymentDate: DateTime(2022, 1, 22),
-    ),
-    Loan(
-      loanAmount: 4000,
-      amountRepaid: 4000,
-      loaner: Loaner(name: 'NCASH'),
-      interestRate: 10,
-      applyDate: DateTime(2022, 1, 15),
-      dueDate: DateTime(2022, 1, 22),
-      lastPaymentDate: DateTime(2022, 1, 22),
-    ),
-  ];
-
   static final List<Apps> applicationList = [
-    Apps(iconData: Icons.history_edu, name: 'Loan History'),
-    Apps(iconData: Icons.payment, name: 'Repayment History'),
-    Apps(iconData: Icons.assignment_returned, name: 'Reconciliations'),
-    Apps(iconData: Icons.calendar_month, name: 'Promises'),
-    Apps(iconData: Icons.health_and_safety, name: 'Loan Health'),
-    Apps(iconData: Icons.phone_in_talk, name: 'Loan Advisor'),
-    Apps(iconData: Icons.money, name: 'Loan Record', route: '/loanRecord'),
+    Apps(
+      iconData: Icons.history_edu,
+      name: 'Loan History',
+      destinationWidget: LoanTrackingPage(loanListHeight: -1, isHome: false),
+    ),
+    Apps(
+      iconData: Icons.payment,
+      name: 'Repayment History',
+      destinationWidget: const RepaymentHistory(),
+    ),
+    Apps(
+        iconData: Icons.health_and_safety,
+        name: 'Loan Health',
+        destinationWidget: const LoanHealth()),
+    Apps(
+        iconData: Icons.phone_in_talk,
+        name: 'Loan Advisor',
+        destinationWidget: const LoanAdvisor()),
+    Apps(
+        iconData: Icons.money,
+        name: 'New Loan',
+        destinationWidget: LoanRecord(edit: false)),
     Apps(
         iconData: Icons.payments_rounded,
-        name: 'Repayment Record',
-        route: '/repaymentRecord'),
-    Apps(iconData: Icons.pattern, name: 'Loan Pattern'),
-    Apps(iconData: Icons.notifications_none_sharp, name: 'Notifications'),
-    Apps(iconData: Icons.message, name: 'Email & Messages'),
-    Apps(iconData: Icons.newspaper, name: 'News'),
-    Apps(iconData: Icons.numbers, name: 'Credit Score'),
+        name: 'Repay Loan',
+        destinationWidget: LoanTrackingPage(loanListHeight: -1, isHome: false)),
+    Apps(
+        iconData: Icons.pattern,
+        name: 'Borrowing Pattern',
+        destinationWidget: BorrowingPattern()),
+    Apps(
+        iconData: Icons.notifications_none_sharp,
+        name: 'Notifications',
+        destinationWidget: Notifications()),
+    Apps(
+        iconData: Icons.message,
+        name: 'Email & Messages',
+        destinationWidget: EmailAndMessages()),
+    Apps(iconData: Icons.newspaper, name: 'News', destinationWidget: News()),
+    Apps(
+        iconData: Icons.numbers,
+        name: 'Credit Score',
+        destinationWidget: CreditScore()),
   ];
 
   static const aboutLoanTrack =

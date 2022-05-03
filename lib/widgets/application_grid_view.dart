@@ -24,13 +24,17 @@ class _LoanTrackAppsGridViewState extends State<LoanTrackAppsGridView> {
         children: List.generate(LocalData.applicationList.length, (index) {
           return GestureDetector(
             onTap: () {
-              Navigator.pushNamed(
-                  context, LocalData.applicationList[index].route as dynamic);
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          LocalData.applicationList[index].destinationWidget));
             },
             child: Container(
               decoration: BoxDecoration(
                   border: Border.all(
-                      width: 1.2, color: LoanTrackColors.PrimaryOneDark),
+                      width: 1.2,
+                      color: LoanTrackColors.PrimaryOne.withOpacity(.5)),
                   borderRadius: BorderRadius.circular(10),
                   color: LoanTrackColors.PrimaryOne.withOpacity(.1)),
               child: Column(

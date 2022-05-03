@@ -99,7 +99,7 @@ Container LoanList(
                                 softWrap: true,
                               ),
                             ),
-                            (progress == 1)
+                            (progress >= 1)
                                 ? const Text(
                                     'PAID',
                                     style: TextStyle(
@@ -212,34 +212,77 @@ Container LoanBulletedList(
   );
 }
 
-double totalRepayments = 0;
-
-Container repaymentList(
-    {required DocumentSnapshot documentSnapshot,
-    required BuildContext context}) {
-  //Query Repayments
+Container RepaymentBulletedList(
+    {required double height, int? numberOfItems, required String userId}) {
+  ScrollController _controller = ScrollController();
   return Container(
-    height: MediaQuery.of(context).size.height,
+    height: height,
+    padding: EdgeInsets.only(bottom: 5),
     child: StreamBuilder<QuerySnapshot>(
       stream: FirebaseFirestore.instance
           .collection('repayments')
-          .where('userId', isEqualTo: FirebaseAuth.instance.currentUser!.uid)
-          .where('loanId', isEqualTo: documentSnapshot.id)
+          .where('userId', isEqualTo: userId)
           .snapshots(),
-      builder: (context, rSnapshot) {
-        int len = 0;
-        if (rSnapshot.data?.docs.length != null) {
-          len = rSnapshot.data!.docs.length;
-        } else {
-          len = 0;
-        }
-        for (int j = 0; j < len; j++) {
-          DocumentSnapshot repaymentSnapshot = rSnapshot.data!.docs[j];
-          totalRepayments += repaymentSnapshot.get('amountRepaid');
-        }
-        return Container();
+      builder: (context, snapshot) {
+        if (!snapshot.hasData)
+          return SpinKitThreeBounce(
+            color: LoanTrackColors2.PrimaryOneLight,
+            size: 50,
+          );
+
+        return ListView.builder(
+            itemCount: (numberOfItems != null &&
+                    numberOfItems > 0 &&
+                    numberOfItems <= snapshot.data!.docs.length)
+                ? numberOfItems
+                : snapshot.data?.docs.length, //snapshot.data!.docs.length,
+            controller: _controller,
+            itemBuilder: (_, index) {
+              DocumentSnapshot document = snapshot.data!.docs[index];
+
+              if (document.get('userId') ==
+                  FirebaseAuth.instance.currentUser!.uid) {
+                return Padding(
+                    padding: EdgeInsets.symmetric(vertical: 2),
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) {
+                          return LoanDetail(document: document);
+                        }));
+                      },
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Container(
+                            //width: MediaQuery.of(context).size.width * .4,
+
+                            child: BulletedList(
+                              text:
+                                  '${document.get('amountRepaid').toString().toUpperCase()} - ${FirebaseFirestore.instance.doc('loans/' + document.id)}',
+                              style: const TextStyle(
+                                  color: LoanTrackColors2.PrimaryOne),
+                            ),
+                          ),
+                          Text(document.get('dateOfRepayment').toString(),
+                              style: TextStyle(
+                                  color: LoanTrackColors2.PrimaryOne)),
+                          GestureDetector(
+                              onTap: () {
+                                FirebaseFirestore.instance
+                                    .collection('repayments')
+                                    .doc(document.id)
+                                    .delete();
+                                Navigator.pop(context);
+                              },
+                              child: Icon(Icons.delete_outline))
+                        ],
+                      ),
+                    ));
+              }
+              return const SizedBox(height: 0);
+            });
       },
     ),
   );
-  //End of Repayment Query
 }

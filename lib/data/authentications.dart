@@ -86,6 +86,8 @@ class AuthService {
               .substring(0, 10), //DateTime.now().toString().substring(0, 10),
           dueWhen: DateTime.now().toString().substring(0, 10),
           lastPaidWhen: DateTime.now().toString().substring(0, 10),
+          entryDate: DateTime.now().toString().substring(0, 10),
+          modifiedWhen: DateTime.now().toString().substring(0, 10),
           lenderType: 'Dummy',
           lender: 'Dummy',
           loanPurpose: 'Dummy',

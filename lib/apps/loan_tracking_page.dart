@@ -42,7 +42,7 @@ class _LoanTrackingPageState extends State<LoanTrackingPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('LOAN LIST',
+                const Text('LOAN LIST',
                     style: TextStyle(color: LoanTrackColors.PrimaryTwoLight)),
                 SizedBox(height: 20),
                 Row(
@@ -108,7 +108,7 @@ class _LoanTrackingPageState extends State<LoanTrackingPage> {
                               color: LoanTrackColors.PrimaryTwoLight)),
                       child: Column(
                         children: [
-                          const Text('TOTAL IN LOAN',
+                          const Text('CURRENT LOAN TOTAL',
                               style: TextStyle(
                                   color: LoanTrackColors.PrimaryTwoLight)),
                           StreamBuilder<QuerySnapshot>(
@@ -283,7 +283,7 @@ class _LoanTrackingPageState extends State<LoanTrackingPage> {
                               color: LoanTrackColors.PrimaryTwoLight)),
                       child: Column(
                         children: [
-                          const Text('TOTAL IN LOAN',
+                          const Text('CURRENT LOAN TOTAL',
                               style: TextStyle(
                                   color: LoanTrackColors.PrimaryTwoLight)),
                           StreamBuilder<QuerySnapshot>(
