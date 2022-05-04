@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:loantrack/apps/repayment_history.dart';
+import 'package:loantrack/apps/repayment_list_app.dart';
 import 'package:loantrack/apps/home.dart';
-import 'package:loantrack/apps/loan_detail.dart';
-import 'package:loantrack/apps/loan_tracking_page.dart';
-import 'package:loantrack/apps/login.dart';
-import 'package:loantrack/apps/news.dart';
+import 'package:loantrack/apps/widgets/loan_detail.dart';
+import 'package:loantrack/apps/loan_list_app.dart';
+import 'package:loantrack/apps/login_app.dart';
+import 'package:loantrack/apps/widgets/news.dart';
 import 'package:loantrack/apps/providers/login_states.dart';
 import 'package:provider/provider.dart';
 
-import 'apps/loan_record.dart';
+import 'apps/loan_record_app.dart';
 import 'helpers/colors.dart';
 
 void main() {

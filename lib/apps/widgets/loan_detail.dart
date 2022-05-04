@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:loantrack/apps/loan_record.dart';
+import 'package:loantrack/apps/loan_record_app.dart';
 import 'package:loantrack/apps/widgets/button.dart';
 import 'package:loantrack/helpers/colors.dart';
 import 'package:loantrack/helpers/common_widgets.dart';
@@ -54,14 +54,11 @@ class _LoanDetailState extends State<LoanDetail> {
       body: Stack(children: [
         Container(
           height: screenHeight,
-          padding: const EdgeInsets.only(left: 32.0, right: 32, top: 16),
+          padding: const EdgeInsets.only(left: 24.0, right: 24, top: 16),
           child: SingleChildScrollView(
             child: Column(children: [
               Container(
-                //height: screenHeight * .7,
-                //padding: EdgeInsets.only(left: 16, right: 16),
                 decoration: BoxDecoration(
-                  //color: LoanTrackColors.PrimaryTwoLight.withOpacity(.05),
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: Column(
@@ -101,7 +98,6 @@ class _LoanDetailState extends State<LoanDetail> {
                       height: 40,
                       padding: const EdgeInsets.symmetric(vertical: 10),
                       decoration: BoxDecoration(
-                        //borderRadius: BorderRadius.circular(10),
                         border: Border.all(
                             color: (due > 0 && progress < 1)
                                 ? LoanTrackColors2.PrimaryOneLight
@@ -248,7 +244,7 @@ class _LoanDetailState extends State<LoanDetail> {
                                 textAlign: TextAlign.right, style: detailStyle))
                       ],
                     ),
-                    separatorSpace50,
+                    separatorSpace40,
                     (progress < 1)
                         ? GestureDetector(
                             onTap: () {
@@ -263,10 +259,11 @@ class _LoanDetailState extends State<LoanDetail> {
                             child: Container(
                                 //width: screenWidth,
                                 child: LoanTrackButton.primary(
-                                    context: context, label: 'Repay')),
+                                    context: context,
+                                    label: 'Add a repayment record')),
                           )
                         : const SizedBox(height: 0),
-                    const SizedBox(height: 20),
+                    separatorSpace20,
                     GestureDetector(
                       onTap: () {
                         Navigator.push(
@@ -280,7 +277,17 @@ class _LoanDetailState extends State<LoanDetail> {
                       child: Container(
                           //width: screenWidth,
                           child: LoanTrackButton.secondary(
-                              context: context, label: 'Edit')),
+                              context: context, label: 'Edit this record')),
+                    ),
+                    separatorSpace20,
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
+                      child: Container(
+                          //width: screenWidth,
+                          child: LoanTrackButton.secondaryOutline(
+                              context: context, label: 'Cancel')),
                     ),
                   ],
                 ),

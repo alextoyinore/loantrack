@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:loantrack/apps/borrowing_pattern.dart';
-import 'package:loantrack/apps/credit_score.dart';
-import 'package:loantrack/apps/loan_advisor.dart';
-import 'package:loantrack/apps/loan_record.dart';
-import 'package:loantrack/apps/loan_tracking_page.dart';
-import 'package:loantrack/apps/mail_and_messages.dart';
-import 'package:loantrack/apps/news.dart';
-import 'package:loantrack/apps/notifications.dart';
-import 'package:loantrack/apps/repayment_history.dart';
+import 'package:loantrack/apps/borrowing_pattern_app.dart';
+import 'package:loantrack/apps/credit_score_app.dart';
+import 'package:loantrack/apps/loan_advisor_app.dart';
+import 'package:loantrack/apps/loan_record_app.dart';
+import 'package:loantrack/apps/loan_list_app.dart';
+import 'package:loantrack/apps/mail_and_messages_app.dart';
+import 'package:loantrack/apps/widgets/news.dart';
+import 'package:loantrack/apps/notifications_app.dart';
+import 'package:loantrack/apps/repayment_list_app.dart';
 
-import '../apps/loan_health.dart';
+import '../apps/loan_health_app.dart';
 import 'apps.dart';
 
 class LocalData {
   static const LoginInMessage =
-      'Welcome to LoanTrack. We are your premier loan tracking and credit score company. Track your loans and repayments.Get loan advice, Credit Score and more.';
+      'Welcome to LoanTrack. We are your premier loan tracking and credit score company. Track your loans and repayments. Get loan advice, Follow loan news and more.';
 
   static final List<Apps> applicationList = [
     Apps(
@@ -46,20 +46,23 @@ class LocalData {
     Apps(
         iconData: Icons.pattern,
         name: 'Borrowing Pattern',
-        destinationWidget: BorrowingPattern()),
+        destinationWidget: const BorrowingPattern()),
     Apps(
         iconData: Icons.notifications_none_sharp,
         name: 'Notifications',
-        destinationWidget: Notifications()),
+        destinationWidget: const Notifications()),
     Apps(
         iconData: Icons.message,
         name: 'Email & Messages',
-        destinationWidget: EmailAndMessages()),
-    Apps(iconData: Icons.newspaper, name: 'News', destinationWidget: News()),
+        destinationWidget: const EmailAndMessages()),
+    Apps(
+        iconData: Icons.newspaper,
+        name: 'News',
+        destinationWidget: const News()),
     Apps(
         iconData: Icons.numbers,
         name: 'Credit Score',
-        destinationWidget: CreditScore()),
+        destinationWidget: const CreditScore()),
   ];
 
   static const aboutLoanTrack =

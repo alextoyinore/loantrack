@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:loantrack/apps/providers/login_states.dart';
 import 'package:loantrack/data/authentications.dart';
 import 'package:loantrack/helpers/colors.dart';
+import 'package:loantrack/helpers/common_widgets.dart';
 import 'package:provider/provider.dart';
 
 import '../data/local.dart';
@@ -30,16 +31,16 @@ class _AppSettingsState extends State<AppSettings> {
             children: [
               Container(
                 padding: const EdgeInsets.only(left: 16.0, right: 16),
-                child: Text(
+                child: const Text(
                   'Adjust your app settings here. Manage your profile settings, app look and feel, and other settings.',
                   style: TextStyle(color: LoanTrackColors.PrimaryTwoVeryLight),
                 ),
               ),
-              SizedBox(height: 10),
+              separatorSpace10,
               ListTile(
-                leading:
-                    Icon(Icons.info_outline, color: LoanTrackColors.PrimaryOne),
-                title: Text('About',
+                leading: const Icon(Icons.info_outline,
+                    color: LoanTrackColors.PrimaryOne),
+                title: const Text('About',
                     style: TextStyle(color: LoanTrackColors.PrimaryOne)),
                 onTap: () {
                   LoanTrackModal.modal(context,
@@ -57,8 +58,9 @@ class _AppSettingsState extends State<AppSettings> {
                   thickness: .5,
                   color: LoanTrackColors.PrimaryTwo.withOpacity(.2)),
               ListTile(
-                leading: Icon(Icons.person, color: LoanTrackColors.PrimaryOne),
-                title: Text('Profile Settings',
+                leading:
+                    const Icon(Icons.person, color: LoanTrackColors.PrimaryOne),
+                title: const Text('Profile Settings',
                     style: TextStyle(color: LoanTrackColors.PrimaryOne)),
                 onTap: () {},
               ),
@@ -66,9 +68,9 @@ class _AppSettingsState extends State<AppSettings> {
                   thickness: .5,
                   color: LoanTrackColors.PrimaryTwo.withOpacity(.2)),
               ListTile(
-                leading:
-                    Icon(Icons.logout, color: LoanTrackColors2.PrimaryOneLight),
-                title: Text('Sign Out',
+                leading: const Icon(Icons.logout,
+                    color: LoanTrackColors2.PrimaryOneLight),
+                title: const Text('Sign Out',
                     style: TextStyle(color: LoanTrackColors2.PrimaryOneLight)),
                 onTap: () {
                   AuthService auth = AuthService();

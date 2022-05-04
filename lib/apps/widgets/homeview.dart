@@ -1,7 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:loantrack/apps/loan_tracking_page.dart';
+import 'package:loantrack/apps/borrowing_pattern_app.dart';
+import 'package:loantrack/apps/credit_score_app.dart';
+import 'package:loantrack/apps/loan_advisor_app.dart';
+import 'package:loantrack/apps/loan_health_app.dart';
+import 'package:loantrack/apps/loan_list_app.dart';
+import 'package:loantrack/apps/news_app.dart';
 import 'package:loantrack/helpers/colors.dart';
 import 'package:loantrack/helpers/common_widgets.dart';
 
@@ -216,7 +221,7 @@ class _HomeViewState extends State<HomeView> {
               child: Container(
                 child: LoanTrackButton.secondary(
                   context: context,
-                  label: 'Add New Record',
+                  label: 'Add Loan Record',
                 ),
               ),
             ),
@@ -234,7 +239,7 @@ class _HomeViewState extends State<HomeView> {
               child: Container(
                   child: LoanTrackButton.primary(
                 context: context,
-                label: 'Make Repayment',
+                label: 'Add Repayment Record',
               )),
             ),
 
@@ -316,31 +321,48 @@ class _HomeViewState extends State<HomeView> {
                 scrollDirection: Axis.horizontal,
                 shrinkWrap: true,
                 children: [
-                  LoanTrackProductLinkBox(
-                    icon: const Icon(Icons.phone,
-                        size: 25, color: LoanTrackColors2.PrimaryOne),
-                    label: const Text('ADVISOR',
-                        style: TextStyle(
-                            color: LoanTrackColors2.PrimaryOne, fontSize: 11),
-                        softWrap: true),
-                    backgroundColor: LoanTrackColors2.PrimaryOneVeryLight,
-                  ),
-                  separatorSpace10,
-                  LoanTrackProductLinkBox(
-                    icon: const Icon(Icons.health_and_safety,
-                        size: 25, color: LoanTrackColors.PrimaryOneLight),
-                    label: const Text('LOAN HEALTH',
-                        style: TextStyle(
-                            color: LoanTrackColors.PrimaryOneLight,
-                            fontSize: 11),
-                        textAlign: TextAlign.center,
-                        softWrap: true),
-                    backgroundColor: LoanTrackColors.PrimaryOneVeryLight,
-                  ),
-                  separatorSpace10,
                   GestureDetector(
                     onTap: () {
-                      Navigator.pushNamed(context, '/news');
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => LoanAdvisor()));
+                    },
+                    child: LoanTrackProductLinkBox(
+                      icon: const Icon(Icons.phone,
+                          size: 25, color: LoanTrackColors2.PrimaryOne),
+                      label: const Text('ADVISOR',
+                          style: TextStyle(
+                              color: LoanTrackColors2.PrimaryOne, fontSize: 11),
+                          softWrap: true),
+                      backgroundColor: LoanTrackColors2.PrimaryOneVeryLight,
+                    ),
+                  ),
+                  horizontalSeparatorSpace20,
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => LoanHealth()));
+                    },
+                    child: LoanTrackProductLinkBox(
+                      icon: const Icon(Icons.health_and_safety,
+                          size: 25, color: LoanTrackColors.PrimaryOneLight),
+                      label: const Text('LOAN HEALTH',
+                          style: TextStyle(
+                              color: LoanTrackColors.PrimaryOneLight,
+                              fontSize: 11),
+                          textAlign: TextAlign.center,
+                          softWrap: true),
+                      backgroundColor: LoanTrackColors.PrimaryOneVeryLight,
+                    ),
+                  ),
+                  horizontalSeparatorSpace20,
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => NewsApp()));
                     },
                     child: LoanTrackProductLinkBox(
                       icon: const Icon(Icons.newspaper,
@@ -353,27 +375,43 @@ class _HomeViewState extends State<HomeView> {
                       backgroundColor: LoanTrackColors2.TetiaryOne,
                     ),
                   ),
-                  separatorSpace10,
-                  LoanTrackProductLinkBox(
-                    icon: const Icon(Icons.pattern,
-                        size: 25, color: LoanTrackColors.PrimaryOne),
-                    label: const Text('LOAN PATTERN',
-                        style: TextStyle(
-                            color: LoanTrackColors.PrimaryOne, fontSize: 11),
-                        textAlign: TextAlign.center,
-                        softWrap: true),
-                    backgroundColor: LoanTrackColors.PrimaryOne,
+                  horizontalSeparatorSpace20,
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => BorrowingPattern()));
+                    },
+                    child: LoanTrackProductLinkBox(
+                      icon: const Icon(Icons.pattern,
+                          size: 25, color: LoanTrackColors.PrimaryOne),
+                      label: const Text('LOAN PATTERN',
+                          style: TextStyle(
+                              color: LoanTrackColors.PrimaryOne, fontSize: 11),
+                          textAlign: TextAlign.center,
+                          softWrap: true),
+                      backgroundColor: LoanTrackColors.PrimaryOne,
+                    ),
                   ),
-                  separatorSpace10,
-                  LoanTrackProductLinkBox(
-                    icon: const Icon(Icons.numbers,
-                        size: 25, color: LoanTrackColors2.PrimaryOne),
-                    label: const Text('CREDIT SCORE',
-                        style: TextStyle(
-                            color: LoanTrackColors2.PrimaryOne, fontSize: 11),
-                        textAlign: TextAlign.center,
-                        softWrap: true),
-                    backgroundColor: LoanTrackColors2.PrimaryOne,
+                  horizontalSeparatorSpace20,
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => CreditScore()));
+                    },
+                    child: LoanTrackProductLinkBox(
+                      icon: const Icon(Icons.numbers,
+                          size: 25, color: LoanTrackColors2.PrimaryOne),
+                      label: const Text('CREDIT SCORE',
+                          style: TextStyle(
+                              color: LoanTrackColors2.PrimaryOne, fontSize: 11),
+                          textAlign: TextAlign.center,
+                          softWrap: true),
+                      backgroundColor: LoanTrackColors2.PrimaryOne,
+                    ),
                   )
                 ],
               ),

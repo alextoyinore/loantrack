@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
-import '../apps/loan_detail.dart';
+import '../apps/widgets/loan_detail.dart';
 import '../widgets/bulleted_list.dart';
 import 'colors.dart';
 

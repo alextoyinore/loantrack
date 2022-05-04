@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:loantrack/helpers/colors.dart';
+import 'package:loantrack/helpers/common_widgets.dart';
 
 class LoanTrackModal {
   static modal(BuildContext context,
@@ -16,7 +17,7 @@ class LoanTrackModal {
         builder: (context) {
           return Container(
             width: screenWidth,
-            //height: screenHeight * 2,
+            height: screenHeight / 2.5,
             decoration: BoxDecoration(
                 color: !isError ? Colors.white : Colors.redAccent,
                 borderRadius: const BorderRadius.only(
@@ -27,10 +28,10 @@ class LoanTrackModal {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Container(
-                  padding: EdgeInsets.symmetric(vertical: 10),
+                  padding: const EdgeInsets.symmetric(vertical: 10),
                   alignment: Alignment.center,
                   width: screenWidth,
-                  height: 50,
+                  height: screenHeight / 20,
                   decoration: BoxDecoration(
                       color: !isError
                           ? Colors.white //LoanTrackColors.PrimaryTwo
@@ -44,19 +45,16 @@ class LoanTrackModal {
                           color: LoanTrackColors.PrimaryTwoLight //Colors.white,
                           )),
                 ),
-                SizedBox(height: 5),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 20.0, vertical: 5),
-                    child: (e == null)
-                        ? content
-                        : Text(
-                            e.toString(),
-                            //style: TextStyle(color: Colors.white),
-                            softWrap: true,
-                          ),
-                  ),
+                separatorSpace5,
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 20.0, vertical: 5),
+                  child: (e == null)
+                      ? content
+                      : Text(
+                          e.toString(),
+                          softWrap: true,
+                        ),
                 ),
               ],
             ),

@@ -194,7 +194,7 @@ class _LoanTrackingPageState extends State<LoanTrackingPage> {
 
                 SizedBox(height: 20),
 
-                Text(
+                const Text(
                   'Select a loan from the list to \'Edit\' or \'Make Repayment\' ',
                   style: TextStyle(color: LoanTrackColors.PrimaryTwoVeryLight),
                 ),

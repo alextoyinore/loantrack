@@ -104,15 +104,18 @@ class _LoanRecordState extends State<LoanRecord> {
                     title: 'Applications');
               },
               child: LoanTrackIcons.ApplicationIcon),
-          title: (widget.documentSnapshot != null && widget.edit == true)
+          title: (widget.documentSnapshot != null && widget.edit == false)
               ? const Text(
                   'New Repayment Record',
                   style: TextStyle(color: LoanTrackColors.PrimaryOne),
                 )
-              : const Text(
-                  'New Loan Record',
-                  style: TextStyle(color: LoanTrackColors.PrimaryOne),
-                ),
+              : (widget.documentSnapshot != null && widget.edit == true)
+                  ? const Text(
+                      'Editing Record',
+                      style: TextStyle(color: LoanTrackColors.PrimaryOne),
+                    )
+                  : const Text('New Loan Record',
+                      style: TextStyle(color: LoanTrackColors.PrimaryOne)),
           actions: [
             GestureDetector(
               onTap: () {
@@ -137,9 +140,9 @@ class _LoanRecordState extends State<LoanRecord> {
                   ? Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text(
-                          'Repay a loan record here by filling this form. All fields are required.',
-                          style: TextStyle(
+                        Text(
+                          'Enter  a repayment record for ${widget.documentSnapshot!.get('loanAmount').toString()} loan owed to ${widget.documentSnapshot!.get('lender')} by filling this form. All fields are required.',
+                          style: const TextStyle(
                             color: LoanTrackColors.PrimaryTwoLight,
                           ),
                         ),
