@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'colors.dart';
 
 Divider separatorLine = Divider(
-    thickness: .5, color: LoanTrackColors.PrimaryTwoVeryLight.withOpacity(.2));
+    thickness: .5, color: LoanTrackColors.PrimaryTwoVeryLight.withOpacity(.3));
 
 SizedBox separatorSpace10 = const SizedBox(height: 10);
 SizedBox separatorSpace5 = const SizedBox(height: 5);

@@ -28,7 +28,7 @@ class _LoanTrackHomeState extends State<LoanTrackHome> {
 
     List<Widget> _widgetOptions = <Widget>[
       const HomeView(),
-      LoanTrackingPage(isHome: true, loanListHeight: screenHeight / 1.55),
+      LoanTrackingPage(isHome: true, loanListHeight: screenHeight / 1.51),
       const Center(
         child: News(),
       ),
@@ -72,6 +72,7 @@ class _LoanTrackHomeState extends State<LoanTrackHome> {
           unselectedItemColor:
               LoanTrackColors.PrimaryTwoVeryLight.withOpacity(.3),
           selectedItemColor: LoanTrackColors.PrimaryOne,
+          elevation: 0,
           items: const [
             BottomNavigationBarItem(
                 icon: Icon(Icons.home_outlined),

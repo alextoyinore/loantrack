@@ -295,7 +295,7 @@ class _LoanDetailState extends State<LoanDetail> {
               separatorSpace100,
             ]),
           ),
-        ),
+        )
       ]),
     );
   }

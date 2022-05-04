@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:loantrack/helpers/common_widgets.dart';
 
 import '../apps/widgets/loan_detail.dart';
 import '../widgets/bulleted_list.dart';
@@ -217,7 +218,7 @@ Container RepaymentBulletedList(
   ScrollController _controller = ScrollController();
   return Container(
     height: height,
-    padding: EdgeInsets.only(bottom: 5),
+    padding: const EdgeInsets.only(bottom: 5),
     child: StreamBuilder<QuerySnapshot>(
       stream: FirebaseFirestore.instance
           .collection('repayments')
@@ -242,40 +243,53 @@ Container RepaymentBulletedList(
 
               if (document.get('userId') ==
                   FirebaseAuth.instance.currentUser!.uid) {
-                return Padding(
-                    padding: EdgeInsets.symmetric(vertical: 2),
+                return Container(
+                    padding: const EdgeInsets.symmetric(vertical: 2),
                     child: GestureDetector(
                       onTap: () {
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (context) {
-                          return LoanDetail(document: document);
-                        }));
+                        // Navigator.push(context,
+                        //     MaterialPageRoute(builder: (context) {
+                        //   return LoanDetail(document: document.get('loanId'));
+                        // }));
                       },
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      child: Column(
                         children: [
-                          Container(
-                            //width: MediaQuery.of(context).size.width * .4,
-
-                            child: BulletedList(
-                              text:
-                                  '${document.get('amountRepaid').toString().toUpperCase()} - ${FirebaseFirestore.instance.doc('loans/' + document.id)}',
-                              style: const TextStyle(
-                                  color: LoanTrackColors2.PrimaryOne),
-                            ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Container(
+                                child: BulletedList(
+                                  text: document
+                                      .get('amountRepaid')
+                                      .toString()
+                                      .toUpperCase(),
+                                  style: const TextStyle(
+                                      color: LoanTrackColors.PrimaryOne),
+                                ),
+                              ),
+                              Text(document.get('dateOfRepayment').toString(),
+                                  style: const TextStyle(
+                                      color: LoanTrackColors.PrimaryOne)),
+                              GestureDetector(
+                                  onTap: () {
+                                    FirebaseFirestore.instance
+                                        .collection('repayments')
+                                        .doc(document.id)
+                                        .delete();
+                                    Navigator.pop(context);
+                                  },
+                                  child: const Icon(
+                                    Icons.delete_outline,
+                                    size: 20,
+                                    color: LoanTrackColors.PrimaryTwoVeryLight,
+                                  ))
+                            ],
                           ),
-                          Text(document.get('dateOfRepayment').toString(),
-                              style: TextStyle(
-                                  color: LoanTrackColors2.PrimaryOne)),
-                          GestureDetector(
-                              onTap: () {
-                                FirebaseFirestore.instance
-                                    .collection('repayments')
-                                    .doc(document.id)
-                                    .delete();
-                                Navigator.pop(context);
-                              },
-                              child: Icon(Icons.delete_outline))
+                          (index < snapshot.data!.docs.length - 1 ||
+                                  (numberOfItems != null &&
+                                      index < numberOfItems - 1))
+                              ? separatorLine
+                              : const SizedBox(height: 0),
                         ],
                       ),
                     ));

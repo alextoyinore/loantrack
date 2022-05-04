@@ -77,21 +77,20 @@ class AuthService {
       await credential.user!.updateDisplayName(displayName);
       DatabaseService databaseService = DatabaseService();
       databaseService.updateLoanData(
-          loanAmount: 20,
+          loanAmount: 10,
           amountRepaid: 10,
-          interestRate: 3.5,
+          interestRate: 0,
           dailyOverdueCharge: 1,
           applyWhen: DateTime.now()
-              .toString()
-              .substring(0, 10), //DateTime.now().toString().substring(0, 10),
-          dueWhen: DateTime.now().toString().substring(0, 10),
-          lastPaidWhen: DateTime.now().toString().substring(0, 10),
-          entryDate: DateTime.now().toString().substring(0, 10),
-          modifiedWhen: DateTime.now().toString().substring(0, 10),
-          lenderType: 'Dummy',
-          lender: 'Dummy',
-          loanPurpose: 'Dummy',
-          note: 'Dummy');
+              .toString(), //DateTime.now().toString().substring(0, 10),
+          dueWhen: DateTime.now().toString(),
+          lastPaidWhen: DateTime.now().toString(),
+          entryDate: DateTime.now().toString(),
+          modifiedWhen: DateTime.now().toString(),
+          lenderType: 'Test',
+          lender: 'Test',
+          loanPurpose: 'Test',
+          note: 'Test');
 
       if (FirebaseAuth.instance.currentUser!.emailVerified) {
         Navigator.pushNamed(context, '/home');

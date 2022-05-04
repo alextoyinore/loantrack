@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:loantrack/apps/widgets/button.dart';
 import 'package:loantrack/data/database.dart';
 import 'package:loantrack/helpers/colors.dart';
+import 'package:loantrack/helpers/functions.dart';
 import 'package:loantrack/helpers/icons.dart';
 import 'package:loantrack/widgets/application_grid_view.dart';
 import 'package:loantrack/widgets/date_picker.dart';
@@ -12,7 +13,6 @@ import 'package:loantrack/widgets/dialogs.dart';
 import 'package:loantrack/widgets/loan_track_modal.dart';
 import 'package:loantrack/widgets/loan_track_textfield.dart';
 
-import '../widgets/bulleted_list.dart';
 import '../widgets/loan_progress_bar.dart';
 
 class LoanRecord extends StatefulWidget {
@@ -384,21 +384,10 @@ class _LoanRecordState extends State<LoanRecord> {
                               ),
                               //SizedBox(height: 20),
 
-                              const SizedBox(height: 10),
-                              BulletedList(
-                                  text: 'LCREDIT - 3000 - 2022-03-02, Noon',
-                                  style: const TextStyle(
-                                      color: LoanTrackColors.PrimaryOne)),
-                              const SizedBox(height: 5),
-                              BulletedList(
-                                  text: 'CASHBUS - 4000 - 2022-03-05, Night',
-                                  style: const TextStyle(
-                                      color: LoanTrackColors.PrimaryOne)),
-                              const SizedBox(height: 5),
-                              BulletedList(
-                                  text: '9CREDIT - 3500 - 2022-04-07, Morning',
-                                  style: const TextStyle(
-                                      color: LoanTrackColors.PrimaryOne))
+                              RepaymentBulletedList(
+                                  height: screenHeight * .2,
+                                  userId: _userUID,
+                                  numberOfItems: 3)
                             ],
                           ),
                         ),

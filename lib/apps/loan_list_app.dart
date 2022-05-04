@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:loantrack/apps/widgets/text_button.dart';
 import 'package:loantrack/helpers/colors.dart';
+import 'package:loantrack/helpers/common_widgets.dart';
 
 import '../helpers/functions.dart';
 
@@ -206,7 +207,7 @@ class _LoanTrackingPageState extends State<LoanTrackingPage> {
                       width: screenWidth,
                       height: (widget.loanListHeight > 0)
                           ? widget.loanListHeight
-                          : screenHeight / 1.7),
+                          : screenHeight * .7),
                 ),
                 SizedBox(height: 10),
               ],
@@ -377,7 +378,7 @@ class _LoanTrackingPageState extends State<LoanTrackingPage> {
                           ? widget.loanListHeight
                           : screenHeight / 1.76),
                 ),
-                SizedBox(height: 40),
+                separatorSpace10,
               ],
             ),
           );

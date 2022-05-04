@@ -1,5 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:loantrack/helpers/colors.dart';
+import 'package:loantrack/helpers/common_widgets.dart';
 import 'package:loantrack/helpers/functions.dart';
 
 class RepaymentHistory extends StatefulWidget {
@@ -15,8 +17,27 @@ class _RepaymentHistoryState extends State<RepaymentHistory> {
   Widget build(BuildContext context) {
     return Scaffold(
         body: SingleChildScrollView(
-      child: RepaymentBulletedList(
-          height: MediaQuery.of(context).size.height * .7, userId: userId),
+      child: Column(
+        children: [
+          separatorSpace50,
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 24.0),
+            child: Row(
+              children: const [
+                Text('Repayment History',
+                    style: TextStyle(
+                        color: LoanTrackColors.PrimaryOne, fontSize: 20)),
+              ],
+            ),
+          ),
+          Container(
+            margin: const EdgeInsets.symmetric(horizontal: 24.0),
+            child: RepaymentBulletedList(
+                height: MediaQuery.of(context).size.height * .7,
+                userId: userId),
+          ),
+        ],
+      ),
     ));
   }
 }
