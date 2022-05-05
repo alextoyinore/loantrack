@@ -1,9 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:loantrack/apps/widgets/newsdetail.dart';
+import 'package:loantrack/data/database.dart';
 import 'package:loantrack/helpers/common_widgets.dart';
 
+import '../apps/widgets/blogdetail.dart';
 import '../apps/widgets/loan_detail.dart';
 import '../widgets/bulleted_list.dart';
 import 'colors.dart';
@@ -23,9 +25,15 @@ Container LoanList(
             .snapshots(),
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
-            return const SpinKitThreeBounce(
-              color: LoanTrackColors.PrimaryOneLight,
-              size: 50,
+            return const Center(child: Text('No data'));
+          }
+          if (snapshot.data!.docs.isEmpty) {
+            return const Center(
+              child: Text(
+                'No data',
+                style: TextStyle(
+                    fontSize: 14, color: LoanTrackColors.PrimaryTwoVeryLight),
+              ),
             );
           }
           return ListView.builder(
@@ -145,11 +153,17 @@ Container LoanBulletedList(
           .where('userId', isEqualTo: userId)
           .snapshots(),
       builder: (context, snapshot) {
-        if (!snapshot.hasData)
-          return SpinKitThreeBounce(
-            color: LoanTrackColors2.PrimaryOneLight,
-            size: 50,
+        if (!snapshot.hasData) return const Text('No data');
+
+        if (snapshot.data!.docs.isEmpty) {
+          return const Center(
+            child: Text(
+              'No data',
+              style: TextStyle(
+                  fontSize: 14, color: LoanTrackColors.PrimaryTwoVeryLight),
+            ),
           );
+        }
 
         return ListView.builder(
             itemCount: (numberOfItems != null &&
@@ -225,11 +239,19 @@ Container RepaymentBulletedList(
           .where('userId', isEqualTo: userId)
           .snapshots(),
       builder: (context, snapshot) {
-        if (!snapshot.hasData)
-          return SpinKitThreeBounce(
-            color: LoanTrackColors2.PrimaryOneLight,
-            size: 50,
+        if (!snapshot.hasData) {
+          return const Center(child: Text('No data'));
+        }
+
+        if (snapshot.data!.docs.isEmpty) {
+          return const Center(
+            child: Text(
+              'No data',
+              style: TextStyle(
+                  fontSize: 14, color: LoanTrackColors.PrimaryTwoVeryLight),
+            ),
           );
+        }
 
         return ListView.builder(
             itemCount: (numberOfItems != null &&
@@ -295,6 +317,286 @@ Container RepaymentBulletedList(
                     ));
               }
               return const SizedBox(height: 0);
+            });
+      },
+    ),
+  );
+}
+
+Container BlogList({required double height}) {
+  ScrollController controller = ScrollController();
+  DatabaseService db = DatabaseService();
+  return Container(
+    height: height,
+    child: StreamBuilder<QuerySnapshot>(
+      stream: db.blog.snapshots(),
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) {
+          return const Center(child: Text('No data'));
+        }
+
+        if (snapshot.data!.docs.isEmpty) {
+          return const Center(
+            child: Text(
+              'No data',
+              style: TextStyle(
+                  fontSize: 14, color: LoanTrackColors.PrimaryTwoVeryLight),
+            ),
+          );
+        }
+        return ListView.builder(
+            itemCount: (snapshot.hasData) ? snapshot.data!.docs.length : 0,
+            controller: controller,
+            itemBuilder: (context, index) {
+              DocumentSnapshot blogDocument = snapshot.data!.docs[index];
+              return GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => BlogDetail(
+                              blog: blogDocument,
+                            )),
+                  );
+                },
+                child: Container(
+                  height: MediaQuery.of(context).size.height / 5,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  margin: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+                  //decoration: BoxDecoration(color: Colors.white, boxShadow: []),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Container(
+                        height: double
+                            .infinity, //MediaQuery.of(context).size.height / 8,
+                        width: MediaQuery.of(context).size.height / 5.8,
+                        decoration: BoxDecoration(
+                            borderRadius: const BorderRadius.only(
+                                topLeft: Radius.circular(10),
+                                bottomLeft: Radius.circular(10)),
+                            image: DecorationImage(
+                              image: NetworkImage(
+                                  blogDocument.get('featuredImage')),
+                              fit: BoxFit.cover,
+                            )),
+                      ),
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 15, vertical: 10),
+                        width: MediaQuery.of(context).size.width / 1.87,
+                        height: double
+                            .infinity, //MediaQuery.of(context).size.height / 8,
+                        decoration: BoxDecoration(
+                          color:
+                              LoanTrackColors.PrimaryTwoVeryLight.withOpacity(
+                                  .1),
+                          borderRadius: const BorderRadius.only(
+                              topRight: Radius.circular(10),
+                              bottomRight: Radius.circular(10)),
+                        ),
+                        child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                blogDocument.get('title').toString(),
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                  color: LoanTrackColors.PrimaryOne.withOpacity(
+                                      .9),
+                                ),
+                              ),
+                              separatorSpace5,
+                              Text(
+                                  blogDocument
+                                          .get('content')
+                                          .toString()
+                                          .substring(0, 60) +
+                                      '...',
+                                  style: const TextStyle(
+                                    fontSize: 12,
+                                    color: LoanTrackColors.PrimaryTwoVeryLight,
+                                  ),
+                                  softWrap: true),
+                              separatorSpace5,
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    blogDocument
+                                        .get('category')
+                                        .toString()
+                                        .toUpperCase(),
+                                    style: const TextStyle(
+                                      fontSize: 12,
+                                      color:
+                                          LoanTrackColors.PrimaryTwoVeryLight,
+                                    ),
+                                  ),
+                                  Text(
+                                    blogDocument
+                                        .get('whenPublished')
+                                        .toString(),
+                                    style: const TextStyle(
+                                        fontSize: 12,
+                                        color: LoanTrackColors
+                                            .PrimaryTwoVeryLight),
+                                  ),
+                                ],
+                              ),
+                            ]),
+                      )
+                    ],
+                  ),
+                ),
+              );
+            });
+      },
+    ),
+  );
+}
+
+Container NewsList({required double height}) {
+  ScrollController controller = ScrollController();
+  DatabaseService db = DatabaseService();
+  return Container(
+    height: height,
+    child: StreamBuilder<QuerySnapshot>(
+      stream: db.news.snapshots(),
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) {
+          return const Center(child: Text('No data'));
+        }
+
+        if (snapshot.data!.docs.isEmpty) {
+          return const Center(
+            child: Text(
+              'No data',
+              style: TextStyle(
+                  fontSize: 14, color: LoanTrackColors.PrimaryTwoVeryLight),
+            ),
+          );
+        }
+        return ListView.builder(
+            itemCount: (snapshot.hasData) ? snapshot.data!.docs.length : 0,
+            controller: controller,
+            itemBuilder: (context, index) {
+              DocumentSnapshot newsDocument = snapshot.data!.docs[index];
+              return GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => NewsDetail(
+                              news: newsDocument,
+                            )),
+                  );
+                },
+                child: Container(
+                  height: MediaQuery.of(context).size.height / 5,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  margin:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                  //decoration: BoxDecoration(color: Colors.white, boxShadow: []),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Container(
+                        height: double
+                            .infinity, //MediaQuery.of(context).size.height / 8,
+                        width: MediaQuery.of(context).size.height / 5.8,
+                        decoration: BoxDecoration(
+                            borderRadius: const BorderRadius.only(
+                                topLeft: Radius.circular(10),
+                                bottomLeft: Radius.circular(10)),
+                            image: DecorationImage(
+                              image: NetworkImage(
+                                  newsDocument.get('featuredImage')),
+                              fit: BoxFit.cover,
+                            )),
+                      ),
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 15, vertical: 10),
+                        width: MediaQuery.of(context).size.width / 1.87,
+                        height: double
+                            .infinity, //MediaQuery.of(context).size.height / 8,
+                        decoration: BoxDecoration(
+                          color:
+                              LoanTrackColors.PrimaryTwoVeryLight.withOpacity(
+                                  .1),
+                          borderRadius: const BorderRadius.only(
+                              topRight: Radius.circular(10),
+                              bottomRight: Radius.circular(10)),
+                        ),
+                        child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                newsDocument.get('title').toString(),
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                  color:
+                                      LoanTrackColors2.PrimaryOne.withOpacity(
+                                          .9),
+                                ),
+                              ),
+                              separatorSpace5,
+                              Text(
+                                  newsDocument
+                                          .get('excerpt')
+                                          .toString()
+                                          .substring(0, 60) +
+                                      '...',
+                                  style: const TextStyle(
+                                    fontSize: 12,
+                                    color: LoanTrackColors.PrimaryTwoVeryLight,
+                                  ),
+                                  softWrap: true),
+                              separatorSpace5,
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    newsDocument
+                                        .get('source')
+                                        .toString()
+                                        .toUpperCase(),
+                                    style: const TextStyle(
+                                      fontSize: 12,
+                                      color:
+                                          LoanTrackColors.PrimaryTwoVeryLight,
+                                    ),
+                                  ),
+                                  Text(
+                                    newsDocument
+                                        .get('whenPublished')
+                                        .toString(),
+                                    style: const TextStyle(
+                                        fontSize: 12,
+                                        color: LoanTrackColors
+                                            .PrimaryTwoVeryLight),
+                                  ),
+                                ],
+                              ),
+                            ]),
+                      )
+                    ],
+                  ),
+                ),
+              );
             });
       },
     ),

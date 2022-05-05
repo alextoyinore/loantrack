@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:loantrack/apps/borrowing_pattern_app.dart';
 import 'package:loantrack/apps/credit_score_app.dart';
 import 'package:loantrack/apps/loan_advisor_app.dart';
-import 'package:loantrack/apps/loan_record_app.dart';
 import 'package:loantrack/apps/loan_list_app.dart';
+import 'package:loantrack/apps/loan_record_app.dart';
 import 'package:loantrack/apps/mail_and_messages_app.dart';
-import 'package:loantrack/apps/widgets/news.dart';
 import 'package:loantrack/apps/notifications_app.dart';
 import 'package:loantrack/apps/repayment_list_app.dart';
 
 import '../apps/loan_health_app.dart';
+import '../apps/news_app.dart';
 import 'apps.dart';
 
 class LocalData {
@@ -58,7 +58,7 @@ class LocalData {
     Apps(
         iconData: Icons.newspaper,
         name: 'News',
-        destinationWidget: const News()),
+        destinationWidget: const NewsApp()),
     Apps(
         iconData: Icons.numbers,
         name: 'Credit Score',

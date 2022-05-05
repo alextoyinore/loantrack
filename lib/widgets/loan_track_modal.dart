@@ -17,7 +17,7 @@ class LoanTrackModal {
         builder: (context) {
           return Container(
             width: screenWidth,
-            height: screenHeight / 2.5,
+            //height: screenHeight / 2.5,
             decoration: BoxDecoration(
                 color: !isError ? Colors.white : Colors.redAccent,
                 borderRadius: const BorderRadius.only(
@@ -46,7 +46,7 @@ class LoanTrackModal {
                           )),
                 ),
                 separatorSpace5,
-                Padding(
+                Container(
                   padding:
                       const EdgeInsets.symmetric(horizontal: 20.0, vertical: 5),
                   child: (e == null)

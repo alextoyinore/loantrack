@@ -16,5 +16,6 @@ SizedBox separatorSpace100 = const SizedBox(height: 100);
 SizedBox separatorSpace150 = const SizedBox(height: 150);
 SizedBox separatorSpace200 = const SizedBox(height: 200);
 
+SizedBox horizontalSeparatorSpace5 = const SizedBox(width: 5);
 SizedBox horizontalSeparatorSpace10 = const SizedBox(width: 10);
 SizedBox horizontalSeparatorSpace20 = const SizedBox(width: 20);

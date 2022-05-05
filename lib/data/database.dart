@@ -10,6 +10,12 @@ class DatabaseService with ChangeNotifier {
   final CollectionReference repayments =
       FirebaseFirestore.instance.collection('repayments');
 
+  final CollectionReference blog =
+      FirebaseFirestore.instance.collection('blog');
+
+  final CollectionReference news =
+      FirebaseFirestore.instance.collection('news');
+
   final userId = FirebaseAuth.instance.currentUser!.uid;
 
   DatabaseService();
