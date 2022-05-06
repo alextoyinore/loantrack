@@ -25,7 +25,12 @@ Container LoanList(
             .snapshots(),
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
-            return const Center(child: Text('No data'));
+            return const Center(
+                child: Text(
+              'No data',
+              style: TextStyle(
+                  fontSize: 14, color: LoanTrackColors.PrimaryTwoVeryLight),
+            ));
           }
           if (snapshot.data!.docs.isEmpty) {
             return const Center(
@@ -153,7 +158,14 @@ Container LoanBulletedList(
           .where('userId', isEqualTo: userId)
           .snapshots(),
       builder: (context, snapshot) {
-        if (!snapshot.hasData) return const Text('No data');
+        if (!snapshot.hasData)
+          return Center(
+            child: const Text(
+              'No data',
+              style: TextStyle(
+                  fontSize: 14, color: LoanTrackColors.PrimaryTwoVeryLight),
+            ),
+          );
 
         if (snapshot.data!.docs.isEmpty) {
           return const Center(
@@ -240,7 +252,12 @@ Container RepaymentBulletedList(
           .snapshots(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
-          return const Center(child: Text('No data'));
+          return const Center(
+              child: Text(
+            'No data',
+            style: TextStyle(
+                fontSize: 14, color: LoanTrackColors.PrimaryTwoVeryLight),
+          ));
         }
 
         if (snapshot.data!.docs.isEmpty) {
@@ -332,7 +349,12 @@ Container BlogList({required double height}) {
       stream: db.blog.snapshots(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
-          return const Center(child: Text('No data'));
+          return const Center(
+              child: Text(
+            'No data',
+            style: TextStyle(
+                fontSize: 14, color: LoanTrackColors.PrimaryTwoVeryLight),
+          ));
         }
 
         if (snapshot.data!.docs.isEmpty) {
@@ -471,7 +493,12 @@ Container NewsList({required double height}) {
       stream: db.news.snapshots(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
-          return const Center(child: Text('No data'));
+          return const Center(
+              child: Text(
+            'No data',
+            style: TextStyle(
+                fontSize: 14, color: LoanTrackColors.PrimaryTwoVeryLight),
+          ));
         }
 
         if (snapshot.data!.docs.isEmpty) {

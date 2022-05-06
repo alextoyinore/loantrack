@@ -77,11 +77,11 @@ class LoanTrackButton {
       decoration: BoxDecoration(
           borderRadius: borderRadius,
           //color: Colors.white,
-          border: Border.all(color: LoanTrackColors2.PrimaryOne, width: .5)),
+          border: Border.all(color: LoanTrackColors.PrimaryTwo, width: .5)),
       child: Text(
         label,
         style: const TextStyle(
-            color: LoanTrackColors2.PrimaryOne,
+            color: LoanTrackColors.PrimaryTwo,
             fontSize: 14,
             fontWeight: FontWeight.w300),
         textAlign: TextAlign.center,

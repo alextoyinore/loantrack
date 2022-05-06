@@ -7,7 +7,6 @@ import 'package:loantrack/apps/login_app.dart';
 import 'package:loantrack/apps/providers/login_states.dart';
 import 'package:loantrack/apps/repayment_list_app.dart';
 import 'package:loantrack/apps/widgets/loan_detail.dart';
-import 'package:loantrack/apps/widgets/news.dart';
 import 'package:provider/provider.dart';
 
 import 'apps/loan_record_app.dart';
@@ -61,7 +60,7 @@ class _MainState extends State<Main> {
             isHome: false),
         '/loanDetail': (context) => LoanDetail(),
         '/repaymentHistory': (context) => const RepaymentHistory(),
-        '/news': (context) => const News(),
+        /*'/news': (context) => const News(),*/
       },
     );
   }

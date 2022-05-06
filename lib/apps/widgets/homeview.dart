@@ -330,10 +330,11 @@ class _HomeViewState extends State<HomeView> {
                     },
                     child: LoanTrackProductLinkBox(
                       icon: const Icon(Icons.phone,
-                          size: 25, color: LoanTrackColors2.PrimaryOne),
+                          size: 25, color: LoanTrackColors2.PrimaryOneLight),
                       label: const Text('ADVISOR',
                           style: TextStyle(
-                              color: LoanTrackColors2.PrimaryOne, fontSize: 11),
+                              color: LoanTrackColors2.PrimaryOneLight,
+                              fontSize: 11),
                           softWrap: true),
                       backgroundColor: LoanTrackColors2.PrimaryOneVeryLight,
                     ),

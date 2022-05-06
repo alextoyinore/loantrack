@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:loantrack/apps/loan_list_app.dart';
-import 'package:loantrack/apps/news_app.dart';
 import 'package:loantrack/apps/settings_app.dart';
 import 'package:loantrack/apps/widgets/homeview.dart';
+import 'package:loantrack/apps/widgets/newsview.dart';
 import 'package:loantrack/apps/widgets/user_profile.dart';
 import 'package:loantrack/helpers/colors.dart';
 
@@ -30,7 +30,7 @@ class _LoanTrackHomeState extends State<LoanTrackHome> {
       const HomeView(),
       LoanTrackingPage(isHome: true, loanListHeight: screenHeight / 1.51),
       Center(
-        child: NewsApp(),
+        child: NewsView(),
       ),
       const Center(
         child: UserProfile(),

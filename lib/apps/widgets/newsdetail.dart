@@ -82,7 +82,7 @@ class _NewsDetailState extends State<NewsDetail> {
                                       builder: (context) =>
                                           NewsFullViewer(news: widget.news)));
                             },
-                            child: LoanTrackButton.primary(
+                            child: LoanTrackButton.secondary(
                                 context: context, label: 'Continue Reading'),
                           ),
                           separatorSpace20,

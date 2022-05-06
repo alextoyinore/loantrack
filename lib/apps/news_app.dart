@@ -14,18 +14,21 @@ class NewsApp extends StatelessWidget {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          separatorSpace30,
+          separatorSpace50,
           Container(
             margin: const EdgeInsets.symmetric(horizontal: 24),
             child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
               children: const [
+                Icon(
+                  Icons.newspaper,
+                  color: LoanTrackColors2.PrimaryOne,
+                  size: 20,
+                ),
+                SizedBox(width: 10),
                 Text(
                   'NEWS',
                   style: TextStyle(
-                    fontSize: 20,
-                    color: LoanTrackColors2.PrimaryOne,
-                  ),
+                      color: LoanTrackColors2.PrimaryOne, fontSize: 20),
                 )
               ],
             ),
@@ -40,9 +43,9 @@ class NewsApp extends StatelessWidget {
               ),
             ),
           ),
-          separatorSpace10,
+          //separatorSpace10,
           SingleChildScrollView(
-            child: NewsList(height: MediaQuery.of(context).size.height * .77),
+            child: NewsList(height: MediaQuery.of(context).size.height * .85),
           ),
         ],
       ),

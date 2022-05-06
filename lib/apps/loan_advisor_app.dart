@@ -23,14 +23,17 @@ class _LoanAdvisorState extends State<LoanAdvisor> {
             Container(
               margin: const EdgeInsets.symmetric(horizontal: 24),
               child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
                 children: const [
+                  Icon(
+                    Icons.call,
+                    color: LoanTrackColors.PrimaryOne,
+                    size: 20,
+                  ),
+                  SizedBox(width: 10),
                   Text(
                     'LOAN ADVISOR',
                     style: TextStyle(
-                      fontSize: 20,
-                      color: LoanTrackColors.PrimaryOne,
-                    ),
+                        color: LoanTrackColors.PrimaryOne, fontSize: 20),
                   )
                 ],
               ),
@@ -39,14 +42,14 @@ class _LoanAdvisorState extends State<LoanAdvisor> {
             const Padding(
               padding: EdgeInsets.only(left: 24.0),
               child: Text(
-                'Get tips, advice, and guidance content here',
+                'Get tips, advice, and loan guidance content here',
                 style: TextStyle(
                   color: LoanTrackColors.PrimaryTwoVeryLight,
                 ),
               ),
             ),
-            separatorSpace10,
-            BlogList(height: MediaQuery.of(context).size.height * .77),
+            //separatorSpace10,
+            BlogList(height: MediaQuery.of(context).size.height * .86),
           ],
         ),
       ),
