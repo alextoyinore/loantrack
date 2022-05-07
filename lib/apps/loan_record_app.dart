@@ -13,6 +13,7 @@ import 'package:loantrack/widgets/dialogs.dart';
 import 'package:loantrack/widgets/loan_track_modal.dart';
 import 'package:loantrack/widgets/loan_track_textfield.dart';
 
+import '../helpers/common_widgets.dart';
 import '../widgets/loan_progress_bar.dart';
 
 class LoanRecord extends StatefulWidget {
@@ -382,7 +383,9 @@ class _LoanRecordState extends State<LoanRecord> {
                                 style: TextStyle(
                                     color: LoanTrackColors.PrimaryOne),
                               ),
-                              //SizedBox(height: 20),
+                              separatorSpace5,
+                              separatorLine,
+                              separatorSpace5,
 
                               RepaymentBulletedList(
                                   height: screenHeight * .2,

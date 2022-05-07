@@ -6,7 +6,7 @@ import 'package:loantrack/data/database.dart';
 import 'package:loantrack/helpers/common_widgets.dart';
 
 import '../apps/widgets/blogdetail.dart';
-import '../apps/widgets/loan_detail.dart';
+import '../apps/widgets/loandetail.dart';
 import '../widgets/bulleted_list.dart';
 import 'colors.dart';
 
@@ -219,7 +219,7 @@ Container LoanBulletedList(
                           ),
                           (due > 0)
                               ? Text('${due} DAYS OVERDUE',
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                       color: LoanTrackColors2.PrimaryOne))
                               : (due == 0)
                                   ? const Text('DUE TODAY',
@@ -315,7 +315,6 @@ Container RepaymentBulletedList(
                                         .collection('repayments')
                                         .doc(document.id)
                                         .delete();
-                                    Navigator.pop(context);
                                   },
                                   child: const Icon(
                                     Icons.delete_outline,
@@ -367,10 +366,16 @@ Container BlogList({required double height}) {
           );
         }
         return ListView.builder(
-            itemCount: (snapshot.hasData) ? snapshot.data!.docs.length : 0,
-            controller: controller,
-            itemBuilder: (context, index) {
-              DocumentSnapshot blogDocument = snapshot.data!.docs[index];
+          itemCount: (snapshot.hasData) ? snapshot.data!.docs.length : 0,
+          controller: controller,
+          itemBuilder: (context, index) {
+            DocumentSnapshot blogDocument = snapshot.data!.docs[index];
+
+            if (blogDocument.get('featuredImage') != null &&
+                blogDocument.get('title') != null &&
+                blogDocument.get('content') != null &&
+                blogDocument.get('category') != null &&
+                blogDocument.get('whenPublished') != null) {
               return GestureDetector(
                 onTap: () {
                   Navigator.push(
@@ -386,7 +391,8 @@ Container BlogList({required double height}) {
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
                   ),
-                  margin: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+                  margin:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
                   //decoration: BoxDecoration(color: Colors.white, boxShadow: []),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -409,7 +415,7 @@ Container BlogList({required double height}) {
                       Container(
                         padding: const EdgeInsets.symmetric(
                             horizontal: 15, vertical: 10),
-                        width: MediaQuery.of(context).size.width / 1.87,
+                        width: MediaQuery.of(context).size.width / 2,
                         height: double
                             .infinity, //MediaQuery.of(context).size.height / 8,
                         decoration: BoxDecoration(
@@ -438,6 +444,8 @@ Container BlogList({required double height}) {
                                   blogDocument
                                           .get('content')
                                           .toString()
+                                          .replaceAll('<p>', '')
+                                          .replaceAll('</p>', '')
                                           .substring(0, 60) +
                                       '...',
                                   style: const TextStyle(
@@ -478,7 +486,11 @@ Container BlogList({required double height}) {
                   ),
                 ),
               );
-            });
+            } else {
+              return const SizedBox(height: 0);
+            }
+          },
+        );
       },
     ),
   );
@@ -511,10 +523,16 @@ Container NewsList({required double height}) {
           );
         }
         return ListView.builder(
-            itemCount: (snapshot.hasData) ? snapshot.data!.docs.length : 0,
-            controller: controller,
-            itemBuilder: (context, index) {
-              DocumentSnapshot newsDocument = snapshot.data!.docs[index];
+          itemCount: (snapshot.hasData) ? snapshot.data!.docs.length : 0,
+          controller: controller,
+          itemBuilder: (context, index) {
+            DocumentSnapshot newsDocument = snapshot.data!.docs[index];
+
+            if (newsDocument.get('featuredImage') != null &&
+                newsDocument.get('title') != null &&
+                newsDocument.get('excerpt') != null &&
+                newsDocument.get('source') != null &&
+                newsDocument.get('whenPublished') != null) {
               return GestureDetector(
                 onTap: () {
                   Navigator.push(
@@ -554,7 +572,7 @@ Container NewsList({required double height}) {
                       Container(
                         padding: const EdgeInsets.symmetric(
                             horizontal: 15, vertical: 10),
-                        width: MediaQuery.of(context).size.width / 1.87,
+                        width: MediaQuery.of(context).size.width / 2,
                         height: double
                             .infinity, //MediaQuery.of(context).size.height / 8,
                         decoration: BoxDecoration(
@@ -624,7 +642,10 @@ Container NewsList({required double height}) {
                   ),
                 ),
               );
-            });
+            }
+            return const SizedBox(height: 0);
+          },
+        );
       },
     ),
   );

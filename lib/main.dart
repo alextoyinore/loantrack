@@ -6,7 +6,7 @@ import 'package:loantrack/apps/loan_list_app.dart';
 import 'package:loantrack/apps/login_app.dart';
 import 'package:loantrack/apps/providers/login_states.dart';
 import 'package:loantrack/apps/repayment_list_app.dart';
-import 'package:loantrack/apps/widgets/loan_detail.dart';
+import 'package:loantrack/apps/widgets/loandetail.dart';
 import 'package:provider/provider.dart';
 
 import 'apps/loan_record_app.dart';

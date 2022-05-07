@@ -31,7 +31,7 @@ class LoanTrackModal {
                   padding: const EdgeInsets.symmetric(vertical: 10),
                   alignment: Alignment.center,
                   width: screenWidth,
-                  height: screenHeight / 20,
+                  height: screenHeight / 16,
                   decoration: BoxDecoration(
                       color: !isError
                           ? Colors.white //LoanTrackColors.PrimaryTwo

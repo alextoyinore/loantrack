@@ -46,7 +46,7 @@ class _NewsViewState extends State<NewsView> {
             ),
           ),
         ),
-        NewsList(height: MediaQuery.of(context).size.height * .79),
+        NewsList(height: MediaQuery.of(context).size.height * .78),
       ],
     );
   }
