@@ -283,7 +283,7 @@ Container RepaymentBulletedList(
               if (document.get('userId') ==
                   FirebaseAuth.instance.currentUser!.uid) {
                 return Container(
-                    padding: const EdgeInsets.symmetric(vertical: 2),
+                    padding: const EdgeInsets.symmetric(vertical: 3),
                     child: GestureDetector(
                       onTap: () {
                         // Navigator.push(context,
@@ -299,14 +299,14 @@ Container RepaymentBulletedList(
                               Container(
                                 child: BulletedList(
                                   text: document
-                                      .get('amountRepaid')
+                                      .get('dateOfRepayment')
                                       .toString()
                                       .toUpperCase(),
                                   style: const TextStyle(
                                       color: LoanTrackColors.PrimaryOne),
                                 ),
                               ),
-                              Text(document.get('dateOfRepayment').toString(),
+                              Text(document.get('amountRepaid').toString(),
                                   style: const TextStyle(
                                       color: LoanTrackColors.PrimaryOne)),
                               GestureDetector(
@@ -415,7 +415,7 @@ Container BlogList({required double height}) {
                       Container(
                         padding: const EdgeInsets.symmetric(
                             horizontal: 15, vertical: 10),
-                        width: MediaQuery.of(context).size.width / 2,
+                        width: MediaQuery.of(context).size.width / 1.95,
                         height: double
                             .infinity, //MediaQuery.of(context).size.height / 8,
                         decoration: BoxDecoration(
@@ -572,7 +572,7 @@ Container NewsList({required double height}) {
                       Container(
                         padding: const EdgeInsets.symmetric(
                             horizontal: 15, vertical: 10),
-                        width: MediaQuery.of(context).size.width / 2,
+                        width: MediaQuery.of(context).size.width / 1.95,
                         height: double
                             .infinity, //MediaQuery.of(context).size.height / 8,
                         decoration: BoxDecoration(

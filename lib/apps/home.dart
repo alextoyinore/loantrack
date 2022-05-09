@@ -29,7 +29,7 @@ class _LoanTrackHomeState extends State<LoanTrackHome> {
     List<Widget> _widgetOptions = <Widget>[
       const HomeView(),
       LoanTrackingPage(isHome: true, loanListHeight: screenHeight / 1.51),
-      Center(
+      const Center(
         child: NewsView(),
       ),
       const Center(
@@ -50,7 +50,7 @@ class _LoanTrackHomeState extends State<LoanTrackHome> {
       onWillPop: () async {
         DateTime now = DateTime.now();
         if (currentTime == null ||
-            now.difference(currentTime) > Duration(seconds: 2)) {
+            now.difference(currentTime) > const Duration(seconds: 2)) {
           //add duration of press gap
           currentTime = now;
           ScaffoldMessenger.of(context).showSnackBar(const SnackBar(

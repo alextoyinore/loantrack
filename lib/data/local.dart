@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:loantrack/apps/borrowing_pattern_app.dart';
 import 'package:loantrack/apps/credit_score_app.dart';
 import 'package:loantrack/apps/loan_advisor_app.dart';
+import 'package:loantrack/apps/loan_compare_app.dart';
 import 'package:loantrack/apps/loan_list_app.dart';
 import 'package:loantrack/apps/loan_record_app.dart';
 import 'package:loantrack/apps/mail_and_messages_app.dart';
@@ -44,9 +44,9 @@ class LocalData {
         name: 'Repay Loan',
         destinationWidget: LoanTrackingPage(loanListHeight: -1, isHome: false)),
     Apps(
-        iconData: Icons.pattern,
-        name: 'Borrowing Pattern',
-        destinationWidget: const BorrowingPattern()),
+        iconData: Icons.info_outline,
+        name: 'Compare Loan',
+        destinationWidget: const CompareLoanOffer()),
     Apps(
         iconData: Icons.notifications_none_sharp,
         name: 'Notifications',

@@ -44,7 +44,7 @@ class _LoanTrackDatePickerState extends State<LoanTrackDatePicker> {
             label: widget.initialText,
             enable: false,
             color: (widget.isPayment)
-                ? LoanTrackColors2.PrimaryOne
+                ? LoanTrackColors.PrimaryOne
                 : LoanTrackColors.PrimaryOne));
   }
 

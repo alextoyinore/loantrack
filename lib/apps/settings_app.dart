@@ -76,7 +76,7 @@ class _AppSettingsState extends State<AppSettings> {
                   AuthService auth = AuthService();
                   auth.signOut();
                   context.read<LoginState>().emailVerification();
-                  Navigator.pushNamed(context, '/');
+                  Navigator.pushNamed(context, '/login');
                 },
               ),
             ],

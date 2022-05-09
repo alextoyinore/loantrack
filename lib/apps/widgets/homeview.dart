@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:loantrack/apps/borrowing_pattern_app.dart';
 import 'package:loantrack/apps/credit_score_app.dart';
 import 'package:loantrack/apps/loan_advisor_app.dart';
+import 'package:loantrack/apps/loan_compare_app.dart';
 import 'package:loantrack/apps/loan_health_app.dart';
 import 'package:loantrack/apps/loan_list_app.dart';
 import 'package:loantrack/apps/news_app.dart';
@@ -33,11 +33,12 @@ class _HomeViewState extends State<HomeView> {
 
     ScrollController sliderScrollController = ScrollController();
 
-    return Stack(children: [
-      SingleChildScrollView(
+    return SingleChildScrollView(
+      controller: _controller,
+      child: Expanded(
         child: Container(
           padding: const EdgeInsets.only(left: 24, top: 16, right: 24),
-          height: screenHeight * .92,
+          //height: MediaQuery.of(context).size.height,
           child: Column(children: [
             //SizedBox(height: 20),
             Row(
@@ -89,7 +90,7 @@ class _HomeViewState extends State<HomeView> {
             Container(
               width: screenWidth,
               //height: screenHeight / 2.9,
-              padding: const EdgeInsets.only(top: 16, bottom: 16),
+              padding: const EdgeInsets.only(top: 8, bottom: 8),
               decoration: BoxDecoration(
                 border: Border.all(
                     color: LoanTrackColors.PrimaryOne,
@@ -204,9 +205,9 @@ class _HomeViewState extends State<HomeView> {
                     style: TextStyle(color: LoanTrackColors.PrimaryTwoLight),
                   ),
                   /*Text(
-                    'SEE ALL',
-                    style: TextStyle(color: LoanTrackColors.PrimaryOne),
-                  )*/
+                      'SEE ALL',
+                      style: TextStyle(color: LoanTrackColors.PrimaryOne),
+                    )*/
                 ],
               ),
             ),
@@ -241,6 +242,11 @@ class _HomeViewState extends State<HomeView> {
                 context: context,
                 label: 'Add Repayment Record',
               )),
+            ),
+            separatorSpace10,
+            GestureDetector(
+              child: LoanTrackButton.primaryOutline(
+                  context: context, label: 'Compare Loan Offer'),
             ),
 
             //END ACTION BUTTONS
@@ -287,7 +293,7 @@ class _HomeViewState extends State<HomeView> {
 
             // BEGIN PRODUCT SLIDER
 
-            separatorSpace10,
+            //separatorSpace10,
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 16.0),
               child: Row(
@@ -382,7 +388,7 @@ class _HomeViewState extends State<HomeView> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => BorrowingPattern()));
+                              builder: (context) => const CompareLoanOffer()));
                     },
                     child: LoanTrackProductLinkBox(
                       icon: const Icon(Icons.pattern,
@@ -417,13 +423,12 @@ class _HomeViewState extends State<HomeView> {
                 ],
               ),
             ),
-
             //END PRODUCT SLIDER
-            //SizedBox(height: 50),
+            separatorSpace20,
           ]),
         ),
       ),
-    ]);
+    );
   }
 }
 

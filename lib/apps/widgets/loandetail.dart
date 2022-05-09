@@ -258,7 +258,7 @@ class _LoanDetailState extends State<LoanDetail> {
                             },
                             child: Container(
                                 //width: screenWidth,
-                                child: LoanTrackButton.primary(
+                                child: LoanTrackButton.primaryOutline(
                                     context: context,
                                     label: 'Add a repayment record')),
                           )
@@ -276,7 +276,7 @@ class _LoanDetailState extends State<LoanDetail> {
                       },
                       child: Container(
                           //width: screenWidth,
-                          child: LoanTrackButton.secondary(
+                          child: LoanTrackButton.secondaryOutline(
                               context: context, label: 'Edit this record')),
                     ),
                     separatorSpace20,

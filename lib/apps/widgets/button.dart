@@ -54,9 +54,9 @@ class LoanTrackButton {
       width: MediaQuery.of(context).size.width,
       padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
       decoration: BoxDecoration(
-          border: Border.all(color: LoanTrackColors2.PrimaryOne, width: .5),
+          border: Border.all(color: LoanTrackColors.PrimaryTwo, width: .5),
           borderRadius: borderRadius,
-          color: LoanTrackColors2.PrimaryOne),
+          color: LoanTrackColors.PrimaryTwo),
       child: Text(
         label,
         style: const TextStyle(
@@ -77,11 +77,12 @@ class LoanTrackButton {
       decoration: BoxDecoration(
           borderRadius: borderRadius,
           //color: Colors.white,
-          border: Border.all(color: LoanTrackColors.PrimaryTwo, width: .5)),
+          border: Border.all(
+              color: LoanTrackColors.PrimaryTwoVeryLight, width: .5)),
       child: Text(
         label,
         style: const TextStyle(
-            color: LoanTrackColors.PrimaryTwo,
+            color: LoanTrackColors.PrimaryTwoLight,
             fontSize: 14,
             fontWeight: FontWeight.w300),
         textAlign: TextAlign.center,

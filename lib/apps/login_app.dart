@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
@@ -5,21 +7,23 @@ import 'package:flutter/material.dart';
 import 'package:loantrack/apps/providers/login_states.dart';
 import 'package:loantrack/apps/widgets/button.dart';
 import 'package:loantrack/data/authentications.dart';
-import 'package:loantrack/data/local.dart';
 import 'package:loantrack/helpers/colors.dart';
+import 'package:loantrack/helpers/common_widgets.dart';
 import 'package:loantrack/widgets/dialogs.dart';
-import 'package:loantrack/widgets/loan_track_modal.dart';
 import 'package:loantrack/widgets/loan_track_textfield.dart';
 import 'package:provider/provider.dart';
 
-class LoanTackLogin extends StatefulWidget {
-  const LoanTackLogin({Key? key}) : super(key: key);
+import '../data/local.dart';
+import '../widgets/loan_track_modal.dart';
+
+class LoanTrackLogin extends StatefulWidget {
+  const LoanTrackLogin({Key? key}) : super(key: key);
 
   @override
-  State<LoanTackLogin> createState() => _LoanTackLoginState();
+  State<LoanTrackLogin> createState() => _LoanTrackLoginState();
 }
 
-class _LoanTackLoginState extends State<LoanTackLogin> with ChangeNotifier {
+class _LoanTrackLoginState extends State<LoanTrackLogin> with ChangeNotifier {
   //Controllers
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
@@ -27,6 +31,27 @@ class _LoanTackLoginState extends State<LoanTackLogin> with ChangeNotifier {
   //FirebaseAuthException e = FirebaseAuthException(code: 'network-not-found');
 
   AuthService authService = AuthService();
+
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    startTime();
+  }
+
+  startTime() async {
+    var duration = const Duration(seconds: 4);
+    return Timer(duration, runSplashScreen);
+  }
+
+  Container runSplashScreen() {
+    return Container(
+      height: MediaQuery.of(context).size.height,
+      width: MediaQuery.of(context).size.width,
+      child: Center(
+        child: Image.asset('assets/images/loantrack.png'),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +64,7 @@ class _LoanTackLoginState extends State<LoanTackLogin> with ChangeNotifier {
             now.difference(currentTime) > Duration(seconds: 2)) {
           //add duration of press gap
           currentTime = now;
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
               content: Text(
                   'Press the Back Button again to Exit'))); //scaffold message, you can show Toast message too.
           return Future.value(false);
@@ -74,16 +99,16 @@ class _LoanTackLoginState extends State<LoanTackLogin> with ChangeNotifier {
   loginHeader({required BuildContext context, String? message}) {
     return Column(
       children: [
-        SizedBox(height: 80),
+        separatorSpace80,
         Image.asset('assets/images/icon.png', scale: 10),
-        SizedBox(height: 50),
+        separatorSpace50,
         Text(
           (message != null) ? message : '',
-          style: TextStyle(color: LoanTrackColors.PrimaryTwoVeryLight),
+          style: const TextStyle(color: LoanTrackColors.PrimaryTwoVeryLight),
           softWrap: true,
           textAlign: TextAlign.center,
         ),
-        SizedBox(height: 20),
+        separatorSpace20,
       ],
     );
   }
@@ -100,14 +125,14 @@ class _LoanTackLoginState extends State<LoanTackLogin> with ChangeNotifier {
               context: context,
               label: 'Start',
             )),
-        SizedBox(height: 50),
+        separatorSpace50,
         GestureDetector(
             onTap: () {
               LoanTrackModal.modal(context,
                   content: const SingleChildScrollView(
                     child: Text(LocalData.aboutLoanTrack,
                         style: TextStyle(
-                            color: LoanTrackColors.PrimaryTwoLight,
+                            color: LoanTrackColors.PrimaryOne,
                             fontSize: 14,
                             height: 1.6)),
                   ),
@@ -135,9 +160,9 @@ class _LoanTackLoginState extends State<LoanTackLogin> with ChangeNotifier {
           controller: emailController,
           label: 'Email',
           color: LoanTrackColors.PrimaryOne,
-          icon: Icon(Icons.email, color: LoanTrackColors.PrimaryOne),
+          icon: const Icon(Icons.email, color: LoanTrackColors.PrimaryOne),
         ),
-        SizedBox(height: 10),
+        separatorSpace10,
         GestureDetector(
           onTap: () {
             authService.checkEmailExists(
@@ -174,17 +199,17 @@ class _LoanTackLoginState extends State<LoanTackLogin> with ChangeNotifier {
           controller: emailController,
           label: 'Email',
           color: LoanTrackColors.PrimaryOne,
-          icon: Icon(Icons.email, color: LoanTrackColors.PrimaryOne),
+          icon: const Icon(Icons.email, color: LoanTrackColors.PrimaryOne),
         ),
-        const SizedBox(height: 10),
+        separatorSpace10,
         LoanTrackTextField(
           controller: passwordController,
           label: 'Password',
           isHidden: true,
           color: LoanTrackColors.PrimaryOne,
-          icon: Icon(Icons.lock, color: LoanTrackColors.PrimaryOne),
+          icon: const Icon(Icons.lock, color: LoanTrackColors.PrimaryOne),
         ),
-        const SizedBox(height: 10),
+        separatorSpace10,
         GestureDetector(
           onTap: () async {
             authService.signInWithEmailAndPassword(
@@ -201,7 +226,7 @@ class _LoanTackLoginState extends State<LoanTackLogin> with ChangeNotifier {
             label: 'Log In',
           ),
         ),
-        const SizedBox(height: 20),
+        separatorSpace10,
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -225,7 +250,7 @@ class _LoanTackLoginState extends State<LoanTackLogin> with ChangeNotifier {
               },
               child: const Text(
                 'Forgot Password?',
-                style: TextStyle(color: LoanTrackColors.PrimaryTwoLight),
+                style: TextStyle(color: LoanTrackColors.PrimaryOne),
               ),
             ),
             GestureDetector(
@@ -234,7 +259,7 @@ class _LoanTackLoginState extends State<LoanTackLogin> with ChangeNotifier {
               },
               child: const Text(
                 'Cancel',
-                style: TextStyle(color: LoanTrackColors.PrimaryTwoLight),
+                style: TextStyle(color: LoanTrackColors.PrimaryOne),
               ),
             ),
           ],
@@ -255,24 +280,24 @@ class _LoanTackLoginState extends State<LoanTackLogin> with ChangeNotifier {
           controller: emailController,
           label: 'Email',
           color: LoanTrackColors.PrimaryOne,
-          icon: Icon(Icons.email, color: LoanTrackColors.PrimaryOne),
+          icon: const Icon(Icons.email, color: LoanTrackColors.PrimaryOne),
         ),
-        SizedBox(height: 10),
+        separatorSpace10,
         LoanTrackTextField(
           controller: displayNameController,
           label: 'Display Name',
           color: LoanTrackColors.PrimaryOne,
-          icon: Icon(Icons.person, color: LoanTrackColors.PrimaryOne),
+          icon: const Icon(Icons.person, color: LoanTrackColors.PrimaryOne),
         ),
-        SizedBox(height: 10),
+        separatorSpace10,
         LoanTrackTextField(
           controller: passwordController,
           label: 'Password',
           isHidden: true,
           color: LoanTrackColors.PrimaryOne,
-          icon: Icon(Icons.lock, color: LoanTrackColors.PrimaryOne),
+          icon: const Icon(Icons.lock, color: LoanTrackColors.PrimaryOne),
         ),
-        SizedBox(height: 10),
+        separatorSpace10,
         GestureDetector(
           onTap: () {
             authService.registerAccount(
@@ -288,7 +313,7 @@ class _LoanTackLoginState extends State<LoanTackLogin> with ChangeNotifier {
             label: 'Create Account',
           ),
         ),
-        SizedBox(height: 10),
+        separatorSpace10,
         GestureDetector(
           onTap: () {
             context.read<LoginState>().emailVerification();
@@ -307,12 +332,12 @@ class _LoanTackLoginState extends State<LoanTackLogin> with ChangeNotifier {
     return Column(
       children: [
         loginHeader(context: context),
-        SizedBox(height: 20),
+        separatorSpace10,
         const Text(
           'We will send you a verification link. Click \'Request Link\' to get the email now.',
           textAlign: TextAlign.center,
         ),
-        SizedBox(height: 20),
+        separatorSpace10,
         GestureDetector(
             onTap: () async {
               try {
@@ -336,7 +361,7 @@ class _LoanTackLoginState extends State<LoanTackLogin> with ChangeNotifier {
               context: context,
               label: 'Request Link',
             )),
-        SizedBox(height: 20),
+        separatorSpace10,
         GestureDetector(
           onTap: () {
             context.read<LoginState>().passwordCheck();
