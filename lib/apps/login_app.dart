@@ -79,7 +79,7 @@ class _LoanTrackLoginState extends State<LoanTrackLogin> with ChangeNotifier {
             padding: const EdgeInsets.all(32.0),
             child: SingleChildScrollView(
               child: (loginState == States.loggedOut)
-                  ? startLoginFlow(context)
+                  ? emailVerifier(context)
                   : (loginState == States.verifyingEmail)
                       ? emailVerifier(context)
                       : (loginState == States.askingPassword)
