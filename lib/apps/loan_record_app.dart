@@ -5,16 +5,15 @@ import 'package:flutter/material.dart';
 import 'package:loantrack/apps/widgets/button.dart';
 import 'package:loantrack/data/database.dart';
 import 'package:loantrack/helpers/colors.dart';
+import 'package:loantrack/helpers/common_widgets.dart';
 import 'package:loantrack/helpers/functions.dart';
 import 'package:loantrack/helpers/icons.dart';
 import 'package:loantrack/widgets/application_grid_view.dart';
 import 'package:loantrack/widgets/date_picker.dart';
 import 'package:loantrack/widgets/dialogs.dart';
+import 'package:loantrack/widgets/loan_progress_bar.dart';
 import 'package:loantrack/widgets/loan_track_modal.dart';
 import 'package:loantrack/widgets/loan_track_textfield.dart';
-
-import '../helpers/common_widgets.dart';
-import '../widgets/loan_progress_bar.dart';
 
 class LoanRecord extends StatefulWidget {
   LoanRecord({Key? key, this.documentSnapshot, required this.edit})
@@ -657,6 +656,7 @@ class _LoanRecordState extends State<LoanRecord> {
         ),
 
         // Loan purpose
+
         const SizedBox(height: 20),
         LoanTrackTextField(
           controller: loanPurposeController,
@@ -924,7 +924,7 @@ class _LoanRecordState extends State<LoanRecord> {
               });
             }
           },
-          child: SizedBox(
+          child: Container(
             width: MediaQuery.of(context).size.width,
             child: LoanTrackButton.primary(
                 context: context, label: 'Add Loan Record'),

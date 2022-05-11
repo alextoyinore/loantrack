@@ -159,7 +159,7 @@ class _LoanTrackLoginState extends State<LoanTrackLogin> with ChangeNotifier {
           controller: emailController,
           label: 'Email',
           color: LoanTrackColors.PrimaryOne,
-          icon: const Icon(Icons.email, color: LoanTrackColors.PrimaryOne),
+          //icon: const Icon(Icons.email, color: LoanTrackColors.PrimaryOne),
         ),
         separatorSpace10,
         GestureDetector(
@@ -198,7 +198,7 @@ class _LoanTrackLoginState extends State<LoanTrackLogin> with ChangeNotifier {
           controller: emailController,
           label: 'Email',
           color: LoanTrackColors.PrimaryOne,
-          icon: const Icon(Icons.email, color: LoanTrackColors.PrimaryOne),
+          //icon: const Icon(Icons.email, color: LoanTrackColors.PrimaryOne),
         ),
         separatorSpace10,
         LoanTrackTextField(
@@ -206,7 +206,7 @@ class _LoanTrackLoginState extends State<LoanTrackLogin> with ChangeNotifier {
           label: 'Password',
           isHidden: true,
           color: LoanTrackColors.PrimaryOne,
-          icon: const Icon(Icons.lock, color: LoanTrackColors.PrimaryOne),
+          //icon: const Icon(Icons.lock, color: LoanTrackColors.PrimaryOne),
         ),
         separatorSpace10,
         GestureDetector(
@@ -279,14 +279,14 @@ class _LoanTrackLoginState extends State<LoanTrackLogin> with ChangeNotifier {
           controller: emailController,
           label: 'Email',
           color: LoanTrackColors.PrimaryOne,
-          icon: const Icon(Icons.email, color: LoanTrackColors.PrimaryOne),
+          // icon: const Icon(Icons.email, color: LoanTrackColors.PrimaryOne),
         ),
         separatorSpace10,
         LoanTrackTextField(
           controller: displayNameController,
           label: 'Username',
           color: LoanTrackColors.PrimaryOne,
-          icon: const Icon(Icons.person, color: LoanTrackColors.PrimaryOne),
+          // icon: const Icon(Icons.person, color: LoanTrackColors.PrimaryOne),
         ),
         separatorSpace10,
         LoanTrackTextField(
@@ -294,7 +294,7 @@ class _LoanTrackLoginState extends State<LoanTrackLogin> with ChangeNotifier {
           label: 'Password',
           isHidden: true,
           color: LoanTrackColors.PrimaryOne,
-          icon: const Icon(Icons.lock, color: LoanTrackColors.PrimaryOne),
+          //  icon: const Icon(Icons.lock, color: LoanTrackColors.PrimaryOne),
         ),
         separatorSpace10,
         GestureDetector(

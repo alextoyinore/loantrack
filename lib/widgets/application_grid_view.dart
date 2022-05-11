@@ -43,7 +43,7 @@ class _LoanTrackAppsGridViewState extends State<LoanTrackAppsGridView> {
                     padding: const EdgeInsets.all(4.0),
                     child: Icon(
                       LocalData.applicationList[index].iconData,
-                      size: 30,
+                      size: 25,
                       color: LoanTrackColors.PrimaryOneDark,
                     ),
                   ),

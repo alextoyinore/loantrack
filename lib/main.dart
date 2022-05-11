@@ -42,7 +42,7 @@ class _MainState extends State<Main> {
       title: 'Loantrack',
       theme: ThemeData(
         // This is the theme of your application.
-        textTheme: GoogleFonts.interTextTheme(
+        textTheme: GoogleFonts.jostTextTheme(
           Theme.of(context).textTheme,
         ),
         appBarTheme: Theme.of(context).appBarTheme.copyWith(

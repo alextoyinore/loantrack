@@ -152,13 +152,13 @@ class _HomeViewState extends State<HomeView> {
                             return (totalLoans > 0)
                                 ? Text(totalLoans.toString(),
                                     style: const TextStyle(
-                                        fontSize: 36,
+                                        fontSize: 32,
                                         color: LoanTrackColors.PrimaryOne))
                                 : const Text(
                                     '0.0',
                                     style: TextStyle(
                                         color: LoanTrackColors.PrimaryOne,
-                                        fontSize: 36),
+                                        fontSize: 32),
                                   );
                           })
                     ],
@@ -312,7 +312,7 @@ class _HomeViewState extends State<HomeView> {
               ],
             ),
           ),
-          Container(
+          SizedBox(
             height: 80,
             //padding: EdgeInsets.all(5),
             width: MediaQuery.of(context).size.width,
@@ -327,10 +327,10 @@ class _HomeViewState extends State<HomeView> {
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) => LoanAdvisor()));
                   },
-                  child: LoanTrackProductLinkBox(
-                    icon: const Icon(Icons.phone,
+                  child: const LoanTrackProductLinkBox(
+                    icon: Icon(Icons.phone,
                         size: 25, color: LoanTrackColors2.PrimaryOneLight),
-                    label: const Text('ADVISOR',
+                    label: Text('ADVISOR',
                         style: TextStyle(
                             color: LoanTrackColors2.PrimaryOneLight,
                             fontSize: 11),
@@ -344,10 +344,10 @@ class _HomeViewState extends State<HomeView> {
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) => LoanHealth()));
                   },
-                  child: LoanTrackProductLinkBox(
-                    icon: const Icon(Icons.health_and_safety,
+                  child: const LoanTrackProductLinkBox(
+                    icon: Icon(Icons.health_and_safety,
                         size: 25, color: LoanTrackColors.PrimaryOneLight),
-                    label: const Text('LOAN HEALTH',
+                    label: Text('LOAN HEALTH',
                         style: TextStyle(
                             color: LoanTrackColors.PrimaryOneLight,
                             fontSize: 11),
@@ -362,10 +362,10 @@ class _HomeViewState extends State<HomeView> {
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) => NewsApp()));
                   },
-                  child: LoanTrackProductLinkBox(
-                    icon: const Icon(Icons.newspaper,
+                  child: const LoanTrackProductLinkBox(
+                    icon: Icon(Icons.newspaper,
                         size: 25, color: LoanTrackColors2.TetiaryOne),
-                    label: const Text('NEWS',
+                    label: Text('NEWS',
                         style: TextStyle(
                             color: LoanTrackColors2.TetiaryOne, fontSize: 11),
                         textAlign: TextAlign.center,
@@ -381,10 +381,10 @@ class _HomeViewState extends State<HomeView> {
                         MaterialPageRoute(
                             builder: (context) => const CompareLoanOffer()));
                   },
-                  child: LoanTrackProductLinkBox(
-                    icon: const Icon(Icons.pattern,
+                  child: const LoanTrackProductLinkBox(
+                    icon: Icon(Icons.pattern,
                         size: 25, color: LoanTrackColors.PrimaryOne),
-                    label: const Text('LOAN PATTERN',
+                    label: Text('LOAN PATTERN',
                         style: TextStyle(
                             color: LoanTrackColors.PrimaryOne, fontSize: 11),
                         textAlign: TextAlign.center,
@@ -398,10 +398,10 @@ class _HomeViewState extends State<HomeView> {
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) => CreditScore()));
                   },
-                  child: LoanTrackProductLinkBox(
-                    icon: const Icon(Icons.numbers,
+                  child: const LoanTrackProductLinkBox(
+                    icon: Icon(Icons.numbers,
                         size: 25, color: LoanTrackColors2.PrimaryOne),
-                    label: const Text('CREDIT SCORE',
+                    label: Text('CREDIT SCORE',
                         style: TextStyle(
                             color: LoanTrackColors2.PrimaryOne, fontSize: 11),
                         textAlign: TextAlign.center,
@@ -421,7 +421,7 @@ class _HomeViewState extends State<HomeView> {
 }
 
 class LoanTrackProductLinkBox extends StatelessWidget {
-  LoanTrackProductLinkBox({
+  const LoanTrackProductLinkBox({
     Key? key,
     required this.icon,
     required this.label,
@@ -429,10 +429,10 @@ class LoanTrackProductLinkBox extends StatelessWidget {
     this.whenTapped,
   }) : super(key: key);
 
-  Icon icon;
-  Widget label;
-  Function()? whenTapped;
-  Color backgroundColor;
+  final Icon icon;
+  final Widget label;
+  final Function()? whenTapped;
+  final Color backgroundColor;
 
   @override
   Widget build(BuildContext context) {

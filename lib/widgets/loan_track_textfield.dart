@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:loantrack/helpers/colors.dart';
 
 class LoanTrackTextField extends StatefulWidget {
   LoanTrackTextField(
@@ -31,12 +32,13 @@ class LoanTrackTextField extends StatefulWidget {
 class _LoanTrackTextFieldState extends State<LoanTrackTextField> {
   @override
   Widget build(BuildContext context) {
-    return TextFormField(
+    return TextField(
       onTap: widget.whenTapped,
       controller: widget.controller,
       obscureText: widget.isHidden,
       textAlignVertical: TextAlignVertical.top,
-      style: TextStyle(fontSize: 14, color: widget.color),
+      style: const TextStyle(
+          fontSize: 14, color: LoanTrackColors.PrimaryTwoVeryLight),
       keyboardType: widget.keyboardType,
       decoration: InputDecoration(
           filled: true,
@@ -46,10 +48,11 @@ class _LoanTrackTextFieldState extends State<LoanTrackTextField> {
           focusColor: widget.color.withOpacity(.05),
           enabled: widget.enable,
           labelText: widget.label,
-          labelStyle: TextStyle(color: widget.color),
+          labelStyle:
+              const TextStyle(color: LoanTrackColors.PrimaryTwoVeryLight),
           suffixIcon: widget.icon,
           suffixIconColor: widget.color,
-          fillColor: widget.color.withOpacity(.05),
+          fillColor: LoanTrackColors.PrimaryTwoVeryLight.withOpacity(.1),
           focusedBorder: const OutlineInputBorder(
             borderSide: BorderSide.none,
           )),

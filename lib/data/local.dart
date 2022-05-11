@@ -10,6 +10,7 @@ import 'package:loantrack/apps/repayment_list_app.dart';
 
 import '../apps/loan_health_app.dart';
 import '../apps/news_app.dart';
+import '../apps/widgets/editprofile.dart';
 import 'apps.dart';
 
 class LocalData {
@@ -63,6 +64,10 @@ class LocalData {
         iconData: Icons.numbers,
         name: 'Credit Score',
         destinationWidget: const CreditScore()),
+    Apps(
+        iconData: Icons.person_outline,
+        name: 'Edit Profile',
+        destinationWidget: const ProfileUpdate()),
   ];
 
   static const aboutLoanTrack =
