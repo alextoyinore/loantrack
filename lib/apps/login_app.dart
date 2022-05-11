@@ -7,14 +7,13 @@ import 'package:flutter/material.dart';
 import 'package:loantrack/apps/providers/login_states.dart';
 import 'package:loantrack/apps/widgets/button.dart';
 import 'package:loantrack/data/authentications.dart';
+import 'package:loantrack/data/local.dart';
 import 'package:loantrack/helpers/colors.dart';
 import 'package:loantrack/helpers/common_widgets.dart';
 import 'package:loantrack/widgets/dialogs.dart';
+import 'package:loantrack/widgets/loan_track_modal.dart';
 import 'package:loantrack/widgets/loan_track_textfield.dart';
 import 'package:provider/provider.dart';
-
-import '../data/local.dart';
-import '../widgets/loan_track_modal.dart';
 
 class LoanTrackLogin extends StatefulWidget {
   const LoanTrackLogin({Key? key}) : super(key: key);
@@ -61,7 +60,7 @@ class _LoanTrackLoginState extends State<LoanTrackLogin> with ChangeNotifier {
       onWillPop: () async {
         DateTime now = DateTime.now();
         if (currentTime == null ||
-            now.difference(currentTime) > Duration(seconds: 2)) {
+            now.difference(currentTime) > const Duration(seconds: 2)) {
           //add duration of press gap
           currentTime = now;
           ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
@@ -250,7 +249,7 @@ class _LoanTrackLoginState extends State<LoanTrackLogin> with ChangeNotifier {
               },
               child: const Text(
                 'Forgot Password?',
-                style: TextStyle(color: LoanTrackColors.PrimaryOne),
+                style: TextStyle(color: LoanTrackColors.PrimaryTwoVeryLight),
               ),
             ),
             GestureDetector(
@@ -259,7 +258,7 @@ class _LoanTrackLoginState extends State<LoanTrackLogin> with ChangeNotifier {
               },
               child: const Text(
                 'Cancel',
-                style: TextStyle(color: LoanTrackColors.PrimaryOne),
+                style: TextStyle(color: LoanTrackColors.PrimaryTwoVeryLight),
               ),
             ),
           ],
@@ -285,7 +284,7 @@ class _LoanTrackLoginState extends State<LoanTrackLogin> with ChangeNotifier {
         separatorSpace10,
         LoanTrackTextField(
           controller: displayNameController,
-          label: 'Display Name',
+          label: 'Username',
           color: LoanTrackColors.PrimaryOne,
           icon: const Icon(Icons.person, color: LoanTrackColors.PrimaryOne),
         ),
@@ -321,7 +320,6 @@ class _LoanTrackLoginState extends State<LoanTrackLogin> with ChangeNotifier {
           child: LoanTrackButton.secondaryOutline(
             context: context,
             label: 'Cancel',
-            borderRadius: BorderRadius.circular(10),
           ),
         ),
       ],

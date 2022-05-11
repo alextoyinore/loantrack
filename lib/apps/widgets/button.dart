@@ -2,16 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:loantrack/helpers/colors.dart';
 
 class LoanTrackButton {
-  static primary(
-      {required BuildContext context,
-      required String label,
-      BorderRadius? borderRadius}) {
+  static primary({
+    required BuildContext context,
+    required String label,
+  }) {
     return Container(
       width: MediaQuery.of(context).size.width,
       padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
       decoration: BoxDecoration(
           border: Border.all(color: LoanTrackColors.PrimaryOne, width: .5),
-          borderRadius: borderRadius,
+          borderRadius: BorderRadius.circular(5),
           color: LoanTrackColors.PrimaryOne),
       child: Text(
         label,
@@ -23,15 +23,15 @@ class LoanTrackButton {
     );
   }
 
-  static primaryOutline(
-      {required BuildContext context,
-      required String label,
-      BorderRadius? borderRadius}) {
+  static primaryOutline({
+    required BuildContext context,
+    required String label,
+  }) {
     return Container(
       width: MediaQuery.of(context).size.width,
       padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
       decoration: BoxDecoration(
-          borderRadius: borderRadius,
+          borderRadius: BorderRadius.circular(5),
           //color: Colors.white,
           border: Border.all(color: LoanTrackColors.PrimaryOne, width: .5)),
       child: Text(
@@ -46,16 +46,16 @@ class LoanTrackButton {
     );
   }
 
-  static secondary(
-      {required BuildContext context,
-      required String label,
-      BorderRadius? borderRadius}) {
+  static secondary({
+    required BuildContext context,
+    required String label,
+  }) {
     return Container(
       width: MediaQuery.of(context).size.width,
       padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
       decoration: BoxDecoration(
           border: Border.all(color: LoanTrackColors.PrimaryTwo, width: .5),
-          borderRadius: borderRadius,
+          borderRadius: BorderRadius.circular(5),
           color: LoanTrackColors.PrimaryTwo),
       child: Text(
         label,
@@ -67,15 +67,15 @@ class LoanTrackButton {
     );
   }
 
-  static secondaryOutline(
-      {required BuildContext context,
-      required String label,
-      BorderRadius? borderRadius}) {
+  static secondaryOutline({
+    required BuildContext context,
+    required String label,
+  }) {
     return Container(
       width: MediaQuery.of(context).size.width,
       padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
       decoration: BoxDecoration(
-          borderRadius: borderRadius,
+          borderRadius: BorderRadius.circular(5),
           //color: Colors.white,
           border: Border.all(
               color: LoanTrackColors.PrimaryTwoVeryLight, width: .5)),

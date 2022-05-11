@@ -18,6 +18,7 @@ void showErrorDialog(
         ),
         content: SingleChildScrollView(
           child: Column(
+            mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Text(
@@ -36,12 +37,13 @@ void showErrorDialog(
             onTap: () {
               Navigator.of(context).pop();
             },
-            child: LoanTrackButton.secondary(
+            child: Padding(
+              padding: const EdgeInsets.all(24),
+              child: LoanTrackButton.secondary(
                 context: context,
                 label: 'Cancel',
-                borderRadius: const BorderRadius.only(
-                    bottomRight: Radius.circular(4),
-                    bottomLeft: Radius.circular(4))),
+              ),
+            ),
           ),
         ],
       );
@@ -68,7 +70,7 @@ void showSuccessDialog(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Text(
-                '${successMessage}',
+                successMessage,
                 textAlign: TextAlign.left,
                 style: const TextStyle(
                     fontSize: 16, color: LoanTrackColors.PrimaryTwoLight),
@@ -79,12 +81,12 @@ void showSuccessDialog(
         actions: <Widget>[
           GestureDetector(
             onTap: whenTapped,
-            child: LoanTrackButton.primary(
-              context: context,
-              label: 'Ok',
-              borderRadius: const BorderRadius.only(
-                  bottomLeft: Radius.circular(4),
-                  bottomRight: Radius.circular(4)),
+            child: Padding(
+              padding: const EdgeInsets.all(24),
+              child: LoanTrackButton.primary(
+                context: context,
+                label: 'Continue',
+              ),
             ),
           ),
         ],

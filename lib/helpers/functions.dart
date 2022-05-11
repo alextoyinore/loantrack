@@ -1,14 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:loantrack/apps/providers/user.dart';
+import 'package:loantrack/apps/widgets/blogdetail.dart';
+import 'package:loantrack/apps/widgets/loandetail.dart';
 import 'package:loantrack/apps/widgets/newsdetail.dart';
 import 'package:loantrack/data/database.dart';
+import 'package:loantrack/helpers/colors.dart';
 import 'package:loantrack/helpers/common_widgets.dart';
-
-import '../apps/widgets/blogdetail.dart';
-import '../apps/widgets/loandetail.dart';
-import '../widgets/bulleted_list.dart';
-import 'colors.dart';
+import 'package:loantrack/widgets/bulleted_list.dart';
 
 Container LoanList(
     {required double width,
@@ -650,3 +650,32 @@ Container NewsList({required double height}) {
     ),
   );
 }
+
+StreamBuilder userProfile({required BuildContext context}) {
+  DatabaseService db = DatabaseService();
+  return StreamBuilder<List<AppUser>>(
+    stream: db.readData(),
+    builder: (context, snapshot) {
+      final user = snapshot.data!;
+      if (snapshot.hasError) {
+        return const Center(
+          child: Text('No data'),
+        );
+      } else if (snapshot.hasData) {
+        // do something
+        return ListView(
+          children: user.map(buildUser).toList(),
+        );
+      } else {
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
+      }
+    },
+  );
+}
+
+Widget buildUser(AppUser user) => Column(children: [
+      CircleAvatar(child: Image.network(user.profilePicture!)),
+      Text('${user.firstname} ${user.lastname}'),
+    ]);

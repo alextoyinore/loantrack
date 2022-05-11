@@ -32,28 +32,27 @@ class _LoanTrackTextFieldState extends State<LoanTrackTextField> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-        onTap: widget.whenTapped,
-        controller: widget.controller,
-        obscureText: widget.isHidden,
-        textAlignVertical: TextAlignVertical.top,
-        style: TextStyle(fontSize: 14, color: widget.color),
-        keyboardType: widget.keyboardType,
-        decoration: InputDecoration(
-            focusColor: widget.color.withOpacity(.1),
-            enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: widget.color),
-            ),
-            disabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: widget.color),
-            ),
-            enabled: widget.enable,
-            labelText: widget.label,
-            labelStyle: TextStyle(color: widget.color),
-            suffixIcon: widget.icon,
-            suffixIconColor: widget.color,
-            fillColor: widget.color.withOpacity(.1),
-            focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: widget.color.withOpacity(.5)),
-            )));
+      onTap: widget.whenTapped,
+      controller: widget.controller,
+      obscureText: widget.isHidden,
+      textAlignVertical: TextAlignVertical.top,
+      style: TextStyle(fontSize: 14, color: widget.color),
+      keyboardType: widget.keyboardType,
+      decoration: InputDecoration(
+          filled: true,
+          border: const OutlineInputBorder(
+            borderSide: BorderSide.none,
+          ),
+          focusColor: widget.color.withOpacity(.05),
+          enabled: widget.enable,
+          labelText: widget.label,
+          labelStyle: TextStyle(color: widget.color),
+          suffixIcon: widget.icon,
+          suffixIconColor: widget.color,
+          fillColor: widget.color.withOpacity(.05),
+          focusedBorder: const OutlineInputBorder(
+            borderSide: BorderSide.none,
+          )),
+    );
   }
 }

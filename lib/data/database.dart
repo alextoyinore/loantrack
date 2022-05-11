@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:loantrack/apps/providers/user.dart';
 
-class DatabaseService with ChangeNotifier {
+class DatabaseService {
   // Collection reference
   final CollectionReference loans =
       FirebaseFirestore.instance.collection('loans');
@@ -16,9 +16,53 @@ class DatabaseService with ChangeNotifier {
   final CollectionReference news =
       FirebaseFirestore.instance.collection('news');
 
+  final CollectionReference userProfile =
+      FirebaseFirestore.instance.collection('users');
+
   final userId = FirebaseAuth.instance.currentUser!.uid;
 
   DatabaseService();
+
+  Future updateUserProfile({
+    String? firstName,
+    String? lastName,
+    String? gender,
+    bool? married,
+    bool? isSamaritan,
+    String? occupation,
+    double? age,
+    double? totalMonthlyIncome,
+    String? profilePicture,
+    String? countryOfResidence,
+    String? cityOfResidence,
+    String? nationality,
+  }) async {
+    return await userProfile.doc().set(
+      {
+        'userId': userId,
+        'firstname': firstName,
+        'lastname': lastName,
+        'gender': gender,
+        'married': married,
+        'isSamaritan': isSamaritan,
+        'occupation': occupation,
+        'age': age,
+        'totalMonthlyIncome': totalMonthlyIncome,
+        'profilePicture': profilePicture,
+        'countryOfResidence': countryOfResidence,
+        'cityOfResidence': cityOfResidence,
+        'nationality': nationality,
+      },
+      SetOptions(merge: true),
+    );
+  }
+
+  Stream<List<AppUser>> readData() => FirebaseFirestore.instance
+      .collection('users')
+      .where('userId', isEqualTo: userId)
+      .snapshots()
+      .map((snapshot) =>
+          snapshot.docs.map((doc) => AppUser.fromJSON(doc.data())).toList());
 
   Future updateLoanData({
     required double loanAmount,
@@ -100,6 +144,7 @@ class DatabaseService with ChangeNotifier {
     required double amountRepaid,
     required String dateOfRepayment,
     required String note,
+    String? repaymentSlip,
   }) async {
     return await repayments.doc().set({
       'userId': FirebaseAuth.instance.currentUser!.uid,
@@ -107,6 +152,7 @@ class DatabaseService with ChangeNotifier {
       'amountRepaid': amountRepaid,
       'dateOfRepayment': dateOfRepayment,
       'note': note,
+      'repaymentSlip': repaymentSlip,
     }, SetOptions(merge: true));
   }
 }
