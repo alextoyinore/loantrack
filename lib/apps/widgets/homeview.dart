@@ -272,7 +272,7 @@ class _HomeViewState extends State<HomeView> {
                   },
                   child: const Text(
                     'SEE ALL',
-                    style: TextStyle(color: LoanTrackColors.PrimaryOne),
+                    style: TextStyle(color: LoanTrackColors.PrimaryTwoLight),
                   ),
                 )
               ],
@@ -306,7 +306,7 @@ class _HomeViewState extends State<HomeView> {
                   },
                   child: const Text(
                     'SEE ALL',
-                    style: TextStyle(color: LoanTrackColors.PrimaryOne),
+                    style: TextStyle(color: LoanTrackColors.PrimaryTwoLight),
                   ),
                 )
               ],

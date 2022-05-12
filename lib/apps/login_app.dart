@@ -31,6 +31,7 @@ class _LoanTrackLoginState extends State<LoanTrackLogin> with ChangeNotifier {
 
   AuthService authService = AuthService();
 
+  @override
   void initState() {
     // TODO: implement initState
     super.initState();
@@ -42,8 +43,8 @@ class _LoanTrackLoginState extends State<LoanTrackLogin> with ChangeNotifier {
     return Timer(duration, runSplashScreen);
   }
 
-  Container runSplashScreen() {
-    return Container(
+  SizedBox runSplashScreen() {
+    return SizedBox(
       height: MediaQuery.of(context).size.height,
       width: MediaQuery.of(context).size.width,
       child: Center(

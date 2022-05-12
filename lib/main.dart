@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -14,17 +15,21 @@ import 'apps/loan_record_app.dart';
 import 'helpers/colors.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
     statusBarBrightness: Brightness.light,
     statusBarIconBrightness: Brightness.dark,
     statusBarColor: Colors.transparent,
   ));
-  runApp(MultiProvider(
-    providers: [
-      ChangeNotifierProvider(create: (_) => LoginState()),
-    ],
-    child: Main(),
-  ));
+  // Run App
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => LoginState()),
+      ],
+      child: const Main(),
+    ),
+  );
 }
 
 class Main extends StatefulWidget {
@@ -35,6 +40,12 @@ class Main extends StatefulWidget {
 }
 
 class _MainState extends State<Main> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(

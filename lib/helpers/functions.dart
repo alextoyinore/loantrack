@@ -10,12 +10,12 @@ import 'package:loantrack/helpers/colors.dart';
 import 'package:loantrack/helpers/common_widgets.dart';
 import 'package:loantrack/widgets/bulleted_list.dart';
 
-Container LoanList(
+SizedBox LoanList(
     {required double width,
     required double height,
     int? numberOfItems,
     required String userId}) {
-  return Container(
+  return SizedBox(
     width: width,
     height: height,
     child: StreamBuilder<QuerySnapshot>(
@@ -63,82 +63,80 @@ Container LoanList(
                                 )));
                   },
                   contentPadding: EdgeInsets.zero,
-                  title: Container(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Stack(children: [
-                          Container(
-                            width: width * height,
-                            height: 1.5,
-                            decoration: BoxDecoration(
-                              color: (progress >= 0.5)
-                                  ? LoanTrackColors.PrimaryOneLight
-                                  : LoanTrackColors.PrimaryTwoVeryLight,
-                              borderRadius: BorderRadius.circular(5),
+                  title: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Stack(children: [
+                        Container(
+                          width: width * height,
+                          height: 1.5,
+                          decoration: BoxDecoration(
+                            color: (progress >= 0.5)
+                                ? LoanTrackColors.PrimaryOneLight
+                                : LoanTrackColors2.PrimaryOneVeryLight,
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                        ),
+                        Container(
+                          width: width * progress,
+                          height: 1.5,
+                          decoration: BoxDecoration(
+                            color: (progress >= 0.5)
+                                ? LoanTrackColors.PrimaryOne
+                                : LoanTrackColors2.PrimaryOne,
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                        ),
+                      ]),
+                      const SizedBox(height: 5),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width * .65,
+                            child: Text(
+                              snapshot.data!.docs[index]
+                                      .get('lender')
+                                      .toUpperCase() +
+                                  ' | LOAN: ' +
+                                  snapshot.data!.docs[index]
+                                      .get('loanAmount')
+                                      .toString() +
+                                  ' | REPAID: ' +
+                                  snapshot.data!.docs[index]
+                                      .get('amountRepaid')
+                                      .toString(),
+                              style: TextStyle(
+                                  color: (progress >= 1)
+                                      ? LoanTrackColors.PrimaryOne
+                                      : LoanTrackColors2.PrimaryOne,
+                                  fontSize: 12),
+                              softWrap: true,
                             ),
                           ),
-                          Container(
-                            width: width * progress,
-                            height: 1.5,
-                            decoration: BoxDecoration(
-                              color: (progress >= 0.5)
-                                  ? LoanTrackColors.PrimaryOne
-                                  : LoanTrackColors.PrimaryTwoLight,
-                              borderRadius: BorderRadius.circular(5),
-                            ),
-                          ),
-                        ]),
-                        SizedBox(height: 5),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Container(
-                              width: MediaQuery.of(context).size.width * .65,
-                              child: Text(
-                                snapshot.data!.docs[index]
-                                        .get('lender')
-                                        .toUpperCase() +
-                                    ' | LOAN: ' +
-                                    snapshot.data!.docs[index]
-                                        .get('loanAmount')
-                                        .toString() +
-                                    ' | REPAID: ' +
-                                    snapshot.data!.docs[index]
-                                        .get('amountRepaid')
-                                        .toString(),
-                                style: const TextStyle(
-                                    color: LoanTrackColors.PrimaryTwoLight,
-                                    fontSize: 12),
-                                softWrap: true,
-                              ),
-                            ),
-                            (progress >= 1)
-                                ? const Text(
-                                    'PAID',
-                                    style: TextStyle(
-                                        color: LoanTrackColors.PrimaryOne,
-                                        fontSize: 12),
-                                  )
-                                : (progress == 0)
-                                    ? const Text('UNPAID',
-                                        style: TextStyle(
-                                            color:
-                                                LoanTrackColors.PrimaryTwoLight,
-                                            fontSize: 12),
-                                        softWrap: true)
-                                    : Text(
-                                        snapshot.data!.docs[index]
-                                            .get('lastPaidWhen'),
-                                        style: const TextStyle(
-                                            color:
-                                                LoanTrackColors.PrimaryTwoLight,
-                                            fontSize: 12),
-                                        softWrap: true),
-                          ],
-                        )
-                      ],
-                    ),
+                          (progress >= 1)
+                              ? const Text(
+                                  'PAID',
+                                  style: TextStyle(
+                                      color: LoanTrackColors.PrimaryOne,
+                                      fontSize: 12),
+                                )
+                              : (progress == 0)
+                                  ? const Text('UNPAID',
+                                      style: TextStyle(
+                                          color: LoanTrackColors2.PrimaryOne,
+                                          fontSize: 12),
+                                      softWrap: true)
+                                  : Text(
+                                      snapshot.data!.docs[index]
+                                          .get('lastPaidWhen'),
+                                      style: const TextStyle(
+                                          color: LoanTrackColors2.PrimaryOne,
+                                          fontSize: 12),
+                                      softWrap: true),
+                        ],
+                      )
+                    ],
                   ),
                 );
               });
@@ -151,21 +149,22 @@ Container LoanBulletedList(
   ScrollController _controller = ScrollController();
   return Container(
     height: height,
-    padding: EdgeInsets.only(bottom: 5),
+    padding: const EdgeInsets.only(bottom: 5),
     child: StreamBuilder<QuerySnapshot>(
       stream: FirebaseFirestore.instance
           .collection('loans')
           .where('userId', isEqualTo: userId)
           .snapshots(),
       builder: (context, snapshot) {
-        if (!snapshot.hasData)
-          return Center(
-            child: const Text(
+        if (!snapshot.hasData) {
+          return const Center(
+            child: Text(
               'No data',
               style: TextStyle(
                   fontSize: 14, color: LoanTrackColors.PrimaryTwoVeryLight),
             ),
           );
+        }
 
         if (snapshot.data!.docs.isEmpty) {
           return const Center(
@@ -195,7 +194,7 @@ Container LoanBulletedList(
               if (snapshot.data!.docs[index].get('userId') ==
                   FirebaseAuth.instance.currentUser!.uid) {
                 return Padding(
-                    padding: EdgeInsets.symmetric(vertical: 2),
+                    padding: const EdgeInsets.symmetric(vertical: 2),
                     child: GestureDetector(
                       onTap: () {
                         Navigator.push(context,
@@ -207,18 +206,14 @@ Container LoanBulletedList(
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Container(
-                            //width: MediaQuery.of(context).size.width * .4,
-
-                            child: BulletedList(
-                              text:
-                                  '${snapshot.data!.docs[index].get('lender').toUpperCase()} - ${((snapshot.data!.docs[index].get('loanAmount') - document.get('amountRepaid') + (due * document.get('dailyOverdueCharge')))).toString()}',
-                              style: const TextStyle(
-                                  color: LoanTrackColors2.PrimaryOne),
-                            ),
+                          BulletedList(
+                            text:
+                                '${snapshot.data!.docs[index].get('lender').toUpperCase()} - ${((snapshot.data!.docs[index].get('loanAmount') - document.get('amountRepaid') + (due * document.get('dailyOverdueCharge')))).toString()}',
+                            style: const TextStyle(
+                                color: LoanTrackColors2.PrimaryOne),
                           ),
                           (due > 0)
-                              ? Text('${due} DAYS OVERDUE',
+                              ? Text('$due DAYS OVERDUE',
                                   style: const TextStyle(
                                       color: LoanTrackColors2.PrimaryOne))
                               : (due == 0)
@@ -339,10 +334,10 @@ Container RepaymentBulletedList(
   );
 }
 
-Container BlogList({required double height}) {
+SizedBox BlogList({required double height}) {
   ScrollController controller = ScrollController();
   DatabaseService db = DatabaseService();
-  return Container(
+  return SizedBox(
     height: height,
     child: StreamBuilder<QuerySnapshot>(
       stream: db.blog.snapshots(),
@@ -496,10 +491,10 @@ Container BlogList({required double height}) {
   );
 }
 
-Container NewsList({required double height}) {
+SizedBox NewsList({required double height}) {
   ScrollController controller = ScrollController();
   DatabaseService db = DatabaseService();
-  return Container(
+  return SizedBox(
     height: height,
     child: StreamBuilder<QuerySnapshot>(
       stream: db.news.snapshots(),

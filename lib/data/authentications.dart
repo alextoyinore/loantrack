@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:loantrack/apps/providers/login_states.dart';
 import 'package:provider/provider.dart';
 
@@ -37,6 +38,14 @@ class AuthService {
       );
       if (FirebaseAuth.instance.currentUser!.emailVerified) {
         Navigator.pushNamed(context, '/home');
+
+        const AndroidNotificationChannel channel = AndroidNotificationChannel(
+          'authentication_notification_channel',
+          'Authentications Notification',
+          description: 'This channel is used for authentication notifications',
+          importance: Importance.high,
+          playSound: true,
+        );
       } else {
         context.read<LoginState>().sendVerificationEmail();
       }

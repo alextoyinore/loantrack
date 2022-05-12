@@ -20,7 +20,7 @@ class _RepaymentHistoryState extends State<RepaymentHistory> {
         body: SingleChildScrollView(
       child: Column(
         children: [
-          separatorSpace30,
+          separatorSpace50,
           Container(
             width: double.infinity,
             padding: const EdgeInsets.symmetric(horizontal: 24.0),

@@ -10,7 +10,7 @@ class LoanTrackAppsGridView extends StatefulWidget {
 }
 
 class _LoanTrackAppsGridViewState extends State<LoanTrackAppsGridView> {
-  ScrollController _controller = ScrollController();
+  final ScrollController _controller = ScrollController();
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +40,7 @@ class _LoanTrackAppsGridViewState extends State<LoanTrackAppsGridView> {
               child: Column(
                 children: [
                   Padding(
-                    padding: const EdgeInsets.all(4.0),
+                    padding: const EdgeInsets.all(6.0),
                     child: Icon(
                       LocalData.applicationList[index].iconData,
                       size: 25,
@@ -48,7 +48,7 @@ class _LoanTrackAppsGridViewState extends State<LoanTrackAppsGridView> {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.all(4.0),
+                    padding: const EdgeInsets.all(2.0),
                     child: Text(
                       LocalData.applicationList[index].name.toUpperCase(),
                       textAlign: TextAlign.center,

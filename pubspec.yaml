@@ -53,6 +53,8 @@ dependencies:
   flutter_html: ^0.11.1
   image_picker: ^0.8.5+1
   path_provider: ^2.0.10
+  firebase_messaging: ^11.3.0
+  flutter_local_notifications: ^9.5.2
 
 dev_dependencies:
   flutter_test:

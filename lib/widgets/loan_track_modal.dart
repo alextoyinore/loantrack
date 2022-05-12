@@ -17,7 +17,7 @@ class LoanTrackModal {
         context: context,
         builder: (context) {
           return Stack(children: [
-            Container(
+            SizedBox(
               width: screenWidth,
               height: screenHeight / 2.3,
               child: SingleChildScrollView(
