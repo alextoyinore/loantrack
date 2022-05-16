@@ -9,7 +9,7 @@ import 'package:loantrack/apps/widgets/button.dart';
 import 'package:loantrack/data/authentications.dart';
 import 'package:loantrack/data/local.dart';
 import 'package:loantrack/helpers/colors.dart';
-import 'package:loantrack/helpers/common_widgets.dart';
+import 'package:loantrack/widgets/common_widgets.dart';
 import 'package:loantrack/widgets/dialogs.dart';
 import 'package:loantrack/widgets/loan_track_modal.dart';
 import 'package:loantrack/widgets/loan_track_textfield.dart';
@@ -100,7 +100,10 @@ class _LoanTrackLoginState extends State<LoanTrackLogin> with ChangeNotifier {
     return Column(
       children: [
         separatorSpace80,
-        Image.asset('assets/images/icon.png', scale: 10),
+        Image.asset(
+          'assets/images/icon.png',
+          scale: 48,
+        ),
         separatorSpace50,
         Text(
           (message != null) ? message : '',
@@ -155,7 +158,7 @@ class _LoanTrackLoginState extends State<LoanTrackLogin> with ChangeNotifier {
         loginHeader(
             context: context,
             message:
-                'Like our expenditures and investments, your loans tracked will give you peace of mind and help you live a more fulfilling life.'),
+                'Like our expenditures and investments, your loans, tracked, will give you peace of mind and help you live a more fulfilling life.'),
         LoanTrackTextField(
           controller: emailController,
           label: 'Email',
@@ -172,7 +175,7 @@ class _LoanTrackLoginState extends State<LoanTrackLogin> with ChangeNotifier {
                 context: context,
                 title: 'Invalid Email',
                 errorMessage:
-                    'This email does not exist in our system. Kindly create a new account',
+                    'This email is not valid. Kindly check that you have typed a valid email.',
               ),
             );
           },
@@ -217,7 +220,10 @@ class _LoanTrackLoginState extends State<LoanTrackLogin> with ChangeNotifier {
                 email: emailController.text,
                 password: passwordController.text,
                 errorCallback: (e) => showErrorDialog(
-                    context: context, title: 'Credential Error', e: e));
+                    context: context,
+                    title: 'Credential Error',
+                    errorMessage:
+                        'An error occured. Verify that your password is correctly typed.'));
 
             //Navigator.pushNamed(context, '/home');
           },

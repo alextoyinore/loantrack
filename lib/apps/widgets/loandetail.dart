@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:loantrack/apps/loan_record_app.dart';
 import 'package:loantrack/apps/widgets/button.dart';
 import 'package:loantrack/helpers/colors.dart';
-import 'package:loantrack/helpers/common_widgets.dart';
+import 'package:loantrack/widgets/common_widgets.dart';
 import 'package:loantrack/helpers/styles.dart';
 
 class LoanDetail extends StatefulWidget {

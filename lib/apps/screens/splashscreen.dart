@@ -14,7 +14,7 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
-    // TODO: implement initState
+    //implement initState
     super.initState();
     startTime();
   }
@@ -39,7 +39,7 @@ class _SplashScreenState extends State<SplashScreen> {
         child: Center(
           child: Image.asset(
             'assets/images/icon.png',
-            scale: 10,
+            scale: 48,
             color: Colors.white,
             //fit: BoxFit.cover,
           ),

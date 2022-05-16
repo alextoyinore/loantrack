@@ -28,7 +28,7 @@ class _LoanTrackHomeState extends State<LoanTrackHome> {
 
     List<Widget> _widgetOptions = <Widget>[
       const HomeView(),
-      LoanTrackingPage(isHome: true, loanListHeight: screenHeight / 1.51),
+      LoanTrackingPage(isHome: true, loanListHeight: screenHeight / 1.53),
       const Center(
         child: NewsView(),
       ),

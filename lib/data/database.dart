@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:loantrack/apps/providers/user.dart';
+import 'package:loantrack/models/loan.dart';
+import 'package:loantrack/models/repayment.dart';
+import 'package:loantrack/models/user.dart';
 
 class DatabaseService {
   // Collection reference
@@ -16,28 +18,34 @@ class DatabaseService {
   final CollectionReference news =
       FirebaseFirestore.instance.collection('news');
 
-  final CollectionReference userProfile =
+  final CollectionReference users =
       FirebaseFirestore.instance.collection('users');
+
+  final CollectionReference lenders =
+      FirebaseFirestore.instance.collection('lenders');
 
   final userId = FirebaseAuth.instance.currentUser!.uid;
 
   DatabaseService();
 
-  Future updateUserProfile({
+  Future updateUserData({
     String? firstName,
     String? lastName,
     String? gender,
-    bool? married,
-    bool? isSamaritan,
+    String? married,
+    String? isSamaritan,
     String? occupation,
-    double? age,
-    double? totalMonthlyIncome,
+    String? industry,
+    String? entryDate,
+    String? modifiedWhen,
+    String? age,
+    String? totalMonthlyIncome,
     String? profilePicture,
     String? countryOfResidence,
     String? cityOfResidence,
     String? nationality,
   }) async {
-    return await userProfile.doc().set(
+    return await users.doc().set(
       {
         'userId': userId,
         'firstname': firstName,
@@ -46,6 +54,9 @@ class DatabaseService {
         'married': married,
         'isSamaritan': isSamaritan,
         'occupation': occupation,
+        'industry': industry,
+        'entryDate': entryDate,
+        'modifiedWhen': DateTime.now().toIso8601String(),
         'age': age,
         'totalMonthlyIncome': totalMonthlyIncome,
         'profilePicture': profilePicture,
@@ -57,7 +68,47 @@ class DatabaseService {
     );
   }
 
-  Stream<List<AppUser>> readData() => FirebaseFirestore.instance
+  Future updateSingleUserData({
+    required String id,
+    String? firstName,
+    String? lastName,
+    String? gender,
+    String? married,
+    String? isSamaritan,
+    String? occupation,
+    String? industry,
+    String? entryDate,
+    String? modifiedWhen,
+    String? age,
+    String? totalMonthlyIncome,
+    String? profilePicture,
+    String? countryOfResidence,
+    String? cityOfResidence,
+    String? nationality,
+  }) async {
+    return await users.doc(id).update(
+      {
+        'userId': userId,
+        'firstname': firstName,
+        'lastname': lastName,
+        'gender': gender,
+        'married': married,
+        'isSamaritan': isSamaritan,
+        'occupation': occupation,
+        'industry': industry,
+        'entryDate': entryDate,
+        'modifiedWhen': DateTime.now().toIso8601String(),
+        'age': age,
+        'totalMonthlyIncome': totalMonthlyIncome,
+        'profilePicture': profilePicture,
+        'countryOfResidence': countryOfResidence,
+        'cityOfResidence': cityOfResidence,
+        'nationality': nationality,
+      },
+    );
+  }
+
+  Stream<List<AppUser>> readUserProfileData() => FirebaseFirestore.instance
       .collection('users')
       .where('userId', isEqualTo: userId)
       .snapshots()
@@ -101,6 +152,13 @@ class DatabaseService {
         ));
   }
 
+  Stream<List<Loan>> readLoanData() => FirebaseFirestore.instance
+      .collection('loans')
+      .where('userId', isEqualTo: userId)
+      .snapshots()
+      .map((snapshot) =>
+          snapshot.docs.map((doc) => Loan.fromJSON(doc.data())).toList());
+
   Future updateSingleLoanData({
     required double loanAmount,
     required double amountRepaid,
@@ -117,32 +175,30 @@ class DatabaseService {
     required String note,
     required String id,
   }) async {
-    return await loans.doc(id).set(
-        {
-          'userId': FirebaseAuth.instance.currentUser!.uid,
-          'loanAmount': loanAmount,
-          'amountRepaid': amountRepaid,
-          'interestRate': interestRate,
-          'dailyOverdueCharge': dailyOverdueCharge,
-          'applyWhen': applyWhen,
-          'dueWhen': dueWhen,
-          'lastPaidWhen': lastPaidWhen,
-          'entryDate': DateTime.now().toString().substring(0, 10),
-          'modifiedWhen': modifiedWhen,
-          'lenderType': lenderType,
-          'lender': lender,
-          'loanPurpose': loanPurpose,
-          'note': note
-        },
-        SetOptions(
-          merge: true,
-        ));
+    return await loans.doc(id).update(
+      {
+        'userId': FirebaseAuth.instance.currentUser!.uid,
+        'loanAmount': loanAmount,
+        'amountRepaid': amountRepaid,
+        'interestRate': interestRate,
+        'dailyOverdueCharge': dailyOverdueCharge,
+        'applyWhen': applyWhen,
+        'dueWhen': dueWhen,
+        'lastPaidWhen': lastPaidWhen,
+        'entryDate': DateTime.now().toString().substring(0, 10),
+        'modifiedWhen': modifiedWhen,
+        'lenderType': lenderType,
+        'lender': lender,
+        'loanPurpose': loanPurpose,
+        'note': note
+      },
+    );
   }
 
   Future updateRepaymentData({
     required String loanId,
     required double amountRepaid,
-    required String dateOfRepayment,
+    required String repaidWhen,
     required String note,
     String? repaymentSlip,
   }) async {
@@ -150,9 +206,19 @@ class DatabaseService {
       'userId': FirebaseAuth.instance.currentUser!.uid,
       'loanId': loanId,
       'amountRepaid': amountRepaid,
-      'dateOfRepayment': dateOfRepayment,
+      'repaidWhen': repaidWhen,
       'note': note,
       'repaymentSlip': repaymentSlip,
     }, SetOptions(merge: true));
   }
+
+  Stream<List<Repayment>> readRepaymentData({required String loanId}) =>
+      FirebaseFirestore.instance
+          .collection('repayments')
+          .where('userId', isEqualTo: userId)
+          .where('loanId', isEqualTo: loanId)
+          .snapshots()
+          .map((snapshot) => snapshot.docs
+              .map((doc) => Repayment.fromJSON(doc.data()))
+              .toList());
 }

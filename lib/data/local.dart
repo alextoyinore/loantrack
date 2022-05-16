@@ -45,9 +45,9 @@ class LocalData {
         name: 'Repay Loan',
         destinationWidget: LoanTrackingPage(loanListHeight: -1, isHome: false)),
     Apps(
-        iconData: Icons.info_outline,
-        name: 'Compare Loan',
-        destinationWidget: const CompareLoanOffer()),
+        iconData: Icons.auto_graph,
+        name: 'Lending Pattern',
+        destinationWidget: const LendingPattern()),
     Apps(
         iconData: Icons.notifications_none_sharp,
         name: 'Notifications',

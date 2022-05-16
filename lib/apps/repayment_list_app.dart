@@ -1,8 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:loantrack/helpers/colors.dart';
-import 'package:loantrack/helpers/common_widgets.dart';
-import 'package:loantrack/helpers/functions.dart';
+import 'package:loantrack/widgets/common_widgets.dart';
+import 'package:loantrack/helpers/listwidgets.dart';
 import 'package:loantrack/widgets/loan_track_modal.dart';
 
 class RepaymentHistory extends StatefulWidget {

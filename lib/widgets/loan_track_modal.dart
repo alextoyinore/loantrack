@@ -1,12 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:loantrack/helpers/colors.dart';
-import 'package:loantrack/helpers/common_widgets.dart';
+import 'package:loantrack/widgets/common_widgets.dart';
 
 class LoanTrackModal {
   static modal(BuildContext context,
       {required Widget content,
       required String title,
+      double height = 650,
       bool isError = false,
       Exception? e}) {
     double screenWidth = MediaQuery.of(context).size.width;
@@ -19,17 +20,19 @@ class LoanTrackModal {
           return Stack(children: [
             SizedBox(
               width: screenWidth,
-              height: screenHeight / 2.3,
+              height: height,
               child: SingleChildScrollView(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    separatorSpace50,
+                    separatorSpace80,
                     Container(
                       color: Colors.transparent,
                       padding: const EdgeInsets.symmetric(
-                          horizontal: 20.0, vertical: 5),
+                        horizontal: 20.0,
+                        vertical: 5,
+                      ),
                       child: (e == null)
                           ? content
                           : Text(

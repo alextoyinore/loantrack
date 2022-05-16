@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:loantrack/helpers/colors.dart';
-import 'package:loantrack/helpers/common_widgets.dart';
-import 'package:loantrack/helpers/functions.dart';
+import 'package:loantrack/widgets/common_widgets.dart';
+import 'package:loantrack/helpers/listwidgets.dart';
 
 class LoanAdvisor extends StatefulWidget {
   const LoanAdvisor({Key? key}) : super(key: key);

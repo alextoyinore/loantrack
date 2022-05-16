@@ -39,7 +39,7 @@ void showErrorDialog(
             },
             child: Padding(
               padding: const EdgeInsets.all(24),
-              child: LoanTrackButton.secondary(
+              child: LoanTrackButton.error(
                 context: context,
                 label: 'Cancel',
               ),

@@ -90,4 +90,29 @@ class LoanTrackButton {
       ),
     );
   }
+
+  static error({
+    required BuildContext context,
+    required String label,
+  }) {
+    return Container(
+      width: MediaQuery.of(context).size.width,
+      padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+      decoration: BoxDecoration(
+        border: Border.all(
+          color: Colors.red,
+          width: .5,
+        ),
+        borderRadius: BorderRadius.circular(5),
+        color: Colors.red,
+      ),
+      child: Text(
+        label,
+        style: const TextStyle(
+            color: Colors.white, fontSize: 14, fontWeight: FontWeight.w300),
+        textAlign: TextAlign.center,
+        softWrap: true,
+      ),
+    );
+  }
 }

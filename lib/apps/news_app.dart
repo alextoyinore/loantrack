@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:loantrack/helpers/functions.dart';
+import 'package:loantrack/helpers/listwidgets.dart';
 
 import '../helpers/colors.dart';
-import '../helpers/common_widgets.dart';
+import '../widgets/common_widgets.dart';
 
 class NewsApp extends StatelessWidget {
   const NewsApp({Key? key}) : super(key: key);

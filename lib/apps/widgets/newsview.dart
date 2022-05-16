@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:loantrack/helpers/colors.dart';
 
-import '../../helpers/common_widgets.dart';
-import '../../helpers/functions.dart';
+import '../../widgets/common_widgets.dart';
+import '../../helpers/listwidgets.dart';
 
 class NewsView extends StatefulWidget {
   const NewsView({Key? key}) : super(key: key);
@@ -46,7 +46,7 @@ class _NewsViewState extends State<NewsView> {
             ),
           ),
         ),
-        NewsList(height: MediaQuery.of(context).size.height * .78),
+        NewsList(height: MediaQuery.of(context).size.height * .77),
       ],
     );
   }

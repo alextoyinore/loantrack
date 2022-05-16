@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:loantrack/apps/providers/login_states.dart';
+import 'package:loantrack/apps/widgets/editprofile.dart';
 import 'package:loantrack/data/authentications.dart';
 import 'package:loantrack/helpers/colors.dart';
-import 'package:loantrack/helpers/common_widgets.dart';
+import 'package:loantrack/widgets/common_widgets.dart';
 import 'package:provider/provider.dart';
 
 import '../data/local.dart';
@@ -38,10 +39,10 @@ class _AppSettingsState extends State<AppSettings> {
               ),
               separatorSpace10,
               ListTile(
-                leading: const Icon(Icons.info_outline,
-                    color: LoanTrackColors.PrimaryOne),
-                title: const Text('About',
-                    style: TextStyle(color: LoanTrackColors.PrimaryOne)),
+                leading: const Icon(
+                  Icons.info_outline,
+                ),
+                title: const Text('About', style: TextStyle()),
                 onTap: () {
                   LoanTrackModal.modal(context,
                       content: const SingleChildScrollView(
@@ -58,11 +59,17 @@ class _AppSettingsState extends State<AppSettings> {
                   thickness: .5,
                   color: LoanTrackColors.PrimaryTwo.withOpacity(.2)),
               ListTile(
-                leading:
-                    const Icon(Icons.person, color: LoanTrackColors.PrimaryOne),
-                title: const Text('Profile Settings',
-                    style: TextStyle(color: LoanTrackColors.PrimaryOne)),
-                onTap: () {},
+                leading: const Icon(
+                  Icons.person,
+                ),
+                title: const Text('Profile Settings', style: TextStyle()),
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const ProfileUpdate(),
+                      ));
+                },
               ),
               Divider(
                   thickness: .5,

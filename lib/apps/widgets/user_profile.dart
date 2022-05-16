@@ -1,7 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:loantrack/helpers/colors.dart';
-import 'package:loantrack/helpers/common_widgets.dart';
+import 'package:loantrack/helpers/listwidgets.dart';
+import 'package:loantrack/widgets/common_widgets.dart';
 
 class UserProfile extends StatefulWidget {
   const UserProfile({Key? key}) : super(key: key);
@@ -14,8 +15,10 @@ class _UserProfileState extends State<UserProfile> {
   var user = FirebaseAuth.instance.currentUser;
   @override
   Widget build(BuildContext context) {
+    double screenHeight = MediaQuery.of(context).size.height;
     return Container(
-      padding: EdgeInsets.all(24),
+      // height: screenHeight,
+      padding: const EdgeInsets.all(24),
       child: Column(
         children: [
           //separatorSpace20,
@@ -29,6 +32,8 @@ class _UserProfileState extends State<UserProfile> {
                 fontSize: 18, color: LoanTrackColors.PrimaryTwoVeryLight),
           ),
           separatorLine,
+          separatorSpace10,
+          userProfile(height: screenHeight / 1.6),
         ],
       ),
     );

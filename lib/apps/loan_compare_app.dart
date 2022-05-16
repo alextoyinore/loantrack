@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-class CompareLoanOffer extends StatefulWidget {
-  const CompareLoanOffer({Key? key}) : super(key: key);
+class LendingPattern extends StatefulWidget {
+  const LendingPattern({Key? key}) : super(key: key);
 
   @override
-  State<CompareLoanOffer> createState() => _CompareLoanOfferState();
+  State<LendingPattern> createState() => _LendingPatternState();
 }
 
-class _CompareLoanOfferState extends State<CompareLoanOffer> {
+class _LendingPatternState extends State<LendingPattern> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

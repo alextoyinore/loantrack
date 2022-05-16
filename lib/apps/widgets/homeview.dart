@@ -8,9 +8,9 @@ import 'package:loantrack/apps/loan_health_app.dart';
 import 'package:loantrack/apps/loan_list_app.dart';
 import 'package:loantrack/apps/news_app.dart';
 import 'package:loantrack/helpers/colors.dart';
-import 'package:loantrack/helpers/common_widgets.dart';
+import 'package:loantrack/widgets/common_widgets.dart';
 
-import '../../helpers/functions.dart';
+import '../../helpers/listwidgets.dart';
 import '../../widgets/application_grid_view.dart';
 import '../../widgets/loan_track_modal.dart';
 import 'button.dart';
@@ -238,11 +238,11 @@ class _HomeViewState extends State<HomeView> {
               label: 'Add Repayment Record',
             )),
           ),
-          separatorSpace10,
+          /*separatorSpace10,
           GestureDetector(
             child: LoanTrackButton.primaryOutline(
                 context: context, label: 'Compare Loan Offer'),
-          ),
+          ),*/
 
           //END ACTION BUTTONS
 
@@ -300,9 +300,12 @@ class _HomeViewState extends State<HomeView> {
                 ),
                 GestureDetector(
                   onTap: () {
-                    LoanTrackModal.modal(context,
-                        content: const LoanTrackAppsGridView(),
-                        title: 'Applications');
+                    LoanTrackModal.modal(
+                      context,
+                      height: screenHeight / 2.3,
+                      content: const LoanTrackAppsGridView(),
+                      title: 'Applications',
+                    );
                   },
                   child: const Text(
                     'SEE ALL',
@@ -379,12 +382,12 @@ class _HomeViewState extends State<HomeView> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => const CompareLoanOffer()));
+                            builder: (context) => const LendingPattern()));
                   },
                   child: const LoanTrackProductLinkBox(
                     icon: Icon(Icons.pattern,
                         size: 25, color: LoanTrackColors.PrimaryOne),
-                    label: Text('LOAN PATTERN',
+                    label: Text('LENDING PATTERN',
                         style: TextStyle(
                             color: LoanTrackColors.PrimaryOne, fontSize: 11),
                         textAlign: TextAlign.center,
@@ -395,8 +398,10 @@ class _HomeViewState extends State<HomeView> {
                 horizontalSeparatorSpace20,
                 GestureDetector(
                   onTap: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => CreditScore()));
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const CreditScore()));
                   },
                   child: const LoanTrackProductLinkBox(
                     icon: Icon(Icons.numbers,

@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:loantrack/apps/widgets/button.dart';
 import 'package:loantrack/data/database.dart';
 import 'package:loantrack/helpers/colors.dart';
-import 'package:loantrack/helpers/common_widgets.dart';
-import 'package:loantrack/helpers/functions.dart';
+import 'package:loantrack/widgets/common_widgets.dart';
+import 'package:loantrack/helpers/listwidgets.dart';
 import 'package:loantrack/helpers/icons.dart';
 import 'package:loantrack/widgets/application_grid_view.dart';
 import 'package:loantrack/widgets/date_picker.dart';
@@ -51,7 +51,7 @@ class _LoanRecordState extends State<LoanRecord> {
   // FOR REPAYMENT
   TextEditingController loanController = TextEditingController();
   TextEditingController amountRepaidController = TextEditingController();
-  TextEditingController dateOfPayment = TextEditingController();
+  TextEditingController repaidWhenController = TextEditingController();
   TextEditingController balanceLeftController = TextEditingController();
   //TextEditingController noteController = TextEditingController();
 
@@ -812,7 +812,7 @@ class _LoanRecordState extends State<LoanRecord> {
           children: [
             LoanTrackDatePicker(
               isPayment: true,
-              controller: dateOfPayment,
+              controller: repaidWhenController,
               initialText: 'Payment Made When',
               yearsInFuture: 0,
             ),
@@ -879,7 +879,7 @@ class _LoanRecordState extends State<LoanRecord> {
                       amountRepaid: double.parse(amountRepaidController.text),
                       note: noteController.text,
                       loanId: widget.documentSnapshot!.id,
-                      dateOfRepayment: dateOfPayment.text)
+                      repaidWhen: repaidWhenController.text)
                   .whenComplete(() {
                 //UPDATING LOAN COLLECTION
                 double remainder = loanAmount - amountRepaid;
@@ -895,7 +895,7 @@ class _LoanRecordState extends State<LoanRecord> {
                     dailyOverdueCharge: (remainder - amountRepaid <= 0)
                         ? 0
                         : dailyOverdueCharges,
-                    lastPaidWhen: dateOfPayment.text,
+                    lastPaidWhen: repaidWhenController.text,
                     note: note,
                     id: id,
                     dueWhen: widget.documentSnapshot!.get('dueWhen'),

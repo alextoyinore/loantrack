@@ -58,7 +58,8 @@ class _MainState extends State<Main> {
         ),
         appBarTheme: Theme.of(context).appBarTheme.copyWith(
               systemOverlayStyle: SystemUiOverlayStyle.light,
-              backgroundColor: LoanTrackColors.PrimaryOne,
+              foregroundColor: LoanTrackColors.PrimaryOne,
+              backgroundColor: Colors.white,
             ),
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),

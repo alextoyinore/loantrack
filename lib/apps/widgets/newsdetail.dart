@@ -4,7 +4,7 @@ import 'package:loantrack/apps/widgets/button.dart';
 import 'package:loantrack/apps/widgets/newsfullviewer.dart';
 
 import '../../helpers/colors.dart';
-import '../../helpers/common_widgets.dart';
+import '../../widgets/common_widgets.dart';
 
 class NewsDetail extends StatefulWidget {
   NewsDetail({Key? key, required this.news}) : super(key: key);

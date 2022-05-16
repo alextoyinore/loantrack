@@ -4,9 +4,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:loantrack/apps/widgets/text_button.dart';
 import 'package:loantrack/helpers/colors.dart';
-import 'package:loantrack/helpers/common_widgets.dart';
+import 'package:loantrack/widgets/common_widgets.dart';
 
-import '../helpers/functions.dart';
+import '../helpers/listwidgets.dart';
 
 class LoanTrackingPage extends StatefulWidget {
   LoanTrackingPage(
@@ -45,25 +45,23 @@ class _LoanTrackingPageState extends State<LoanTrackingPage> {
               children: [
                 const Text('LOAN LIST',
                     style: TextStyle(color: LoanTrackColors.PrimaryTwoLight)),
-                SizedBox(height: 20),
+                separatorSpace20,
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     // Total repaid Box
                     Container(
                       width: screenWidth / 2.35,
-                      height: 65,
-                      padding:
-                          EdgeInsets.symmetric(vertical: 10, horizontal: 0),
-                      decoration: BoxDecoration(
-                          border:
-                              Border.all(color: LoanTrackColors.PrimaryOne)),
+                      height: screenHeight / 12,
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 10, horizontal: 0),
+                      decoration: BoxDecoration(border: Border.all()),
                       child: Column(
                         //crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           const Text(
                             'TOTAL REPAID',
-                            style: TextStyle(color: LoanTrackColors.PrimaryOne),
+                            style: TextStyle(),
                           ),
                           StreamBuilder<QuerySnapshot>(
                               stream: FirebaseFirestore.instance
@@ -85,8 +83,8 @@ class _LoanTrackingPageState extends State<LoanTrackingPage> {
                                 return (totalRepaid > 0)
                                     ? Text(totalRepaid.toString(),
                                         style: const TextStyle(
-                                            fontSize: 20,
-                                            color: LoanTrackColors.PrimaryOne))
+                                          fontSize: 20,
+                                        ))
                                     : const Text(
                                         '0.0',
                                         style: TextStyle(
@@ -101,9 +99,9 @@ class _LoanTrackingPageState extends State<LoanTrackingPage> {
                     //Total Loan owed Box
                     Container(
                       width: screenWidth / 2.35,
-                      padding:
-                          EdgeInsets.symmetric(vertical: 10, horizontal: 0),
-                      height: 65,
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 10, horizontal: 0),
+                      height: screenHeight / 12,
                       decoration: BoxDecoration(
                           border: Border.all(
                               color: LoanTrackColors.PrimaryTwoLight)),
@@ -153,7 +151,7 @@ class _LoanTrackingPageState extends State<LoanTrackingPage> {
                                   }
                                 }
                                 return (totalLoans > 0)
-                                    ? Text('${totalLoans.toString()}',
+                                    ? Text('$totalLoans',
                                         style: const TextStyle(
                                             fontSize: 20,
                                             color: LoanTrackColors.PrimaryTwo))
@@ -169,7 +167,7 @@ class _LoanTrackingPageState extends State<LoanTrackingPage> {
                     )
                   ],
                 ),
-                SizedBox(height: 20),
+                separatorSpace20,
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -193,7 +191,7 @@ class _LoanTrackingPageState extends State<LoanTrackingPage> {
                   ],
                 ),
 
-                SizedBox(height: 20),
+                separatorSpace20,
 
                 const Text(
                   'Select a loan from the list to \'Edit\' or \'Make Repayment\' ',
@@ -209,7 +207,7 @@ class _LoanTrackingPageState extends State<LoanTrackingPage> {
                           ? widget.loanListHeight
                           : screenHeight * .7),
                 ),
-                SizedBox(height: 10),
+                separatorSpace10,
               ],
             ),
           ))
@@ -218,27 +216,25 @@ class _LoanTrackingPageState extends State<LoanTrackingPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('LOAN LIST',
+                const Text('LOAN LIST',
                     style: TextStyle(color: LoanTrackColors.PrimaryTwoLight)),
-                SizedBox(height: 10),
+                separatorSpace10,
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     // Total repaid Box
                     Container(
                       width: screenWidth / 2.35,
-                      height: 65,
-                      padding:
-                          EdgeInsets.symmetric(vertical: 10, horizontal: 0),
-                      decoration: BoxDecoration(
-                          border:
-                              Border.all(color: LoanTrackColors.PrimaryOne)),
+                      height: MediaQuery.of(context).size.height / 12,
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 10, horizontal: 0),
+                      decoration: BoxDecoration(border: Border.all()),
                       child: Column(
                         //crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           const Text(
                             'TOTAL REPAID',
-                            style: TextStyle(color: LoanTrackColors.PrimaryOne),
+                            style: TextStyle(),
                           ),
                           StreamBuilder<QuerySnapshot>(
                               stream: FirebaseFirestore.instance
@@ -260,8 +256,8 @@ class _LoanTrackingPageState extends State<LoanTrackingPage> {
                                 return (totalRepaid > 0)
                                     ? Text(totalRepaid.toString(),
                                         style: const TextStyle(
-                                            fontSize: 20,
-                                            color: LoanTrackColors.PrimaryOne))
+                                          fontSize: 20,
+                                        ))
                                     : const Text(
                                         '0.0',
                                         style: TextStyle(
@@ -276,9 +272,9 @@ class _LoanTrackingPageState extends State<LoanTrackingPage> {
                     //Total Loan owed Box
                     Container(
                       width: screenWidth / 2.35,
-                      padding:
-                          EdgeInsets.symmetric(vertical: 10, horizontal: 0),
-                      height: 65,
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 10, horizontal: 0),
+                      height: MediaQuery.of(context).size.height / 12,
                       decoration: BoxDecoration(
                           border: Border.all(
                               color: LoanTrackColors.PrimaryTwoLight)),
@@ -328,7 +324,7 @@ class _LoanTrackingPageState extends State<LoanTrackingPage> {
                                   }
                                 }
                                 return (totalLoans > 0)
-                                    ? Text('${totalLoans.toString()}',
+                                    ? Text(totalLoans.toString(),
                                         style: const TextStyle(
                                             fontSize: 20,
                                             color: LoanTrackColors.PrimaryTwo))
@@ -344,7 +340,7 @@ class _LoanTrackingPageState extends State<LoanTrackingPage> {
                     )
                   ],
                 ),
-                SizedBox(height: 20),
+                separatorSpace20,
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -367,7 +363,7 @@ class _LoanTrackingPageState extends State<LoanTrackingPage> {
                     )
                   ],
                 ),
-                SizedBox(height: 10),
+                separatorSpace10,
 
                 //Loan list
                 SingleChildScrollView(
