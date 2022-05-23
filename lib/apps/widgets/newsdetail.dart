@@ -43,6 +43,7 @@ class _NewsDetailState extends State<NewsDetail> {
                             style: const TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.bold,
+                              color: LoanTrackColors.PrimaryOne,
                             ),
                           ),
                           separatorSpace10,
@@ -82,7 +83,7 @@ class _NewsDetailState extends State<NewsDetail> {
                                       builder: (context) =>
                                           NewsFullViewer(news: widget.news)));
                             },
-                            child: LoanTrackButton.secondary(
+                            child: LoanTrackButton.primary(
                                 context: context, label: 'Continue Reading'),
                           ),
                           separatorSpace20,

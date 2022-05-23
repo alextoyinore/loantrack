@@ -5,7 +5,6 @@ import 'package:loantrack/apps/settings_app.dart';
 import 'package:loantrack/apps/widgets/homeview.dart';
 import 'package:loantrack/apps/widgets/newsview.dart';
 import 'package:loantrack/apps/widgets/user_profile.dart';
-import 'package:loantrack/helpers/colors.dart';
 
 import '../data/authentications.dart';
 
@@ -28,7 +27,10 @@ class _LoanTrackHomeState extends State<LoanTrackHome> {
 
     List<Widget> _widgetOptions = <Widget>[
       const HomeView(),
-      LoanTrackingPage(isHome: true, loanListHeight: screenHeight / 1.53),
+      LoanTrackingPage(
+        isHome: true,
+        loanListHeight: screenHeight / 1.53,
+      ),
       const Center(
         child: NewsView(),
       ),
@@ -64,40 +66,31 @@ class _LoanTrackHomeState extends State<LoanTrackHome> {
         return Future.value(true);
       },
       child: Scaffold(
-        backgroundColor: Colors.white,
         body: SafeArea(
           child: _widgetOptions.elementAt(_selectedIndex),
         ),
         bottomNavigationBar: BottomNavigationBar(
-          unselectedItemColor:
-              LoanTrackColors.PrimaryTwoVeryLight.withOpacity(.3),
-          selectedItemColor: LoanTrackColors.PrimaryOne,
           elevation: 0,
           items: const [
             BottomNavigationBarItem(
-                icon: Icon(Icons.home_outlined),
-                label: 'Home',
-                backgroundColor: Colors.white //LoanTrackColors.PrimaryTwoDark,
-                ),
+              icon: Icon(Icons.home_outlined),
+              label: 'Home',
+            ),
             BottomNavigationBarItem(
               icon: Icon(Icons.history_edu),
               label: 'History',
-              backgroundColor: Colors.white, //LoanTrackColors.PrimaryTwoDark,
             ),
             BottomNavigationBarItem(
-                icon: Icon(Icons.newspaper_outlined),
-                label: 'News',
-                backgroundColor: Colors.white //LoanTrackColors.PrimaryTwoDark,
-                ),
+              icon: Icon(Icons.newspaper_outlined),
+              label: 'News',
+            ),
             BottomNavigationBarItem(
-                icon: Icon(Icons.person_outline),
-                label: 'Profile',
-                backgroundColor: Colors.white //LoanTrackColors.PrimaryTwoDark,
-                ),
+              icon: Icon(Icons.person_outline),
+              label: 'Profile',
+            ),
             BottomNavigationBarItem(
               icon: Icon(Icons.settings_outlined),
               label: 'Setting',
-              backgroundColor: Colors.white,
             ),
           ],
           currentIndex: _selectedIndex,

@@ -1,11 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:loantrack/apps/loan_record_app.dart';
 import 'package:loantrack/apps/widgets/button.dart';
 import 'package:loantrack/helpers/colors.dart';
-import 'package:loantrack/widgets/common_widgets.dart';
 import 'package:loantrack/helpers/styles.dart';
+import 'package:loantrack/widgets/common_widgets.dart';
 
 class LoanDetail extends StatefulWidget {
   LoanDetail({Key? key, this.document}) : super(key: key);
@@ -50,7 +51,93 @@ class _LoanDetailState extends State<LoanDetail> {
       );
     }
     return Scaffold(
-      backgroundColor: Colors.white,
+      appBar: AppBar(
+        foregroundColor: LoanTrackColors.PrimaryOne,
+        elevation: 0,
+        leading: Padding(
+          padding: const EdgeInsets.only(left: 8.0),
+          child: GestureDetector(
+            onTap: () {
+              FirebaseFirestore.instance.collection('archive').add({
+                'userId': FirebaseAuth.instance.currentUser!.uid,
+                'loanId': widget.document!.id,
+                'loanAmount': widget.document!.get('loanAmount'),
+                'amountRepaid': widget.document!.get('amountRepaid'),
+                'interestRate': widget.document!.get('interestRate'),
+                'dailyOverdueCharge':
+                    widget.document!.get('dailyOverdueCharge'),
+                'applyWhen': widget.document!.get('applyWhen'),
+                'dueWhen': widget.document!.get('dueWhen'),
+                'lastRepaidWhen': widget.document!.get('lastPaidWhen'),
+                'entryDate': widget.document!.get('entryDate'),
+                'modifiedWhen': widget.document!.get('modifiedWhen'),
+                'lenderType': widget.document!.get('lenderType'),
+                'lender': widget.document!.get('lender'),
+                'loanPurpose': widget.document!.get('loanPurpose'),
+                'note': widget.document!.get('note'),
+              }).whenComplete(
+                () => const SnackBar(
+                  backgroundColor: LoanTrackColors.PrimaryOneVeryLight,
+                  duration: Duration(milliseconds: 500),
+                  content: Text('Loan record archived.'),
+                ),
+              );
+            },
+            child: const Icon(
+              Icons.archive_outlined,
+            ),
+          ),
+        ),
+        title: Text(
+          '${widget.document!.get('lender').toString().toUpperCase()} - ${((widget.document!.get('loanAmount') - widget.document!.get('amountRepaid')) + (widget.document!.get('dailyOverdueCharge') * due)).toString()}',
+        ),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 20.0),
+            child: GestureDetector(
+              onTap: () {
+                FirebaseFirestore.instance.collection('archive').add({
+                  'userId': FirebaseAuth.instance.currentUser!.uid,
+                  'loanId': widget.document!.id,
+                  'loanAmount': widget.document!.get('loanAmount'),
+                  'amountRepaid': widget.document!.get('amountRepaid'),
+                  'interestRate': widget.document!.get('interestRate'),
+                  'dailyOverdueCharge':
+                      widget.document!.get('dailyOverdueCharge'),
+                  'applyWhen': widget.document!.get('applyWhen'),
+                  'dueWhen': widget.document!.get('dueWhen'),
+                  'lastRepaidWhen': widget.document!.get('lastPaidWhen'),
+                  'entryDate': widget.document!.get('entryDate'),
+                  'modifiedWhen': widget.document!.get('modifiedWhen'),
+                  'lenderType': widget.document!.get('lenderType'),
+                  'lender': widget.document!.get('lender'),
+                  'loanPurpose': widget.document!.get('loanPurpose'),
+                  'note': widget.document!.get('note'),
+                }).whenComplete(
+                  () => const SnackBar(
+                    backgroundColor: LoanTrackColors.PrimaryOneVeryLight,
+                    duration: Duration(milliseconds: 500),
+                    content: Text(
+                      'Loan record archived.',
+                      style: TextStyle(
+                        color: LoanTrackColors.PrimaryOne,
+                      ),
+                    ),
+                  ),
+                );
+                FirebaseFirestore.instance
+                    .collection('loans')
+                    .doc(widget.document!.id)
+                    .delete();
+                Navigator.pop(context);
+              },
+              child: const Icon(
+                Icons.delete_outline,
+              ),
+            ),
+          ),
+        ],
+      ),
       body: Stack(children: [
         Container(
           height: screenHeight,
@@ -64,35 +151,6 @@ class _LoanDetailState extends State<LoanDetail> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    SizedBox(height: screenHeight / 25),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const Icon(
-                          Icons.archive_outlined,
-                          color: LoanTrackColors2.PrimaryOne,
-                        ),
-                        Text(
-                          '${widget.document!.get('lender').toString().toUpperCase()} - ${((widget.document!.get('loanAmount') - widget.document!.get('amountRepaid')) + (widget.document!.get('dailyOverdueCharge') * due)).toString()}',
-                          style: const TextStyle(
-                              color: LoanTrackColors.PrimaryTwoLight),
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            FirebaseFirestore.instance
-                                .collection('loans')
-                                .doc(widget.document!.id)
-                                .delete();
-                            Navigator.pop(context);
-                          },
-                          child: const Icon(
-                            Icons.delete_outline,
-                            color: LoanTrackColors2.PrimaryOneLight,
-                          ),
-                        ),
-                      ],
-                    ),
-                    separatorSpace40,
                     Container(
                       width: MediaQuery.of(context).size.width,
                       height: 40,

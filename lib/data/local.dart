@@ -10,7 +10,7 @@ import 'package:loantrack/apps/repayment_list_app.dart';
 
 import '../apps/loan_health_app.dart';
 import '../apps/news_app.dart';
-import '../apps/widgets/editprofile.dart';
+import '../apps/widgets/updateprofile.dart';
 import 'apps.dart';
 
 class LocalData {

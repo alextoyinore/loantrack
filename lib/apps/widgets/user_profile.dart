@@ -33,7 +33,7 @@ class _UserProfileState extends State<UserProfile> {
           ),
           separatorLine,
           separatorSpace10,
-          userProfile(height: screenHeight / 1.6),
+          userProfile(height: screenHeight / 1.7),
         ],
       ),
     );

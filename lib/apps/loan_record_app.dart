@@ -1,14 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:loantrack/apps/widgets/button.dart';
+import 'package:loantrack/data/applists.dart';
 import 'package:loantrack/data/database.dart';
 import 'package:loantrack/helpers/colors.dart';
-import 'package:loantrack/widgets/common_widgets.dart';
 import 'package:loantrack/helpers/listwidgets.dart';
-import 'package:loantrack/helpers/icons.dart';
-import 'package:loantrack/widgets/application_grid_view.dart';
+import 'package:loantrack/widgets/common_widgets.dart';
 import 'package:loantrack/widgets/date_picker.dart';
 import 'package:loantrack/widgets/dialogs.dart';
 import 'package:loantrack/widgets/loan_progress_bar.dart';
@@ -95,18 +95,18 @@ class _LoanRecordState extends State<LoanRecord> {
       child: Scaffold(
         appBar: AppBar(
           centerTitle: true,
-          backgroundColor: Colors.white,
           elevation: 0,
-          leading: GestureDetector(
+          /*      leading: GestureDetector(
               onTap: () {
                 LoanTrackModal.modal(context,
                     content: const LoanTrackAppsGridView(),
+                    height: screenHeight / 2.3,
                     title: 'Applications');
               },
               child: const Padding(
                 padding: EdgeInsets.only(left: 24.0),
                 child: LoanTrackIcons.ApplicationIcon,
-              )),
+              )),*/
           title: (widget.documentSnapshot != null && widget.edit == false)
               ? const Text(
                   'New Repayment Record',
@@ -134,7 +134,6 @@ class _LoanRecordState extends State<LoanRecord> {
             )
           ],
         ),
-        backgroundColor: Colors.white,
         body: Stack(children: [
           SingleChildScrollView(
             child: Padding(
@@ -300,7 +299,7 @@ class _LoanRecordState extends State<LoanRecord> {
         ),
         separatorSpace20,
         const Text(
-          'LOANER INFORMATION',
+          'LENDER INFORMATION',
           style: TextStyle(color: LoanTrackColors.PrimaryTwoLight),
         ),
         separatorSpace20,
@@ -313,11 +312,41 @@ class _LoanRecordState extends State<LoanRecord> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                LoanTrackTextField(
-                  controller: lenderTypeController,
-                  label: 'Lender Type',
-                  color: LoanTrackColors.PrimaryOne,
-                  //icon: Icon(Icons.note),
+                GestureDetector(
+                  onTap: () => LoanTrackModal.modal(
+                    context,
+                    height: MediaQuery.of(context).size.height / 2.5,
+                    content: Column(
+                        //crossAxisAlignment: CrossAxisAlignment.center,
+                        children: List.generate(
+                            AppLists.lenderType.length,
+                            (index) => GestureDetector(
+                                  onTap: () {
+                                    setState(() {
+                                      lenderTypeController.text =
+                                          AppLists.lenderType[index];
+                                      Navigator.pop(context);
+                                    });
+                                  },
+                                  child: ListTile(
+                                    title: Text(
+                                      AppLists.lenderType[index],
+                                      style: const TextStyle(
+                                        color:
+                                            LoanTrackColors.PrimaryTwoVeryLight,
+                                      ),
+                                    ),
+                                  ),
+                                ))),
+                    title: 'Lender Type',
+                  ),
+                  child: LoanTrackTextField(
+                    enable: false,
+                    controller: lenderTypeController,
+                    label: 'Lender Type',
+                    color: LoanTrackColors.PrimaryOne,
+                    //icon: Icon(Icons.note),
+                  ),
                 ),
                 separatorSpace5,
                 const Text('Online App, Family & Friends, Bank & MFB',
@@ -350,11 +379,40 @@ class _LoanRecordState extends State<LoanRecord> {
         // Loan purpose
 
         separatorSpace20,
-        LoanTrackTextField(
-          controller: loanPurposeController,
-          label: 'Loan Purpose',
-          color: LoanTrackColors.PrimaryOne,
-          //icon: Icon(Icons.note),
+        GestureDetector(
+          onTap: () => LoanTrackModal.modal(
+            context,
+            height: MediaQuery.of(context).size.height / 2.5,
+            content: Column(
+                //crossAxisAlignment: CrossAxisAlignment.center,
+                children: List.generate(
+                    AppLists.loanPurpose.length,
+                    (index) => GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              loanPurposeController.text =
+                                  AppLists.loanPurpose[index];
+                              Navigator.pop(context);
+                            });
+                          },
+                          child: ListTile(
+                            title: Text(
+                              AppLists.loanPurpose[index],
+                              style: const TextStyle(
+                                color: LoanTrackColors.PrimaryTwoVeryLight,
+                              ),
+                            ),
+                          ),
+                        ))),
+            title: 'Loan Purpose',
+          ),
+          child: LoanTrackTextField(
+            enable: false,
+            controller: loanPurposeController,
+            label: 'Loan Purpose',
+            color: LoanTrackColors.PrimaryOne,
+            //icon: Icon(Icons.note),
+          ),
         ),
 
         separatorSpace20,
@@ -425,8 +483,6 @@ class _LoanRecordState extends State<LoanRecord> {
 
               db
                   .updateLoanData(
-                      entryDate: DateTime.now().toString().substring(0, 10),
-                      modifiedWhen: DateTime.now().toString().substring(0, 10),
                       loanAmount: double.parse(loanAmountController.text),
                       amountRepaid: double.parse(repaidController.text),
                       interestRate: double.parse(rateController.text),
@@ -443,7 +499,7 @@ class _LoanRecordState extends State<LoanRecord> {
                     context: context,
                     title: 'Success',
                     successMessage:
-                        'You have successfully added a repayment record to your ${widget.documentSnapshot!.get('lender')} loan',
+                        'Loan record "${lenderController.text} - ${loanAmountController.text}" successfully created.',
                     whenTapped: () {
                       Navigator.pushNamed(context, '/home');
                     });
@@ -453,6 +509,10 @@ class _LoanRecordState extends State<LoanRecord> {
                     title: 'Error',
                     errorMessage:
                         'An error has occurred while creating your loan record');
+                if (kDebugMode) {
+                  print(error);
+                  print(stackTrace);
+                }
               });
             }
           },
@@ -935,7 +995,7 @@ class _LoanRecordState extends State<LoanRecord> {
         Container(
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
-            color: LoanTrackColors.PrimaryOne.withOpacity(.1),
+            color: LoanTrackColors.PrimaryOneVeryLight.withOpacity(.1),
             borderRadius: BorderRadius.circular(10),
           ),
           child: Column(
@@ -951,6 +1011,7 @@ class _LoanRecordState extends State<LoanRecord> {
               separatorSpace5,
 
               RepaymentBulletedList(
+                  loanId: widget.documentSnapshot!.id,
                   height: screenHeight * .15,
                   userId: _userUID,
                   numberOfItems: 3)

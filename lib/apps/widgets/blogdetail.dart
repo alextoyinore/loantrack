@@ -68,14 +68,16 @@ class _BlogDetailState extends State<BlogDetail> {
 
   @override
   Widget build(BuildContext context) {
-    return WebView(
-      javascriptMode: JavascriptMode.unrestricted,
-      allowsInlineMediaPlayback: true,
-      initialMediaPlaybackPolicy: AutoMediaPlaybackPolicy.always_allow,
-      onWebViewCreated: (controller) {
-        this.controller = controller;
-        loadBlogContent();
-      },
+    return Scaffold(
+      body: WebView(
+        javascriptMode: JavascriptMode.unrestricted,
+        allowsInlineMediaPlayback: true,
+        initialMediaPlaybackPolicy: AutoMediaPlaybackPolicy.always_allow,
+        onWebViewCreated: (controller) {
+          this.controller = controller;
+          loadBlogContent();
+        },
+      ),
     );
 
     /*Scaffold(

@@ -55,6 +55,7 @@ dependencies:
   path_provider: ^2.0.10
   firebase_messaging: ^11.3.0
   flutter_local_notifications: ^9.5.2
+  shared_preferences: ^2.0.15
 
 dev_dependencies:
   flutter_test:

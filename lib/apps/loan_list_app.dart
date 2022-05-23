@@ -55,13 +55,18 @@ class _LoanTrackingPageState extends State<LoanTrackingPage> {
                       height: screenHeight / 12,
                       padding: const EdgeInsets.symmetric(
                           vertical: 10, horizontal: 0),
-                      decoration: BoxDecoration(border: Border.all()),
+                      decoration: BoxDecoration(
+                          border: Border.all(
+                        color: seed,
+                      )),
                       child: Column(
                         //crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           const Text(
                             'TOTAL REPAID',
-                            style: TextStyle(),
+                            style: TextStyle(
+                              color: seed,
+                            ),
                           ),
                           StreamBuilder<QuerySnapshot>(
                               stream: FirebaseFirestore.instance
@@ -84,12 +89,12 @@ class _LoanTrackingPageState extends State<LoanTrackingPage> {
                                     ? Text(totalRepaid.toString(),
                                         style: const TextStyle(
                                           fontSize: 20,
+                                          color: seed,
                                         ))
                                     : const Text(
                                         '0.0',
                                         style: TextStyle(
-                                            color: LoanTrackColors2.PrimaryOne,
-                                            fontSize: 20),
+                                            color: seed, fontSize: 20),
                                       );
                               })
                         ],
@@ -104,12 +109,13 @@ class _LoanTrackingPageState extends State<LoanTrackingPage> {
                       height: screenHeight / 12,
                       decoration: BoxDecoration(
                           border: Border.all(
-                              color: LoanTrackColors.PrimaryTwoLight)),
+                        color: LoanTrackColors2.PrimaryOne,
+                      )),
                       child: Column(
                         children: [
                           const Text('CURRENT LOAN TOTAL',
                               style: TextStyle(
-                                  color: LoanTrackColors.PrimaryTwoLight)),
+                                  color: LoanTrackColors2.PrimaryOne)),
                           StreamBuilder<QuerySnapshot>(
                               stream: FirebaseFirestore.instance
                                   .collection('loans')
@@ -153,12 +159,13 @@ class _LoanTrackingPageState extends State<LoanTrackingPage> {
                                 return (totalLoans > 0)
                                     ? Text('$totalLoans',
                                         style: const TextStyle(
-                                            fontSize: 20,
-                                            color: LoanTrackColors.PrimaryTwo))
+                                          fontSize: 20,
+                                          color: LoanTrackColors2.PrimaryOne,
+                                        ))
                                     : const Text(
                                         '0.0',
                                         style: TextStyle(
-                                            color: LoanTrackColors.PrimaryTwo,
+                                            color: LoanTrackColors2.PrimaryOne,
                                             fontSize: 20),
                                       );
                               }),
@@ -228,13 +235,18 @@ class _LoanTrackingPageState extends State<LoanTrackingPage> {
                       height: MediaQuery.of(context).size.height / 12,
                       padding: const EdgeInsets.symmetric(
                           vertical: 10, horizontal: 0),
-                      decoration: BoxDecoration(border: Border.all()),
+                      decoration: BoxDecoration(
+                          border: Border.all(
+                        color: seed,
+                      )),
                       child: Column(
                         //crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           const Text(
                             'TOTAL REPAID',
-                            style: TextStyle(),
+                            style: TextStyle(
+                              color: seed,
+                            ),
                           ),
                           StreamBuilder<QuerySnapshot>(
                               stream: FirebaseFirestore.instance
@@ -256,13 +268,13 @@ class _LoanTrackingPageState extends State<LoanTrackingPage> {
                                 return (totalRepaid > 0)
                                     ? Text(totalRepaid.toString(),
                                         style: const TextStyle(
+                                          color: seed,
                                           fontSize: 20,
                                         ))
                                     : const Text(
                                         '0.0',
                                         style: TextStyle(
-                                            color: LoanTrackColors2.PrimaryOne,
-                                            fontSize: 20),
+                                            color: seed, fontSize: 20),
                                       );
                               })
                         ],
@@ -276,13 +288,13 @@ class _LoanTrackingPageState extends State<LoanTrackingPage> {
                           vertical: 10, horizontal: 0),
                       height: MediaQuery.of(context).size.height / 12,
                       decoration: BoxDecoration(
-                          border: Border.all(
-                              color: LoanTrackColors.PrimaryTwoLight)),
+                          border:
+                              Border.all(color: LoanTrackColors2.PrimaryOne)),
                       child: Column(
                         children: [
                           const Text('CURRENT LOAN TOTAL',
                               style: TextStyle(
-                                  color: LoanTrackColors.PrimaryTwoLight)),
+                                  color: LoanTrackColors2.PrimaryOne)),
                           StreamBuilder<QuerySnapshot>(
                               stream: FirebaseFirestore.instance
                                   .collection('loans')
@@ -327,11 +339,11 @@ class _LoanTrackingPageState extends State<LoanTrackingPage> {
                                     ? Text(totalLoans.toString(),
                                         style: const TextStyle(
                                             fontSize: 20,
-                                            color: LoanTrackColors.PrimaryTwo))
+                                            color: LoanTrackColors2.PrimaryOne))
                                     : const Text(
                                         '0.0',
                                         style: TextStyle(
-                                            color: LoanTrackColors.PrimaryTwo,
+                                            color: LoanTrackColors2.PrimaryOne,
                                             fontSize: 20),
                                       );
                               }),

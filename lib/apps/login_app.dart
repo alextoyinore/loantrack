@@ -73,7 +73,6 @@ class _LoanTrackLoginState extends State<LoanTrackLogin> with ChangeNotifier {
         return Future.value(true);
       },
       child: Scaffold(
-        backgroundColor: Colors.white,
         body: Center(
           child: Padding(
             padding: const EdgeInsets.all(32.0),

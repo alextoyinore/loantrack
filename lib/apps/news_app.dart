@@ -10,32 +10,22 @@ class NewsApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      appBar: AppBar(
+        elevation: 0,
+        foregroundColor: LoanTrackColors.PrimaryOne,
+        title: const Text(
+          'Loan News',
+        ),
+      ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          separatorSpace50,
-          Container(
-            margin: const EdgeInsets.symmetric(horizontal: 24),
-            child: Row(
-              children: const [
-                Icon(
-                  Icons.newspaper,
-                  color: LoanTrackColors2.PrimaryOne,
-                  size: 20,
-                ),
-                SizedBox(width: 10),
-                Text(
-                  'NEWS',
-                  style: TextStyle(
-                      color: LoanTrackColors2.PrimaryOne, fontSize: 20),
-                )
-              ],
-            ),
-          ),
-          separatorSpace10,
+          separatorSpace5,
           const Padding(
-            padding: EdgeInsets.only(left: 24.0),
+            padding: EdgeInsets.only(
+              left: 24.0,
+              right: 24,
+            ),
             child: Text(
               'Here we provide you with news from various media outlets to help you be on the know about your lenders',
               style: TextStyle(
@@ -43,9 +33,9 @@ class NewsApp extends StatelessWidget {
               ),
             ),
           ),
-          //separatorSpace10,
+          separatorSpace10,
           SingleChildScrollView(
-            child: NewsList(height: MediaQuery.of(context).size.height * .85),
+            child: NewsList(height: MediaQuery.of(context).size.height * .83),
           ),
         ],
       ),

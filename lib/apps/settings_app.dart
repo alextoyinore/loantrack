@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:loantrack/apps/providers/login_states.dart';
-import 'package:loantrack/apps/widgets/editprofile.dart';
+import 'package:loantrack/apps/providers/theme_provider.dart';
+import 'package:loantrack/apps/widgets/updateprofile.dart';
+import 'package:loantrack/data/applists.dart';
 import 'package:loantrack/data/authentications.dart';
 import 'package:loantrack/helpers/colors.dart';
 import 'package:loantrack/widgets/common_widgets.dart';
@@ -18,7 +20,13 @@ class AppSettings extends StatefulWidget {
 
 class _AppSettingsState extends State<AppSettings> {
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    String themeName = context.read<ThemeManager>().themeName();
     return WillPopScope(
       onWillPop: () async {
         return false;
@@ -42,7 +50,12 @@ class _AppSettingsState extends State<AppSettings> {
                 leading: const Icon(
                   Icons.info_outline,
                 ),
-                title: const Text('About', style: TextStyle()),
+                title: const Text(
+                  'About',
+                  style: TextStyle(
+                    color: LoanTrackColors.PrimaryTwoLight,
+                  ),
+                ),
                 onTap: () {
                   LoanTrackModal.modal(context,
                       content: const SingleChildScrollView(
@@ -62,7 +75,12 @@ class _AppSettingsState extends State<AppSettings> {
                 leading: const Icon(
                   Icons.person,
                 ),
-                title: const Text('Profile Settings', style: TextStyle()),
+                title: const Text(
+                  'Profile Settings',
+                  style: TextStyle(
+                    color: LoanTrackColors.PrimaryTwoLight,
+                  ),
+                ),
                 onTap: () {
                   Navigator.push(
                       context,
@@ -70,6 +88,69 @@ class _AppSettingsState extends State<AppSettings> {
                         builder: (context) => const ProfileUpdate(),
                       ));
                 },
+              ),
+              Divider(
+                  thickness: .5,
+                  color: LoanTrackColors.PrimaryTwo.withOpacity(.2)),
+              GestureDetector(
+                onTap: () => LoanTrackModal.modal(
+                  context,
+                  height: MediaQuery.of(context).size.height / 3.5,
+                  content: Column(
+                      //crossAxisAlignment: CrossAxisAlignment.center,
+                      children: List.generate(
+                          AppLists.theme.length,
+                          (index) => GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    themeName = AppLists.theme[index];
+                                    if (AppLists.theme[index] == 'Light') {
+                                      context
+                                          .read<ThemeManager>()
+                                          .setLightTheme();
+                                    } else if (AppLists.theme[index] ==
+                                        'Dark') {
+                                      context
+                                          .read<ThemeManager>()
+                                          .setDarkTheme();
+                                    } else {
+                                      context
+                                          .read<ThemeManager>()
+                                          .setSystemTheme();
+                                    }
+
+                                    Navigator.pop(context);
+                                  });
+                                },
+                                child: ListTile(
+                                  title: Text(
+                                    AppLists.theme[index],
+                                    style: const TextStyle(
+                                      color:
+                                          LoanTrackColors.PrimaryTwoVeryLight,
+                                    ),
+                                  ),
+                                ),
+                              ))),
+                  title: 'Select Theme',
+                ),
+                child: ListTile(
+                  leading: const Icon(
+                    Icons.light,
+                  ),
+                  title: const Text(
+                    'Theme',
+                    style: TextStyle(
+                      color: LoanTrackColors.PrimaryTwoLight,
+                    ),
+                  ),
+                  trailing: Text(
+                    themeName,
+                    style: const TextStyle(
+                      color: seed,
+                    ),
+                  ),
+                ),
               ),
               Divider(
                   thickness: .5,

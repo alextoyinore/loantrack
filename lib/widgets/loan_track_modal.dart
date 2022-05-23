@@ -14,7 +14,6 @@ class LoanTrackModal {
     double screenHeight = MediaQuery.of(context).size.height;
     showModalBottomSheet(
         isScrollControlled: true,
-        //backgroundColor: Colors.white.withOpacity(0),
         context: context,
         builder: (context) {
           return Stack(children: [
@@ -26,9 +25,8 @@ class LoanTrackModal {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    separatorSpace80,
+                    separatorSpace50,
                     Container(
-                      color: Colors.transparent,
                       padding: const EdgeInsets.symmetric(
                         horizontal: 20.0,
                         vertical: 5,

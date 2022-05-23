@@ -7,8 +7,11 @@ import 'package:loantrack/apps/loan_compare_app.dart';
 import 'package:loantrack/apps/loan_health_app.dart';
 import 'package:loantrack/apps/loan_list_app.dart';
 import 'package:loantrack/apps/news_app.dart';
+import 'package:loantrack/apps/providers/preferences.dart';
+import 'package:loantrack/apps/providers/theme_provider.dart';
 import 'package:loantrack/helpers/colors.dart';
 import 'package:loantrack/widgets/common_widgets.dart';
+import 'package:provider/provider.dart';
 
 import '../../helpers/listwidgets.dart';
 import '../../widgets/application_grid_view.dart';
@@ -24,6 +27,20 @@ class HomeView extends StatefulWidget {
 
 class _HomeViewState extends State<HomeView> {
   final ScrollController _controller = ScrollController();
+
+  String storedThemeName = '';
+
+  void getTheme() async {
+    ThemePreferences themePreferences = ThemePreferences();
+    storedThemeName = await themePreferences.getTheme();
+  }
+
+  @override
+  void initState() {
+    getTheme();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
@@ -32,6 +49,10 @@ class _HomeViewState extends State<HomeView> {
     String userId = FirebaseAuth.instance.currentUser!.uid;
 
     ScrollController sliderScrollController = ScrollController();
+
+    // Watch theme
+    ThemeStates themeStates = context.watch<ThemeManager>().themeMode;
+    var providedTheme = context.read<ThemeManager>().themeMode;
 
     return SingleChildScrollView(
       controller: _controller,
@@ -43,44 +64,69 @@ class _HomeViewState extends State<HomeView> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
+                  Container(
+                    padding: EdgeInsets.zero,
+                    width: screenWidth / 12,
+                    height: screenWidth / 12,
+                    decoration: BoxDecoration(
+                      border: Border.all(width: 0),
+                      borderRadius: BorderRadius.circular(100),
+                    ),
+                    clipBehavior: Clip.antiAliasWithSaveLayer,
+                    child: Image.asset(
+                      'assets/images/user_profile.png',
+                      scale: 10,
+                    ),
+                  ),
+                  horizontalSeparatorSpace10,
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text('Welcome,',
-                          style: TextStyle(
-                              fontSize: 16,
-                              color: LoanTrackColors.PrimaryTwoLight)),
-                      separatorSpace5,
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          const Text('Welcome, ',
+                              style: TextStyle(
+                                  fontSize: 16,
+                                  color: LoanTrackColors.PrimaryOne)),
+                          separatorSpace5,
+                          Text(
+                              FirebaseAuth.instance.currentUser!.displayName
+                                  .toString(),
+                              //.toUpperCase(),
+                              style: const TextStyle(
+                                  fontSize: 16,
+                                  //fontWeight: FontWeight.bold,
+                                  color: LoanTrackColors.PrimaryOne)),
+                        ],
+                      ),
+                      // separatorSpace5,
                       Text(
-                          FirebaseAuth.instance.currentUser!.displayName
-                              .toString(),
-                          //.toUpperCase(),
+                          Timestamp.now()
+                              .toDate()
+                              .toLocal()
+                              .toString()
+                              .substring(0, 16),
                           style: const TextStyle(
-                              fontSize: 16,
-                              //fontWeight: FontWeight.bold,
-                              color: LoanTrackColors.PrimaryTwoLight)),
+                            fontSize: 12,
+                            color: LoanTrackColors.PrimaryTwoVeryLight,
+                          )),
                     ],
                   ),
-                  separatorSpace5,
-                  Text(
-                      Timestamp.now()
-                          .toDate()
-                          .toLocal()
-                          .toString()
-                          .substring(0, 16),
-                      style: const TextStyle(
-                        fontSize: 12,
-                        color: LoanTrackColors.PrimaryTwoVeryLight,
-                      )),
                 ],
               ),
-              const CircleAvatar(
-                radius: 20,
-                backgroundImage: AssetImage('assets/images/user_profile.png'),
-              ),
+              (storedThemeName == 'Light' || providedTheme == ThemeStates.light)
+                  ? const Icon(
+                      Icons.light_mode,
+                      size: 20,
+                    )
+                  : (storedThemeName == 'Dark' ||
+                          providedTheme == ThemeStates.dark)
+                      ? const Icon(Icons.nightlight)
+                      : const Icon(Icons.contrast),
             ],
           ),
           separatorSpace20,
@@ -281,7 +327,7 @@ class _HomeViewState extends State<HomeView> {
 
           LoanList(
               width: screenWidth,
-              height: screenHeight / 7,
+              height: screenHeight / 6,
               userId: userId,
               numberOfItems: 5),
           //END LOAN PROGRESS
@@ -450,8 +496,8 @@ class LoanTrackProductLinkBox extends StatelessWidget {
       //focusColor: LoanTrackColors2.PrimaryOneVeryLight,
       child: Container(
         width: screenHeight / 8,
-        height: screenHeight / 10,
-        padding: const EdgeInsets.all(10),
+        height: screenHeight / 8,
+        padding: const EdgeInsets.all(8),
         decoration: BoxDecoration(
             color: backgroundColor.withOpacity(.1),
             borderRadius: BorderRadius.circular(10),
