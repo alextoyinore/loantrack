@@ -41,15 +41,18 @@ class Main extends StatefulWidget {
 class _MainState extends State<Main> {
   int storedThemeNumber = 0;
 
-  Future<int> getTheme() async {
+  Future<void> getThemeNumber() async {
     ThemePreferences themePreferences = ThemePreferences();
-    return await themePreferences.getTheme();
+    int themeNumber = await themePreferences.getThemeNumber();
+    setState(() {
+      storedThemeNumber = themeNumber;
+    });
   }
 
   @override
   void initState() {
+    getThemeNumber();
     super.initState();
-    getTheme();
   }
 
   @override
@@ -58,32 +61,38 @@ class _MainState extends State<Main> {
       print(storedThemeNumber);
     }
 
-    var providedTheme = context.read<ThemeManager>().themeMode;
+    context.watch<ThemeManager>().themeNumber;
+    var newlySetTheme = context.read<ThemeManager>().themeNumber;
+
+    if (newlySetTheme > -1) {
+      setState(() {
+        storedThemeNumber = newlySetTheme;
+      });
+    }
 
     // Run App
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-      statusBarBrightness: (providedTheme == ThemeMode.light)
-          ? Brightness.dark
-          : Brightness.light,
-      statusBarIconBrightness: (providedTheme == ThemeMode.light)
-          ? Brightness.dark
-          : Brightness.light,
-      systemNavigationBarColor: (providedTheme == ThemeMode.light)
+      statusBarBrightness:
+          (storedThemeNumber == 2) ? Brightness.dark : Brightness.light,
+      statusBarIconBrightness:
+          (storedThemeNumber == 1) ? Brightness.dark : Brightness.light,
+      systemNavigationBarColor: (storedThemeNumber == 1)
           ? lightColorScheme.background
-          : darkColorScheme.background,
-      systemNavigationBarIconBrightness: (providedTheme == ThemeMode.light)
-          ? Brightness.dark
-          : Brightness.light,
+          : (storedThemeNumber == 0)
+              ? seed.withOpacity(.8)
+              : darkColorScheme.background,
+      systemNavigationBarIconBrightness:
+          (storedThemeNumber == 2) ? Brightness.dark : Brightness.light,
       statusBarColor: Colors.transparent,
     ));
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Loantrack',
-      themeMode: (providedTheme == ThemeMode.dark)
-          ? ThemeMode.dark
-          : (providedTheme == ThemeMode.light)
-              ? ThemeMode.light
+      themeMode: (storedThemeNumber == 1)
+          ? ThemeMode.light
+          : (storedThemeNumber == 2)
+              ? ThemeMode.dark
               : ThemeMode.system,
 
       // Light Theme

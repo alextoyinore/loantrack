@@ -7,7 +7,6 @@ import 'package:loantrack/apps/loan_health_app.dart';
 import 'package:loantrack/apps/loan_list_app.dart';
 import 'package:loantrack/apps/news_app.dart';
 import 'package:loantrack/apps/providers/loan_provider.dart';
-import 'package:loantrack/apps/providers/preferences.dart';
 import 'package:loantrack/apps/providers/theme_provider.dart';
 import 'package:loantrack/apps/read_app.dart';
 import 'package:loantrack/apps/summary.dart';
@@ -32,14 +31,8 @@ class _HomeViewState extends State<HomeView> {
 
   int storedThemeNumber = 0;
 
-  void getTheme() async {
-    ThemePreferences themePreferences = ThemePreferences();
-    storedThemeNumber = await themePreferences.getTheme();
-  }
-
   @override
   void initState() {
-    getTheme();
     super.initState();
   }
 
@@ -54,7 +47,7 @@ class _HomeViewState extends State<HomeView> {
 
     // Watch theme
 
-    var providedTheme = context.read<ThemeManager>().themeMode;
+    var providedTheme = context.read<ThemeManager>().themeNumber;
 
     return Stack(
       children: [
@@ -68,11 +61,36 @@ class _HomeViewState extends State<HomeView> {
                 height: 250,
               ),
               // BEGIN LOAN CARD
-              Container(
+              SizedBox(
                 width: screenWidth,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    SizedBox(
+                      width: screenWidth,
+                      height: screenHeight / 4.5,
+                      child: ListView.builder(
+                          itemCount: 4,
+                          scrollDirection: Axis.horizontal,
+                          itemBuilder: (_, index) {
+                            return Container(
+                              width: screenWidth * .8,
+                              height: screenHeight / 4.5,
+                              margin: const EdgeInsets.only(right: 10),
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .primary
+                                      .withOpacity(.1),
+                                  image: DecorationImage(
+                                    image: AssetImage(
+                                        'assets/images/sliders${index + 1}.png'),
+                                    fit: BoxFit.cover,
+                                  )),
+                            );
+                          }),
+                    ),
                     separatorSpace20,
                     Text(
                       'NEW RECORD',
@@ -285,9 +303,13 @@ class _HomeViewState extends State<HomeView> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Text(
+                    Text(
                       'POPULAR APPS',
-                      style: TextStyle(color: LoanTrackColors.PrimaryTwoLight),
+                      style: TextStyle(
+                          color: Theme.of(context)
+                              .colorScheme
+                              .onBackground
+                              .withOpacity(.7)),
                     ),
                     GestureDetector(
                       onTap: () {
@@ -298,10 +320,13 @@ class _HomeViewState extends State<HomeView> {
                           title: 'Applications',
                         );
                       },
-                      child: const Text(
+                      child: Text(
                         'SEE ALL',
-                        style:
-                            TextStyle(color: LoanTrackColors.PrimaryTwoLight),
+                        style: TextStyle(
+                            color: Theme.of(context)
+                                .colorScheme
+                                .onBackground
+                                .withOpacity(.7)),
                       ),
                     )
                   ],
@@ -400,8 +425,10 @@ class _HomeViewState extends State<HomeView> {
                     horizontalSeparatorSpace20,
                     GestureDetector(
                       onTap: () {
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (context) => NewsApp()));
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const NewsApp()));
                       },
                       child: const LoanTrackProductLinkBox(
                         icon: Icon(Icons.newspaper,

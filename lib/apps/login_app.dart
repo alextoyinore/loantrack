@@ -193,16 +193,40 @@ class _LoanTrackLoginState extends State<LoanTrackLogin> with ChangeNotifier {
             context: context,
             label: 'Start Here',
           ),
+          SizedBox(
+            height: MediaQuery.of(context).size.height / 3,
+          ),
         ],
       ),
       Positioned(
-        top: MediaQuery.of(context).size.height - 50,
-        child: Image.asset(
-          'assets/images/logo.png',
-          scale: 10,
-          color: Theme.of(context).colorScheme.onBackground.withOpacity(.1),
-        ),
-      ),
+          bottom: 0,
+          child: Row(
+            children: [
+              Icon(
+                Icons.copyright,
+                size: 20,
+                color:
+                    Theme.of(context).colorScheme.onBackground.withOpacity(.2),
+              ),
+              horizontalSeparatorSpace5,
+              Image.asset(
+                'assets/images/logo.png',
+                scale: 15,
+                color:
+                    Theme.of(context).colorScheme.onBackground.withOpacity(.2),
+              ),
+              horizontalSeparatorSpace5,
+              Text(
+                DateTime.now().year.toString(),
+                style: TextStyle(
+                  color: Theme.of(context)
+                      .colorScheme
+                      .onBackground
+                      .withOpacity(.3),
+                ),
+              ),
+            ],
+          )),
     ]);
   }
 
@@ -285,7 +309,33 @@ class _LoanTrackLoginState extends State<LoanTrackLogin> with ChangeNotifier {
               ),
             ),
           ],
-        )
+        ),
+        SizedBox(
+          height: MediaQuery.of(context).size.height / 4.5,
+        ),
+        Row(
+          children: [
+            Icon(
+              Icons.copyright,
+              size: 20,
+              color: Theme.of(context).colorScheme.onBackground.withOpacity(.2),
+            ),
+            horizontalSeparatorSpace5,
+            Image.asset(
+              'assets/images/logo.png',
+              scale: 15,
+              color: Theme.of(context).colorScheme.onBackground.withOpacity(.2),
+            ),
+            horizontalSeparatorSpace5,
+            Text(
+              DateTime.now().year.toString(),
+              style: TextStyle(
+                color:
+                    Theme.of(context).colorScheme.onBackground.withOpacity(.3),
+              ),
+            ),
+          ],
+        ),
       ],
     );
   }

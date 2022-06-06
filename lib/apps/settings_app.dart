@@ -113,18 +113,12 @@ class _AppSettingsState extends State<AppSettings> {
                                   setState(() {
                                     themeName = AppLists.theme[index];
                                     if (AppLists.theme[index] == 'Light') {
-                                      context
-                                          .read<ThemeManager>()
-                                          .setLightTheme(ThemeMode.light);
+                                      context.read<ThemeManager>().setTheme(1);
                                     } else if (AppLists.theme[index] ==
                                         'Dark') {
-                                      context
-                                          .read<ThemeManager>()
-                                          .setDarkTheme(ThemeMode.dark);
+                                      context.read<ThemeManager>().setTheme(2);
                                     } else {
-                                      context
-                                          .read<ThemeManager>()
-                                          .setSystemTheme(ThemeMode.system);
+                                      context.read<ThemeManager>().setTheme(0);
                                     }
 
                                     Navigator.pop(context);

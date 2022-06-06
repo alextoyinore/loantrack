@@ -42,7 +42,7 @@ class NewsApp extends StatelessWidget {
                           onTap: () {
                             Navigator.pop(context);
                           },
-                          child: Icon(Icons.close)),
+                          child: const Icon(Icons.close)),
                     ],
                   ),
                   separatorSpace10,

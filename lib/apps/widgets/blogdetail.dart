@@ -34,7 +34,7 @@ class _BlogDetailState extends State<BlogDetail> {
         #authorDetails {font-size: 2.5em; color: #aaa; line-height: 1.5;}
         #authorImage {width: 100%; height: 100%; border-radius: 100%; background: center/cover no-repeat url("${widget.blog.get('author_image')}");}
       </style>
-      <body style="${(providedTheme == ThemeMode.light) ? 'background-color:#FFFBFE;' : 'background-color:#1C1B1F;'}">
+      <body style="${(providedTheme == 1) ? 'background-color:#FFFBFE;' : 'background-color:#1C1B1F;'}">
         
         <div id="featuredImage"></div> 
 
@@ -73,7 +73,7 @@ class _BlogDetailState extends State<BlogDetail> {
 
   @override
   Widget build(BuildContext context) {
-    providedTheme = context.read<ThemeManager>().themeMode;
+    providedTheme = context.read<ThemeManager>().themeNumber;
     return Scaffold(
       body: WebView(
         javascriptMode: JavascriptMode.unrestricted,

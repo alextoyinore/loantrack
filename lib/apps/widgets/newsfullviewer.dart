@@ -30,7 +30,7 @@ class _NewsFullViewerState extends State<NewsFullViewer> {
       body: WebView(
         key: _key,
         initialUrl: widget.news.get('link').toString(),
-        javascriptMode: JavascriptMode.disabled,
+        javascriptMode: JavascriptMode.unrestricted,
       ),
     );
   }

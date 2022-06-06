@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:loantrack/apps/credit_score_app.dart';
-import 'package:loantrack/apps/loan_compare_app.dart';
 import 'package:loantrack/apps/loan_list_app.dart';
 import 'package:loantrack/apps/loan_record_app.dart';
 import 'package:loantrack/apps/mail_and_messages_app.dart';
@@ -20,21 +19,21 @@ class LocalData {
   static final List<Apps> applicationList = [
     Apps(
       iconData: Icons.history_edu,
-      name: 'Loan History',
+      name: 'Loans',
       destinationWidget: LoanTrackingPage(loanListHeight: -1, isHome: false),
     ),
     Apps(
       iconData: Icons.payment,
-      name: 'Repayment History',
+      name: 'Repayments',
       destinationWidget: const RepaymentHistory(),
     ),
     Apps(
         iconData: Icons.health_and_safety,
-        name: 'Loan Health',
+        name: 'Health',
         destinationWidget: const LoanHealth()),
     Apps(
         iconData: Icons.phone_in_talk,
-        name: 'Loan Advisor',
+        name: 'Read',
         destinationWidget: const Read()),
     Apps(
         iconData: Icons.money,
@@ -45,12 +44,8 @@ class LocalData {
         name: 'Repay Loan',
         destinationWidget: LoanTrackingPage(loanListHeight: -1, isHome: false)),
     Apps(
-        iconData: Icons.auto_graph,
-        name: 'Lending Pattern',
-        destinationWidget: const LendingPattern()),
-    Apps(
         iconData: Icons.notifications_none_sharp,
-        name: 'Notifications',
+        name: 'Notices',
         destinationWidget: const Notifications()),
     Apps(
         iconData: Icons.message,
@@ -62,7 +57,7 @@ class LocalData {
         destinationWidget: const NewsApp()),
     Apps(
         iconData: Icons.numbers,
-        name: 'Credit Score',
+        name: 'Score',
         destinationWidget: const CreditScore()),
     Apps(
         iconData: Icons.person_outline,

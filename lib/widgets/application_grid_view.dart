@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:loantrack/data/local.dart';
-import 'package:loantrack/helpers/colors.dart';
 
 class LoanTrackAppsGridView extends StatefulWidget {
   const LoanTrackAppsGridView({Key? key}) : super(key: key);
@@ -34,9 +33,15 @@ class _LoanTrackAppsGridViewState extends State<LoanTrackAppsGridView> {
               decoration: BoxDecoration(
                   border: Border.all(
                       width: 1.2,
-                      color: LoanTrackColors.PrimaryOne.withOpacity(.5)),
+                      color: Theme.of(context)
+                          .colorScheme
+                          .onBackground
+                          .withOpacity(.05)),
                   borderRadius: BorderRadius.circular(10),
-                  color: LoanTrackColors.PrimaryOne.withOpacity(.1)),
+                  color: Theme.of(context)
+                      .colorScheme
+                      .onBackground
+                      .withOpacity(.05)),
               child: Column(
                 children: [
                   Padding(
@@ -44,7 +49,10 @@ class _LoanTrackAppsGridViewState extends State<LoanTrackAppsGridView> {
                     child: Icon(
                       LocalData.applicationList[index].iconData,
                       size: 25,
-                      color: LoanTrackColors.PrimaryOneDark,
+                      color: Theme.of(context)
+                          .colorScheme
+                          .onBackground
+                          .withOpacity(.7),
                     ),
                   ),
                   Padding(
@@ -52,10 +60,13 @@ class _LoanTrackAppsGridViewState extends State<LoanTrackAppsGridView> {
                     child: Text(
                       LocalData.applicationList[index].name.toUpperCase(),
                       textAlign: TextAlign.center,
-                      style: const TextStyle(
+                      style: TextStyle(
                           fontWeight: FontWeight.w300,
                           fontSize: 12,
-                          color: LoanTrackColors.PrimaryOneDark),
+                          color: Theme.of(context)
+                              .colorScheme
+                              .onBackground
+                              .withOpacity(.7)),
                     ),
                   ),
                 ],
