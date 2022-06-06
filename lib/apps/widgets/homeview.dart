@@ -1,3 +1,4 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -10,6 +11,7 @@ import 'package:loantrack/apps/providers/loan_provider.dart';
 import 'package:loantrack/apps/providers/theme_provider.dart';
 import 'package:loantrack/apps/read_app.dart';
 import 'package:loantrack/apps/summary.dart';
+import 'package:loantrack/data/applists.dart';
 import 'package:loantrack/helpers/colors.dart';
 import 'package:loantrack/helpers/styles.dart';
 import 'package:loantrack/widgets/common_widgets.dart';
@@ -67,30 +69,31 @@ class _HomeViewState extends State<HomeView> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     SizedBox(
-                      width: screenWidth,
-                      height: screenHeight / 4.5,
-                      child: ListView.builder(
-                          itemCount: 4,
-                          scrollDirection: Axis.horizontal,
-                          itemBuilder: (_, index) {
-                            return Container(
-                              width: screenWidth * .8,
-                              height: screenHeight / 4.5,
-                              margin: const EdgeInsets.only(right: 10),
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  color: Theme.of(context)
-                                      .colorScheme
-                                      .primary
-                                      .withOpacity(.1),
-                                  image: DecorationImage(
-                                    image: AssetImage(
-                                        'assets/images/sliders${index + 1}.png'),
-                                    fit: BoxFit.cover,
-                                  )),
-                            );
-                          }),
-                    ),
+                        width: screenWidth,
+                        height: screenHeight / 4,
+                        child: CarouselSlider(
+                          items: AppLists.homeScreenSliderImages
+                              .map((item) => Container(
+                                    width: screenWidth,
+                                    height: screenHeight / 4,
+                                    margin: const EdgeInsets.only(right: 5),
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(10),
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .primary
+                                            .withOpacity(.1),
+                                        image: DecorationImage(
+                                          image: AssetImage(item),
+                                          fit: BoxFit.cover,
+                                        )),
+                                  ))
+                              .toList(),
+                          options: CarouselOptions(
+                            autoPlay: true,
+                            viewportFraction: 1,
+                          ),
+                        )),
                     separatorSpace20,
                     Text(
                       'NEW RECORD',

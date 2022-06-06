@@ -3,6 +3,13 @@ class AppLists {
   static List<String> inMemoryLoanDetails = [];
   static List<String> inMemoryUserDetails = [];
 
+  static List<String> homeScreenSliderImages = [
+    'assets/images/sliders1.png',
+    'assets/images/sliders2.png',
+    'assets/images/sliders3.png',
+    'assets/images/sliders4.png',
+  ];
+
   static List<String> lenderType = [
     'Loan App',
     'Bank/MFB',
