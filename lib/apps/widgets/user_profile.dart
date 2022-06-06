@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:loantrack/helpers/colors.dart';
 import 'package:loantrack/helpers/listwidgets.dart';
+import 'package:loantrack/helpers/styles.dart';
 import 'package:loantrack/widgets/common_widgets.dart';
 
 class UserProfile extends StatefulWidget {
@@ -20,20 +20,14 @@ class _UserProfileState extends State<UserProfile> {
       // height: screenHeight,
       padding: const EdgeInsets.all(24),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          //separatorSpace20,
-          const CircleAvatar(
-            backgroundImage: AssetImage('assets/images/user_profile.png'),
-            radius: 50,
-          ),
           Text(
-            user!.displayName.toString(),
-            style: const TextStyle(
-                fontSize: 18, color: LoanTrackColors.PrimaryTwoVeryLight),
+            '${user!.displayName.toString()}\'s Profile',
+            style: titleStyle(context),
           ),
-          separatorLine,
-          separatorSpace10,
-          userProfile(height: screenHeight / 1.7),
+          separatorSpace20,
+          userProfile(height: screenHeight / 1.37),
         ],
       ),
     );

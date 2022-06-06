@@ -2,7 +2,10 @@ import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:webview_flutter/webview_flutter.dart';
+
+import '../providers/theme_provider.dart';
 
 class BlogDetail extends StatefulWidget {
   BlogDetail({Key? key, required this.blog}) : super(key: key);
@@ -16,20 +19,22 @@ class BlogDetail extends StatefulWidget {
 class _BlogDetailState extends State<BlogDetail> {
   late WebViewController controller;
 
+  late var providedTheme;
+
   Future<void> loadBlogContent() async {
     final url = Uri.dataFromString(
       '''
       <style>
         body {margin: 0px; padding: 0px; }
-        #featuredImage {margin: 0px; height: 60%; width: 115%; background: center/cover url("${widget.blog.get('featuredImage')}")}
+        #featuredImage {margin: 0px; height: 50%; width: 115%; background: center/cover url("${widget.blog.get('featuredImage')}")}
         #content {padding: 7.5%; width: 100%;}
         #content p { font-size: 3em; color: grey; line-height: 1.5;}
-        h1{font-size:5em;}
+        h1{font-size:5em; color: #777;}
         #authorBox {align-content: start; display: grid; grid-template-columns: 1fr 3fr; column-gap: 3%; height: 12%;}
         #authorDetails {font-size: 2.5em; color: #aaa; line-height: 1.5;}
         #authorImage {width: 100%; height: 100%; border-radius: 100%; background: center/cover no-repeat url("${widget.blog.get('author_image')}");}
       </style>
-      <body>
+      <body style="${(providedTheme == ThemeMode.light) ? 'background-color:#FFFBFE;' : 'background-color:#1C1B1F;'}">
         
         <div id="featuredImage"></div> 
 
@@ -68,6 +73,7 @@ class _BlogDetailState extends State<BlogDetail> {
 
   @override
   Widget build(BuildContext context) {
+    providedTheme = context.read<ThemeManager>().themeMode;
     return Scaffold(
       body: WebView(
         javascriptMode: JavascriptMode.unrestricted,

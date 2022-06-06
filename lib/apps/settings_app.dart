@@ -5,6 +5,7 @@ import 'package:loantrack/apps/widgets/updateprofile.dart';
 import 'package:loantrack/data/applists.dart';
 import 'package:loantrack/data/authentications.dart';
 import 'package:loantrack/helpers/colors.dart';
+import 'package:loantrack/helpers/styles.dart';
 import 'package:loantrack/widgets/common_widgets.dart';
 import 'package:provider/provider.dart';
 
@@ -24,38 +25,32 @@ class _AppSettingsState extends State<AppSettings> {
     super.initState();
   }
 
+  String themeName = '';
+
   @override
   Widget build(BuildContext context) {
-    String themeName = context.read<ThemeManager>().themeName();
     return WillPopScope(
       onWillPop: () async {
         return false;
       },
       child: SingleChildScrollView(
         child: Container(
-          padding: const EdgeInsets.only(left: 16.0, right: 16, top: 32),
+          padding: const EdgeInsets.only(left: 24.0, right: 24, top: 24),
           height: MediaQuery.of(context).size.height,
-          child: ListView(
-            padding: EdgeInsets.zero,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Container(
-                padding: const EdgeInsets.only(left: 16.0, right: 16),
-                child: const Text(
-                  'Adjust your app settings here. Manage your profile settings, app look and feel, and other settings.',
-                  style: TextStyle(color: LoanTrackColors.PrimaryTwoVeryLight),
-                ),
+              Text(
+                'Settings',
+                style: titleStyle(context),
               ),
-              separatorSpace10,
-              ListTile(
-                leading: const Icon(
-                  Icons.info_outline,
-                ),
-                title: const Text(
-                  'About',
-                  style: TextStyle(
-                    color: LoanTrackColors.PrimaryTwoLight,
-                  ),
-                ),
+              separatorSpace20,
+              Text(
+                'Adjust your app settings here. Manage your profile settings, app look and feel, and other settings.',
+                style: descriptionStyle(context),
+              ),
+              separatorSpace40,
+              GestureDetector(
                 onTap: () {
                   LoanTrackModal.modal(context,
                       content: const SingleChildScrollView(
@@ -67,20 +62,22 @@ class _AppSettingsState extends State<AppSettings> {
                               softWrap: true)),
                       title: 'About');
                 },
-              ),
-              Divider(
-                  thickness: .5,
-                  color: LoanTrackColors.PrimaryTwo.withOpacity(.2)),
-              ListTile(
-                leading: const Icon(
-                  Icons.person,
-                ),
-                title: const Text(
-                  'Profile Settings',
-                  style: TextStyle(
-                    color: LoanTrackColors.PrimaryTwoLight,
+                child: Row(children: [
+                  const Icon(
+                    Icons.info_outline,
+                    size: 30,
                   ),
-                ),
+                  const SizedBox(
+                    width: 20,
+                  ),
+                  Text(
+                    'About',
+                    style: bodyStyle(context),
+                  ),
+                ]),
+              ),
+              separatorSpace40,
+              GestureDetector(
                 onTap: () {
                   Navigator.push(
                       context,
@@ -88,10 +85,21 @@ class _AppSettingsState extends State<AppSettings> {
                         builder: (context) => const ProfileUpdate(),
                       ));
                 },
+                child: Row(children: [
+                  const Icon(
+                    Icons.person,
+                    size: 30,
+                  ),
+                  const SizedBox(
+                    width: 20,
+                  ),
+                  Text(
+                    'Profile Settings',
+                    style: bodyStyle(context),
+                  ),
+                ]),
               ),
-              Divider(
-                  thickness: .5,
-                  color: LoanTrackColors.PrimaryTwo.withOpacity(.2)),
+              separatorSpace40,
               GestureDetector(
                 onTap: () => LoanTrackModal.modal(
                   context,
@@ -107,16 +115,16 @@ class _AppSettingsState extends State<AppSettings> {
                                     if (AppLists.theme[index] == 'Light') {
                                       context
                                           .read<ThemeManager>()
-                                          .setLightTheme();
+                                          .setLightTheme(ThemeMode.light);
                                     } else if (AppLists.theme[index] ==
                                         'Dark') {
                                       context
                                           .read<ThemeManager>()
-                                          .setDarkTheme();
+                                          .setDarkTheme(ThemeMode.dark);
                                     } else {
                                       context
                                           .read<ThemeManager>()
-                                          .setSystemTheme();
+                                          .setSystemTheme(ThemeMode.system);
                                     }
 
                                     Navigator.pop(context);
@@ -134,38 +142,51 @@ class _AppSettingsState extends State<AppSettings> {
                               ))),
                   title: 'Select Theme',
                 ),
-                child: ListTile(
-                  leading: const Icon(
+                child: Row(children: [
+                  const Icon(
                     Icons.light,
+                    size: 30,
                   ),
-                  title: const Text(
+                  const SizedBox(
+                    width: 20,
+                  ),
+                  Text(
                     'Theme',
-                    style: TextStyle(
-                      color: LoanTrackColors.PrimaryTwoLight,
-                    ),
+                    style: bodyStyle(context),
                   ),
-                  trailing: Text(
+                  const SizedBox(
+                    width: 20,
+                  ),
+                  Text(
                     themeName,
-                    style: const TextStyle(
-                      color: seed,
-                    ),
+                    style: bodyStyle(context),
                   ),
-                ),
+                ]),
               ),
-              Divider(
-                  thickness: .5,
-                  color: LoanTrackColors.PrimaryTwo.withOpacity(.2)),
-              ListTile(
-                leading: const Icon(Icons.logout,
-                    color: LoanTrackColors2.PrimaryOneLight),
-                title: const Text('Sign Out',
-                    style: TextStyle(color: LoanTrackColors2.PrimaryOneLight)),
+              separatorSpace40,
+              GestureDetector(
                 onTap: () {
                   AuthService auth = AuthService();
                   auth.signOut();
                   context.read<LoginState>().emailVerification();
                   Navigator.pushNamed(context, '/login');
                 },
+                child: Row(
+                  children: [
+                    Icon(
+                      Icons.logout,
+                      color: Theme.of(context).colorScheme.tertiary,
+                      size: 30,
+                    ),
+                    const SizedBox(
+                      width: 20,
+                    ),
+                    Text(
+                      'Sign Out',
+                      style: bodyStyle(context),
+                    ),
+                  ],
+                ),
               ),
             ],
           ),

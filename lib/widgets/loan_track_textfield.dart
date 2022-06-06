@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:loantrack/helpers/colors.dart';
 
 class LoanTrackTextField extends StatefulWidget {
   LoanTrackTextField(
@@ -36,25 +35,29 @@ class _LoanTrackTextFieldState extends State<LoanTrackTextField> {
       onTap: widget.whenTapped,
       controller: widget.controller,
       obscureText: widget.isHidden,
+      textAlign: TextAlign.justify,
       textAlignVertical: TextAlignVertical.top,
-      style: const TextStyle(
-          fontSize: 14, color: LoanTrackColors.PrimaryTwoVeryLight),
+      style: TextStyle(
+        fontSize: 20,
+        color: Theme.of(context).colorScheme.onBackground.withOpacity(.5),
+      ),
       keyboardType: widget.keyboardType,
       decoration: InputDecoration(
           filled: true,
-          border: const OutlineInputBorder(
-            borderSide: BorderSide.none,
-          ),
-          focusColor: widget.color.withOpacity(.05),
+          border: OutlineInputBorder(
+              borderSide: BorderSide.none,
+              borderRadius: BorderRadius.circular(100)),
+          focusColor:
+              Theme.of(context).colorScheme.onBackground.withOpacity(.05),
           enabled: widget.enable,
-          labelText: widget.label,
-          labelStyle:
-              const TextStyle(color: LoanTrackColors.PrimaryTwoVeryLight),
+          hintText: '  ' + widget.label,
           suffixIcon: widget.icon,
           suffixIconColor: widget.color,
-          fillColor: LoanTrackColors.PrimaryTwoVeryLight.withOpacity(.1),
-          focusedBorder: const OutlineInputBorder(
+          fillColor:
+              Theme.of(context).colorScheme.onBackground.withOpacity(.05),
+          focusedBorder: OutlineInputBorder(
             borderSide: BorderSide.none,
+            borderRadius: BorderRadius.circular(100),
           )),
     );
   }

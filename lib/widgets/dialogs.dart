@@ -11,10 +11,17 @@ void showErrorDialog(
     context: context,
     builder: (context) {
       return AlertDialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(50),
+        ),
+        backgroundColor: Theme.of(context).colorScheme.errorContainer,
         buttonPadding: EdgeInsets.zero,
         title: Text(
           title,
-          style: const TextStyle(fontSize: 24),
+          style: TextStyle(
+            fontSize: 24,
+            color: Theme.of(context).colorScheme.onErrorContainer,
+          ),
         ),
         content: SingleChildScrollView(
           child: Column(
@@ -26,23 +33,23 @@ void showErrorDialog(
                     ? '${(e as dynamic).message}'
                     : errorMessage,
                 textAlign: TextAlign.left,
-                style: const TextStyle(
-                    fontSize: 16, color: LoanTrackColors.PrimaryTwoLight),
+                style: TextStyle(
+                  fontSize: 16,
+                  color: Theme.of(context).colorScheme.onErrorContainer,
+                ),
               ),
             ],
           ),
         ),
         actions: <Widget>[
-          GestureDetector(
-            onTap: () {
-              Navigator.of(context).pop();
-            },
-            child: Padding(
-              padding: const EdgeInsets.all(24),
-              child: LoanTrackButton.error(
-                context: context,
-                label: 'Cancel',
-              ),
+          Padding(
+            padding: const EdgeInsets.all(24),
+            child: LoanTrackButton.error(
+              whenPressed: () {
+                Navigator.of(context).pop();
+              },
+              context: context,
+              label: 'Cancel',
             ),
           ),
         ],
@@ -55,11 +62,12 @@ void showSuccessDialog(
     {required BuildContext context,
     required String title,
     required String successMessage,
-    Function()? whenTapped}) {
+    required VoidCallback whenTapped}) {
   showDialog<void>(
     context: context,
     builder: (context) {
       return AlertDialog(
+        backgroundColor: LoanTrackColors2.TetiaryOne,
         buttonPadding: EdgeInsets.zero,
         title: Text(
           title,
@@ -79,14 +87,12 @@ void showSuccessDialog(
           ),
         ),
         actions: <Widget>[
-          GestureDetector(
-            onTap: whenTapped,
-            child: Padding(
-              padding: const EdgeInsets.all(24),
-              child: LoanTrackButton.primary(
-                context: context,
-                label: 'Continue',
-              ),
+          Padding(
+            padding: const EdgeInsets.all(24),
+            child: LoanTrackButton.primaryOutline(
+              whenPressed: whenTapped,
+              context: context,
+              label: 'Continue',
             ),
           ),
         ],

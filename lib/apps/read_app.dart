@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:loantrack/helpers/listwidgets.dart';
+import 'package:loantrack/widgets/common_widgets.dart';
 
+import '../helpers/listwidgets.dart';
 import '../helpers/styles.dart';
-import '../widgets/common_widgets.dart';
 
-class NewsApp extends StatelessWidget {
-  const NewsApp({Key? key}) : super(key: key);
+class Read extends StatefulWidget {
+  const Read({Key? key}) : super(key: key);
 
+  @override
+  State<Read> createState() => _ReadState();
+}
+
+class _ReadState extends State<Read> {
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
@@ -18,9 +23,9 @@ class NewsApp extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const SizedBox(
-                  height: 250,
+                  height: 230,
                 ),
-                NewsList(
+                BlogList(
                   height: screenHeight * .7,
                 ),
               ],
@@ -28,7 +33,7 @@ class NewsApp extends StatelessWidget {
           ),
           Container(
             color: Theme.of(context).colorScheme.background,
-            height: MediaQuery.of(context).size.height / 3.2,
+            height: MediaQuery.of(context).size.height / 3.5,
             child: Padding(
               padding: const EdgeInsets.fromLTRB(24, 24, 24, 0),
               child: Column(
@@ -47,13 +52,12 @@ class NewsApp extends StatelessWidget {
                   ),
                   separatorSpace10,
                   Text(
-                    'News',
+                    'Read',
                     style: titleStyle(context),
                   ),
                   separatorSpace10,
                   Text(
-                    'This News app brings you up-to-date loan-related news in Nigeria.'
-                    'News are curated from the best sources in the country.',
+                    'Here we give you loan advices in form of blog posts, audio/visual posts and more.',
                     style: descriptionStyle(context),
                   ),
                   separatorSpace20,

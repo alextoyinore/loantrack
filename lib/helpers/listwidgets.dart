@@ -1,21 +1,26 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:loantrack/apps/loan_record_app.dart';
 import 'package:loantrack/apps/widgets/blogdetail.dart';
 import 'package:loantrack/apps/widgets/button.dart';
-import 'package:loantrack/apps/widgets/updateprofile.dart';
 import 'package:loantrack/apps/widgets/loandetail.dart';
 import 'package:loantrack/apps/widgets/newsdetail.dart';
+import 'package:loantrack/apps/widgets/updateprofile.dart';
 import 'package:loantrack/data/applists.dart';
 import 'package:loantrack/data/database.dart';
 import 'package:loantrack/helpers/colors.dart';
+import 'package:loantrack/helpers/styles.dart';
 import 'package:loantrack/widgets/bulleted_list.dart';
 import 'package:loantrack/widgets/common_widgets.dart';
 import 'package:loantrack/widgets/dialogs.dart';
 import 'package:loantrack/widgets/loan_track_modal.dart';
 import 'package:loantrack/widgets/loan_track_textfield.dart';
+import 'package:provider/provider.dart';
+
+import '../apps/providers/loan_provider.dart';
 
 SizedBox LoanList(
     {required double width,
@@ -48,19 +53,24 @@ SizedBox LoanList(
               ),
             );
           }
-          return ListView.builder(
-              //padding: const EdgeInsets.only(bottom: 10),
+          return GridView.builder(
+              gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                  maxCrossAxisExtent: 200,
+                  childAspectRatio: 3 / 3,
+                  crossAxisSpacing: 20,
+                  mainAxisSpacing: 20),
               itemCount: (numberOfItems != null &&
                       numberOfItems > 0 &&
                       numberOfItems <= snapshot.data!.docs.length)
                   ? numberOfItems
                   : snapshot.data?.docs.length,
+              shrinkWrap: true,
               //controller: _controller,
               itemBuilder: (BuildContext context, int index) {
                 DocumentSnapshot document = snapshot.data!.docs[index];
                 double progress =
                     document.get('amountRepaid') / document.get('loanAmount');
-                return ListTile(
+                return GestureDetector(
                   onTap: () {
                     Navigator.push(
                         context,
@@ -83,7 +93,7 @@ SizedBox LoanList(
                                           case 0:
                                             Navigator.push(
                                                 context,
-                                                MaterialPageRoute(
+                                                CupertinoPageRoute(
                                                     builder: (context) =>
                                                         LoanDetail(
                                                           document: document,
@@ -93,7 +103,7 @@ SizedBox LoanList(
                                           case 1:
                                             Navigator.push(
                                                 context,
-                                                MaterialPageRoute(
+                                                CupertinoPageRoute(
                                                     builder: (context) =>
                                                         LoanRecord(
                                                           edit: false,
@@ -105,7 +115,7 @@ SizedBox LoanList(
                                           case 2:
                                             Navigator.push(
                                                 context,
-                                                MaterialPageRoute(
+                                                CupertinoPageRoute(
                                                     builder: (context) =>
                                                         LoanRecord(
                                                           edit: true,
@@ -220,87 +230,499 @@ SizedBox LoanList(
                       title: 'Options',
                     );
                   },
-                  contentPadding: EdgeInsets.zero,
-                  title: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Stack(children: [
-                        Container(
-                          width: width * height,
-                          height: 1.5,
-                          decoration: BoxDecoration(
-                            color: (progress >= 0.5)
-                                ? LoanTrackColors.PrimaryOneLight
-                                : LoanTrackColors2.PrimaryOneVeryLight,
-                            borderRadius: BorderRadius.circular(5),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: Theme.of(context)
+                          .colorScheme
+                          .secondary
+                          .withOpacity(.05),
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(
+                            top: 10.0,
+                            left: 10,
+                            right: 10,
+                          ),
+                          child: Text(
+                            snapshot.data!.docs[index]
+                                .get('lender')
+                                .toUpperCase(),
+                            style: sectionHeaderStyle(context),
                           ),
                         ),
-                        Container(
-                          width: width * progress,
-                          height: 1.5,
-                          decoration: BoxDecoration(
-                            color: (progress >= 0.5)
-                                ? LoanTrackColors.PrimaryOne
-                                : LoanTrackColors2.PrimaryOne,
-                            borderRadius: BorderRadius.circular(5),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                          child: Text(
+                            'Loan Balance',
+                            style: smallerDescriptionStyle(context),
                           ),
                         ),
-                      ]),
-                      const SizedBox(height: 5),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          SizedBox(
-                            width: MediaQuery.of(context).size.width * .65,
-                            child: Text(
-                              snapshot.data!.docs[index]
-                                      .get('lender')
-                                      .toUpperCase() +
-                                  ' | LOAN: ' +
-                                  snapshot.data!.docs[index]
-                                      .get('loanAmount')
-                                      .toString() +
-                                  ' | REPAID: ' +
-                                  snapshot.data!.docs[index]
-                                      .get('amountRepaid')
-                                      .toString(),
-                              style: TextStyle(
-                                  color: (progress >= 1)
-                                      ? LoanTrackColors.PrimaryOne
-                                      : LoanTrackColors2.PrimaryOne,
-                                  fontSize: 12),
-                              softWrap: true,
-                            ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                          child: Text(
+                            (snapshot.data!.docs[index].get('loanAmount') -
+                                    snapshot.data!.docs[index]
+                                        .get('amountRepaid'))
+                                .toString(),
+                            style: featureTitleStyle(context),
                           ),
-                          (progress >= 1)
-                              ? const Text(
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                          child: Text(
+                            'Amount Repaid',
+                            style: smallerDescriptionStyle(context),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                          child: Text(
+                            snapshot.data!.docs[index]
+                                .get('amountRepaid')
+                                .toString(),
+                            style: smallerTitleStyle(context),
+                          ),
+                        ),
+                        (progress >= 1)
+                            ? const Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 10.0),
+                                child: Text(
                                   'PAID',
                                   style: TextStyle(
                                       color: LoanTrackColors.PrimaryOne,
                                       fontSize: 12),
-                                )
-                              : (progress == 0)
-                                  ? const Text('UNPAID',
-                                      style: TextStyle(
-                                          color: LoanTrackColors2.PrimaryOne,
-                                          fontSize: 12),
-                                      softWrap: true)
-                                  : Text(
-                                      snapshot.data!.docs[index]
-                                          .get('lastPaidWhen'),
-                                      style: const TextStyle(
-                                          color: LoanTrackColors2.PrimaryOne,
-                                          fontSize: 12),
-                                      softWrap: true),
-                        ],
-                      )
-                    ],
+                                ),
+                              )
+                            : (progress == 0)
+                                ? const Padding(
+                                    padding:
+                                        EdgeInsets.symmetric(horizontal: 10.0),
+                                    child: Text('UNPAID',
+                                        style: TextStyle(
+                                            color: LoanTrackColors2.PrimaryOne,
+                                            fontSize: 12),
+                                        softWrap: true),
+                                  )
+                                : Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 10.0),
+                                    child: Text(
+                                        snapshot.data!.docs[index]
+                                            .get('lastPaidWhen'),
+                                        style: const TextStyle(
+                                            color: LoanTrackColors2.PrimaryOne,
+                                            fontSize: 12),
+                                        softWrap: true),
+                                  ),
+                        Stack(children: [
+                          Container(
+                            width: MediaQuery.of(context).size.width / 2,
+                            height: 4,
+                            decoration: BoxDecoration(
+                              color: (progress >= 0.5)
+                                  ? Theme.of(context)
+                                      .colorScheme
+                                      .primary
+                                      .withOpacity(.1)
+                                  : Theme.of(context)
+                                      .colorScheme
+                                      .primary
+                                      .withOpacity(.05),
+                              borderRadius: const BorderRadius.only(
+                                bottomRight: Radius.circular(10),
+                                bottomLeft: Radius.circular(10),
+                              ),
+                            ),
+                          ),
+                          Container(
+                            width: MediaQuery.of(context).size.width /
+                                2 *
+                                progress,
+                            height: 4,
+                            decoration: BoxDecoration(
+                              color: (progress >= 0.5)
+                                  ? Theme.of(context)
+                                      .colorScheme
+                                      .primary
+                                      .withOpacity(.5)
+                                  : Theme.of(context)
+                                      .colorScheme
+                                      .secondary
+                                      .withOpacity(.5),
+                              borderRadius: BorderRadius.only(
+                                bottomRight: (progress >= 1)
+                                    ? const Radius.circular(10)
+                                    : const Radius.circular(0),
+                                bottomLeft: const Radius.circular(10),
+                              ),
+                            ),
+                          ),
+                        ]),
+                      ],
+                    ),
                   ),
                 );
               });
         }),
   );
 }
+
+// BEGIN LOAN SLIDER
+
+SizedBox LoanSlider(
+    {required double width,
+    required double height,
+    int? numberOfItems,
+    required String userId}) {
+  return SizedBox(
+    width: width,
+    height: height,
+    child: StreamBuilder<QuerySnapshot>(
+        stream: FirebaseFirestore.instance
+            .collection('loans')
+            .where('userId', isEqualTo: userId)
+            .snapshots(),
+        builder: (context, snapshot) {
+          if (!snapshot.hasData) {
+            return const Center(
+                child: Text(
+              'No data',
+              style: TextStyle(
+                  fontSize: 14, color: LoanTrackColors.PrimaryTwoVeryLight),
+            ));
+          }
+          if (snapshot.data!.docs.isEmpty) {
+            return const Center(
+              child: Text(
+                'No data',
+                style: TextStyle(
+                    fontSize: 14, color: LoanTrackColors.PrimaryTwoVeryLight),
+              ),
+            );
+          }
+          return ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: (numberOfItems != null &&
+                      numberOfItems > 0 &&
+                      numberOfItems <= snapshot.data!.docs.length)
+                  ? numberOfItems
+                  : snapshot.data?.docs.length,
+              shrinkWrap: true,
+              //controller: _controller,
+              itemBuilder: (BuildContext context, int index) {
+                DocumentSnapshot document = snapshot.data!.docs[index];
+                double progress =
+                    document.get('amountRepaid') / document.get('loanAmount');
+                return GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => LoanDetail(
+                                  document: document,
+                                )));
+                  },
+                  onLongPress: () {
+                    LoanTrackModal.modal(
+                      context,
+                      height: MediaQuery.of(context).size.height / 2.5,
+                      content: Container(
+                        child: Column(
+                            children: List.generate(
+                                AppLists.loanListOptionItem.length,
+                                (index) => GestureDetector(
+                                      onTap: () {
+                                        switch (index) {
+                                          case 0:
+                                            Navigator.push(
+                                                context,
+                                                CupertinoPageRoute(
+                                                    builder: (context) =>
+                                                        LoanDetail(
+                                                          document: document,
+                                                        )));
+                                            // Navigator.pop(context);
+                                            break;
+                                          case 1:
+                                            Navigator.push(
+                                                context,
+                                                CupertinoPageRoute(
+                                                    builder: (context) =>
+                                                        LoanRecord(
+                                                          edit: false,
+                                                          documentSnapshot:
+                                                              document,
+                                                        )));
+                                            //Navigator.pop(context);
+                                            break;
+                                          case 2:
+                                            Navigator.push(
+                                                context,
+                                                CupertinoPageRoute(
+                                                    builder: (context) =>
+                                                        LoanRecord(
+                                                          edit: true,
+                                                          documentSnapshot:
+                                                              document,
+                                                        )));
+                                            //Navigator.pop(context);
+                                            break;
+                                          case 3:
+                                            FirebaseFirestore.instance
+                                                .collection('archive')
+                                                .add({
+                                              'userId': FirebaseAuth
+                                                  .instance.currentUser!.uid,
+                                              'loanId': document.id,
+                                              'loanAmount':
+                                                  document.get('loanAmount'),
+                                              'amountRepaid':
+                                                  document.get('amountRepaid'),
+                                              'interestRate':
+                                                  document.get('interestRate'),
+                                              'dailyOverdueCharge': document
+                                                  .get('dailyOverdueCharge'),
+                                              'applyWhen':
+                                                  document.get('applyWhen'),
+                                              'dueWhen':
+                                                  document.get('dueWhen'),
+                                              'lastRepaidWhen':
+                                                  document.get('lastPaidWhen'),
+                                              'entryDate':
+                                                  document.get('entryDate'),
+                                              'modifiedWhen':
+                                                  document.get('modifiedWhen'),
+                                              'lenderType':
+                                                  document.get('lenderType'),
+                                              'lender': document.get('lender'),
+                                              'loanPurpose':
+                                                  document.get('loanPurpose'),
+                                              'note': document.get('note'),
+                                            }).whenComplete(
+                                              () => const SnackBar(
+                                                backgroundColor: LoanTrackColors
+                                                    .PrimaryOneVeryLight,
+                                                duration:
+                                                    Duration(milliseconds: 500),
+                                                content: Text(
+                                                    'Loan record archived.'),
+                                              ),
+                                            );
+                                            // Navigator.pop(context);
+                                            break;
+                                          case 4:
+                                            FirebaseFirestore.instance
+                                                .collection('archive')
+                                                .add({
+                                              'userId': FirebaseAuth
+                                                  .instance.currentUser!.uid,
+                                              'loanId': document.id,
+                                              'loanAmount':
+                                                  document.get('loanAmount'),
+                                              'amountRepaid':
+                                                  document.get('amountRepaid'),
+                                              'interestRate':
+                                                  document.get('interestRate'),
+                                              'dailyOverdueCharge': document
+                                                  .get('dailyOverdueCharge'),
+                                              'applyWhen':
+                                                  document.get('applyWhen'),
+                                              'dueWhen':
+                                                  document.get('dueWhen'),
+                                              'lastRepaidWhen':
+                                                  document.get('lastPaidWhen'),
+                                              'entryDate':
+                                                  document.get('entryDate'),
+                                              'modifiedWhen':
+                                                  document.get('modifiedWhen'),
+                                              'lenderType':
+                                                  document.get('lenderType'),
+                                              'lender': document.get('lender'),
+                                              'loanPurpose':
+                                                  document.get('loanPurpose'),
+                                              'note': document.get('note'),
+                                            }).whenComplete(
+                                              () => const SnackBar(
+                                                backgroundColor: LoanTrackColors
+                                                    .PrimaryOneVeryLight,
+                                                duration:
+                                                    Duration(milliseconds: 500),
+                                                content: Text(
+                                                    'Loan record archived.'),
+                                              ),
+                                            );
+                                            FirebaseFirestore.instance
+                                                .collection('loans')
+                                                .doc(document.id)
+                                                .delete();
+                                          // Navigator.pop(context);
+                                          //break;
+                                        }
+                                      },
+                                      child: ListTile(
+                                        title: Text(
+                                          AppLists.loanListOptionItem[index],
+                                          style: const TextStyle(
+                                            color: LoanTrackColors
+                                                .PrimaryTwoVeryLight,
+                                          ),
+                                        ),
+                                      ),
+                                    ))),
+                      ),
+                      title: 'Options',
+                    );
+                  },
+                  child: Container(
+                    width: MediaQuery.of(context).size.width / 2.4,
+                    margin: const EdgeInsets.only(right: 20),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: Theme.of(context)
+                          .colorScheme
+                          .secondary
+                          .withOpacity(.05),
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(
+                            top: 10.0,
+                            left: 10,
+                            right: 10,
+                          ),
+                          child: Text(
+                            snapshot.data!.docs[index]
+                                .get('lender')
+                                .toUpperCase(),
+                            style: sectionHeaderStyle(context),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                          child: Text(
+                            'Loan Balance',
+                            style: smallerDescriptionStyle(context),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                          child: Text(
+                            (snapshot.data!.docs[index].get('loanAmount') -
+                                    snapshot.data!.docs[index]
+                                        .get('amountRepaid'))
+                                .toString(),
+                            style: featureTitleStyle(context),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                          child: Text(
+                            'Amount Repaid',
+                            style: smallerDescriptionStyle(context),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                          child: Text(
+                            snapshot.data!.docs[index]
+                                .get('amountRepaid')
+                                .toString(),
+                            style: smallerTitleStyle(context),
+                          ),
+                        ),
+                        (progress >= 1)
+                            ? const Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 10.0),
+                                child: Text(
+                                  'PAID',
+                                  style: TextStyle(
+                                      color: LoanTrackColors.PrimaryOne,
+                                      fontSize: 12),
+                                ),
+                              )
+                            : (progress == 0)
+                                ? const Padding(
+                                    padding:
+                                        EdgeInsets.symmetric(horizontal: 10.0),
+                                    child: Text('UNPAID',
+                                        style: TextStyle(
+                                            color: LoanTrackColors2.PrimaryOne,
+                                            fontSize: 12),
+                                        softWrap: true),
+                                  )
+                                : Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 10.0),
+                                    child: Text(
+                                        snapshot.data!.docs[index]
+                                            .get('lastPaidWhen'),
+                                        style: const TextStyle(
+                                            color: LoanTrackColors2.PrimaryOne,
+                                            fontSize: 12),
+                                        softWrap: true),
+                                  ),
+                        Stack(children: [
+                          Container(
+                            width: MediaQuery.of(context).size.width / 2,
+                            height: 6,
+                            decoration: BoxDecoration(
+                              color: (progress >= 0.5)
+                                  ? Theme.of(context)
+                                      .colorScheme
+                                      .primary
+                                      .withOpacity(.1)
+                                  : Theme.of(context)
+                                      .colorScheme
+                                      .primary
+                                      .withOpacity(.05),
+                              borderRadius: const BorderRadius.only(
+                                bottomRight: Radius.circular(10),
+                                bottomLeft: Radius.circular(10),
+                              ),
+                            ),
+                          ),
+                          Container(
+                            width: MediaQuery.of(context).size.width /
+                                2 *
+                                progress,
+                            height: 6,
+                            decoration: BoxDecoration(
+                              color: (progress >= 0.5)
+                                  ? Theme.of(context)
+                                      .colorScheme
+                                      .primary
+                                      .withOpacity(.3)
+                                  : Theme.of(context)
+                                      .colorScheme
+                                      .secondary
+                                      .withOpacity(.1),
+                              borderRadius: BorderRadius.only(
+                                bottomRight: (progress >= 1)
+                                    ? const Radius.circular(10)
+                                    : const Radius.circular(0),
+                                bottomLeft: const Radius.circular(10),
+                              ),
+                            ),
+                          ),
+                        ]),
+                      ],
+                    ),
+                  ),
+                );
+              });
+        }),
+  );
+}
+
+// END LOAN SLIDER
 
 Container LoanBulletedList({
   required double height,
@@ -318,21 +740,19 @@ Container LoanBulletedList({
           .snapshots(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
-          return const Center(
+          return Center(
             child: Text(
               'No data',
-              style: TextStyle(
-                  fontSize: 14, color: LoanTrackColors.PrimaryTwoVeryLight),
+              style: smallDescriptionStyle(context),
             ),
           );
         }
 
         if (snapshot.data!.docs.isEmpty) {
-          return const Center(
+          return Center(
             child: Text(
               'No data',
-              style: TextStyle(
-                  fontSize: 14, color: LoanTrackColors.PrimaryTwoVeryLight),
+              style: smallDescriptionStyle(context),
             ),
           );
         }
@@ -370,20 +790,22 @@ Container LoanBulletedList({
                           BulletedList(
                             text:
                                 '${snapshot.data!.docs[index].get('lender').toUpperCase()} - ${((snapshot.data!.docs[index].get('loanAmount') - document.get('amountRepaid') + (due * document.get('dailyOverdueCharge')))).toString()}',
-                            style: const TextStyle(
-                                color: LoanTrackColors2.PrimaryOne),
+                            style: smallerTitleStyle(context),
                           ),
                           (due > 0)
-                              ? Text('$due DAYS OVERDUE',
-                                  style: const TextStyle(
-                                      color: LoanTrackColors2.PrimaryOne))
+                              ? Text(
+                                  '$due DAYS OVERDUE',
+                                  style: smallerTitleStyle(context),
+                                )
                               : (due == 0)
-                                  ? const Text('DUE TODAY',
-                                      style: TextStyle(
-                                          color: LoanTrackColors2.PrimaryOne))
-                                  : const Text('',
-                                      style: TextStyle(
-                                          color: LoanTrackColors2.PrimaryOne))
+                                  ? Text(
+                                      'DUE TODAY',
+                                      style: smallerTitleStyle(context),
+                                    )
+                                  : Text(
+                                      '',
+                                      style: smallerTitleStyle(context),
+                                    )
                         ],
                       ),
                     ));
@@ -539,32 +961,28 @@ SizedBox BlogList({required double height}) {
                 onTap: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(
+                    CupertinoPageRoute(
                         builder: (context) => BlogDetail(
                               blog: blogDocument,
                             )),
                   );
                 },
                 child: Container(
-                  height: MediaQuery.of(context).size.height / 5,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
+                  height: MediaQuery.of(context).size.height / 2.2,
                   margin:
                       const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
                   //decoration: BoxDecoration(color: Colors.white, boxShadow: []),
-                  child: Row(
+                  child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Container(
-                        height: double
-                            .infinity, //MediaQuery.of(context).size.height / 8,
-                        width: MediaQuery.of(context).size.height / 5.8,
+                        height: 100, //MediaQuery.of(context).size.height / 8,
                         decoration: BoxDecoration(
                             borderRadius: const BorderRadius.only(
-                                topLeft: Radius.circular(10),
-                                bottomLeft: Radius.circular(10)),
+                              topLeft: Radius.circular(10),
+                              topRight: Radius.circular(10),
+                            ),
                             image: DecorationImage(
                               image: NetworkImage(
                                   blogDocument.get('featuredImage')),
@@ -574,16 +992,14 @@ SizedBox BlogList({required double height}) {
                       Container(
                         padding: const EdgeInsets.symmetric(
                             horizontal: 15, vertical: 10),
-                        width: MediaQuery.of(context).size.width / 1.95,
-                        height: double
-                            .infinity, //MediaQuery.of(context).size.height / 8,
                         decoration: BoxDecoration(
+                          borderRadius: const BorderRadius.only(
+                            bottomLeft: Radius.circular(10),
+                            bottomRight: Radius.circular(10),
+                          ),
                           color:
                               LoanTrackColors.PrimaryTwoVeryLight.withOpacity(
                                   .1),
-                          borderRadius: const BorderRadius.only(
-                              topRight: Radius.circular(10),
-                              bottomRight: Radius.circular(10)),
                         ),
                         child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -591,28 +1007,20 @@ SizedBox BlogList({required double height}) {
                             children: [
                               Text(
                                 blogDocument.get('title').toString(),
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                  color: LoanTrackColors.PrimaryOne.withOpacity(
-                                      .9),
-                                ),
+                                style: smallTitleStyle(context),
                               ),
-                              separatorSpace5,
+                              separatorSpace10,
                               Text(
                                   blogDocument
                                           .get('content')
                                           .toString()
                                           .replaceAll('<p>', '')
                                           .replaceAll('</p>', '')
-                                          .substring(0, 60) +
+                                          .substring(0, 150) +
                                       '...',
-                                  style: const TextStyle(
-                                    fontSize: 12,
-                                    color: LoanTrackColors.PrimaryTwoVeryLight,
-                                  ),
+                                  style: descriptionStyle(context),
                                   softWrap: true),
-                              separatorSpace5,
+                              separatorSpace10,
                               Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
@@ -696,32 +1104,28 @@ SizedBox NewsList({required double height}) {
                 onTap: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(
+                    CupertinoPageRoute(
                         builder: (context) => NewsDetail(
                               news: newsDocument,
                             )),
                   );
                 },
                 child: Container(
-                  height: MediaQuery.of(context).size.height / 5,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
+                  height: MediaQuery.of(context).size.height / 2.2,
                   margin:
-                      const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
                   //decoration: BoxDecoration(color: Colors.white, boxShadow: []),
-                  child: Row(
+                  child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Container(
-                        height: double
-                            .infinity, //MediaQuery.of(context).size.height / 8,
-                        width: MediaQuery.of(context).size.height / 5.8,
+                        height: 100, //MediaQuery.of(context).size.height / 8,
                         decoration: BoxDecoration(
                             borderRadius: const BorderRadius.only(
-                                topLeft: Radius.circular(10),
-                                bottomLeft: Radius.circular(10)),
+                              topLeft: Radius.circular(10),
+                              topRight: Radius.circular(10),
+                            ),
                             image: DecorationImage(
                               image: NetworkImage(
                                   newsDocument.get('featuredImage')),
@@ -731,16 +1135,14 @@ SizedBox NewsList({required double height}) {
                       Container(
                         padding: const EdgeInsets.symmetric(
                             horizontal: 15, vertical: 10),
-                        width: MediaQuery.of(context).size.width / 1.95,
-                        height: double
-                            .infinity, //MediaQuery.of(context).size.height / 8,
                         decoration: BoxDecoration(
+                          borderRadius: const BorderRadius.only(
+                            bottomLeft: Radius.circular(10),
+                            bottomRight: Radius.circular(10),
+                          ),
                           color:
                               LoanTrackColors.PrimaryTwoVeryLight.withOpacity(
                                   .1),
-                          borderRadius: const BorderRadius.only(
-                              topRight: Radius.circular(10),
-                              bottomRight: Radius.circular(10)),
                         ),
                         child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -748,26 +1150,20 @@ SizedBox NewsList({required double height}) {
                             children: [
                               Text(
                                 newsDocument.get('title').toString(),
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                  color: LoanTrackColors.PrimaryOne.withOpacity(
-                                      .9),
-                                ),
+                                style: smallTitleStyle(context),
                               ),
-                              separatorSpace5,
+                              separatorSpace10,
                               Text(
                                   newsDocument
                                           .get('excerpt')
                                           .toString()
-                                          .substring(0, 60) +
+                                          .replaceAll('<p>', '')
+                                          .replaceAll('</p>', '')
+                                          .substring(0, 150) +
                                       '...',
-                                  style: const TextStyle(
-                                    fontSize: 12,
-                                    color: LoanTrackColors.PrimaryTwoVeryLight,
-                                  ),
+                                  style: descriptionStyle(context),
                                   softWrap: true),
-                              separatorSpace5,
+                              separatorSpace10,
                               Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
@@ -822,11 +1218,12 @@ SizedBox userProfile({double? height}) {
             .snapshots(),
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
-            return const Center(
+            return Center(
                 child: Text(
               'No data',
               style: TextStyle(
-                  fontSize: 14, color: LoanTrackColors.PrimaryTwoVeryLight),
+                  fontSize: 14,
+                  color: Theme.of(context).colorScheme.onBackground),
             ));
           }
 
@@ -834,24 +1231,24 @@ SizedBox userProfile({double? height}) {
             return Center(
               child: Column(
                 children: [
-                  const Text(
-                    'You havent updated your profile yet.',
+                  Text(
+                    'You haven\'t updated your profile yet.',
                     style: TextStyle(
                         fontSize: 14,
-                        color: LoanTrackColors.PrimaryTwoVeryLight),
+                        color: Theme.of(context).colorScheme.onBackground),
                   ),
                   GestureDetector(
                     onTap: () {
                       Navigator.push(
                           context,
-                          MaterialPageRoute(
+                          CupertinoPageRoute(
                             builder: (context) => const ProfileUpdate(),
                           ));
                     },
-                    child: const Text(
+                    child: Text(
                       'Update your profile now',
                       style: TextStyle(
-                        color: LoanTrackColors.PrimaryOne,
+                        color: Theme.of(context).colorScheme.onBackground,
                       ),
                     ),
                   )
@@ -864,31 +1261,34 @@ SizedBox userProfile({double? height}) {
               itemCount: snapshot.data!.docs.length,
               itemBuilder: (context, index) {
                 DocumentSnapshot user = snapshot.data!.docs[index];
+                double netIncome = double.parse(user.get('totalMonthlyIncome'));
+                String maritalStatus = user.get('married') ?? '';
+
+                // Add net income to provider
+                context.read<LoanDetailsProviders>().setNetIncome(netIncome);
+                // Add maritalStatus to provider
+                context
+                    .read<LoanDetailsProviders>()
+                    .setMaritalStatus(maritalStatus);
 
                 return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     //Full name
                     Container(
                       padding: const EdgeInsets.symmetric(
                         vertical: 8.0,
-                        horizontal: 8,
+                        horizontal: 8.0,
                       ),
                       /* color:
                           LoanTrackColors.PrimaryTwoVeryLight.withOpacity(.1), */
-                      child: Row(
+                      child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text(
-                            'Name: ',
-                            style: TextStyle(
-                                color: LoanTrackColors.PrimaryTwoVeryLight),
-                            softWrap: true,
-                          ),
                           Text(
-                            '${user.get('firstname')} ${user.get('lastname')}',
-                            style: const TextStyle(
-                                color: LoanTrackColors.PrimaryTwoVeryLight),
+                            'Name: ',
+                            style: descriptionStyle(context),
                             softWrap: true,
                           ),
                           GestureDetector(
@@ -909,16 +1309,16 @@ SizedBox userProfile({double? height}) {
                                       LoanTrackTextField(
                                           controller: firstnameController,
                                           label: 'First Name',
-                                          color: LoanTrackColors
-                                                  .PrimaryTwoVeryLight
-                                              .withOpacity(.1)),
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .onBackground),
                                       separatorSpace10,
                                       LoanTrackTextField(
                                           controller: lastnameController,
                                           label: 'Last Name',
-                                          color: LoanTrackColors
-                                                  .PrimaryTwoVeryLight
-                                              .withOpacity(.1)),
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .onBackground),
                                       separatorSpace10,
                                       GestureDetector(
                                         onTap: () {
@@ -947,11 +1347,12 @@ SizedBox userProfile({double? height}) {
                                                         context: context,
                                                         title: 'Error',
                                                         errorMessage:
-                                                            'An error occured while updating your first name and last name'),
+                                                            'An error occurred while updating your first name and last name'),
                                                   });
                                           Navigator.pop(context);
                                         },
                                         child: LoanTrackButton.primary(
+                                            whenPressed: () {},
                                             context: context,
                                             label: 'Continue'),
                                       ),
@@ -961,11 +1362,10 @@ SizedBox userProfile({double? height}) {
                                 title: 'Edit Names',
                               );
                             },
-                            child: Icon(
-                              Icons.edit_outlined,
-                              size: 15,
-                              color: LoanTrackColors.PrimaryTwoVeryLight
-                                  .withOpacity(.5),
+                            child: Text(
+                              '${user.get('firstname')} ${user.get('lastname')}',
+                              style: bigBodyStyle(context),
+                              softWrap: true,
                             ),
                           ),
                         ],
@@ -982,18 +1382,15 @@ SizedBox userProfile({double? height}) {
                       ),
                       /*  color:
                           LoanTrackColors.PrimaryTwoVeryLight.withOpacity(.1), */
-                      child: Row(
+                      child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           const Text(
                             'Age:',
                             style: TextStyle(
                                 color: LoanTrackColors.PrimaryTwoVeryLight),
                           ),
-                          Text('${user.get('age')}',
-                              style: const TextStyle(
-                                  color: LoanTrackColors.PrimaryTwoVeryLight)),
                           GestureDetector(
                             onTap: () {
                               TextEditingController ageController =
@@ -1044,6 +1441,7 @@ SizedBox userProfile({double? height}) {
                                           Navigator.pop(context);
                                         },
                                         child: LoanTrackButton.primary(
+                                            whenPressed: () {},
                                             context: context,
                                             label: 'Continue'),
                                       ),
@@ -1053,11 +1451,9 @@ SizedBox userProfile({double? height}) {
                                 title: 'Edit Age',
                               );
                             },
-                            child: Icon(
-                              Icons.edit_outlined,
-                              size: 15,
-                              color: LoanTrackColors.PrimaryTwoVeryLight
-                                  .withOpacity(.5),
+                            child: Text(
+                              '${user.get('age')}',
+                              style: bigBodyStyle(context),
                             ),
                           ),
                         ],
@@ -1074,18 +1470,15 @@ SizedBox userProfile({double? height}) {
                       ),
                       /* color:
                           LoanTrackColors.PrimaryTwoVeryLight.withOpacity(.1), */
-                      child: Row(
+                      child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           const Text(
                             'Gender:',
                             style: TextStyle(
                                 color: LoanTrackColors.PrimaryTwoVeryLight),
                           ),
-                          Text('${user.get('gender')}',
-                              style: const TextStyle(
-                                  color: LoanTrackColors.PrimaryTwoVeryLight)),
                           GestureDetector(
                             onTap: () {
                               LoanTrackModal.modal(context,
@@ -1137,12 +1530,8 @@ SizedBox userProfile({double? height}) {
                                   ),
                                   title: 'Edit Gender');
                             },
-                            child: Icon(
-                              Icons.edit_outlined,
-                              size: 15,
-                              color: LoanTrackColors.PrimaryTwoVeryLight
-                                  .withOpacity(.5),
-                            ),
+                            child: Text('${user.get('gender')}',
+                                style: bigBodyStyle(context)),
                           ),
                         ],
                       ),
@@ -1157,18 +1546,15 @@ SizedBox userProfile({double? height}) {
                       ),
                       /* color:
                           LoanTrackColors.PrimaryTwoVeryLight.withOpacity(.1), */
-                      child: Row(
+                      child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           const Text(
                             'Occupation:',
                             style: TextStyle(
                                 color: LoanTrackColors.PrimaryTwoVeryLight),
                           ),
-                          Text('${user.get('occupation')}',
-                              style: const TextStyle(
-                                  color: LoanTrackColors.PrimaryTwoVeryLight)),
                           GestureDetector(
                             onTap: () {
                               TextEditingController occupationController =
@@ -1218,6 +1604,7 @@ SizedBox userProfile({double? height}) {
                                           Navigator.pop(context);
                                         },
                                         child: LoanTrackButton.primary(
+                                            whenPressed: () {},
                                             context: context,
                                             label: 'Continue'),
                                       ),
@@ -1227,12 +1614,8 @@ SizedBox userProfile({double? height}) {
                                 title: 'Edit Occupation',
                               );
                             },
-                            child: Icon(
-                              Icons.edit_outlined,
-                              size: 15,
-                              color: LoanTrackColors.PrimaryTwoVeryLight
-                                  .withOpacity(.5),
-                            ),
+                            child: Text('${user.get('occupation')}',
+                                style: bigBodyStyle(context)),
                           ),
                         ],
                       ),
@@ -1247,18 +1630,15 @@ SizedBox userProfile({double? height}) {
                       ),
                       /* color:
                           LoanTrackColors.PrimaryTwoVeryLight.withOpacity(.1), */
-                      child: Row(
+                      child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           const Text(
                             'Industry:',
                             style: TextStyle(
                                 color: LoanTrackColors.PrimaryTwoVeryLight),
                           ),
-                          Text('${user.get('industry')}',
-                              style: const TextStyle(
-                                  color: LoanTrackColors.PrimaryTwoVeryLight)),
                           GestureDetector(
                             onTap: () {
                               LoanTrackModal.modal(context,
@@ -1312,11 +1692,9 @@ SizedBox userProfile({double? height}) {
                                   ),
                                   title: 'Edit Industry');
                             },
-                            child: Icon(
-                              Icons.edit_outlined,
-                              size: 15,
-                              color: LoanTrackColors.PrimaryTwoVeryLight
-                                  .withOpacity(.5),
+                            child: Text(
+                              '${user.get('industry')}',
+                              style: bigBodyStyle(context),
                             ),
                           ),
                         ],
@@ -1331,18 +1709,15 @@ SizedBox userProfile({double? height}) {
                       ),
                       /* color:
                           LoanTrackColors.PrimaryTwoVeryLight.withOpacity(.1), */
-                      child: Row(
+                      child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           const Text(
                             'Total Monthly Income:',
                             style: TextStyle(
                                 color: LoanTrackColors.PrimaryTwoVeryLight),
                           ),
-                          Text('${user.get('totalMonthlyIncome')}',
-                              style: const TextStyle(
-                                  color: LoanTrackColors.PrimaryTwoVeryLight)),
                           GestureDetector(
                             onTap: () {
                               TextEditingController monthlyController =
@@ -1394,20 +1769,19 @@ SizedBox userProfile({double? height}) {
                                           Navigator.pop(context);
                                         },
                                         child: LoanTrackButton.primary(
+                                            whenPressed: () {},
                                             context: context,
                                             label: 'Continue'),
                                       ),
                                     ],
                                   ),
                                 ),
-                                title: 'Edit MOnthly Income',
+                                title: 'Edit Monthly Income',
                               );
                             },
-                            child: Icon(
-                              Icons.edit_outlined,
-                              size: 15,
-                              color: LoanTrackColors.PrimaryTwoVeryLight
-                                  .withOpacity(.5),
+                            child: Text(
+                              '${user.get('totalMonthlyIncome')}',
+                              style: bigBodyStyle(context),
                             ),
                           ),
                         ],
@@ -1424,18 +1798,15 @@ SizedBox userProfile({double? height}) {
                       ),
                       /* color:
                           LoanTrackColors.PrimaryTwoVeryLight.withOpacity(.1), */
-                      child: Row(
+                      child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           const Text(
                             'Country of Residence:',
                             style: TextStyle(
                                 color: LoanTrackColors.PrimaryTwoVeryLight),
                           ),
-                          Text('${user.get('countryOfResidence')}',
-                              style: const TextStyle(
-                                  color: LoanTrackColors.PrimaryTwoVeryLight)),
                           GestureDetector(
                             onTap: () {
                               LoanTrackModal.modal(context,
@@ -1488,12 +1859,8 @@ SizedBox userProfile({double? height}) {
                                   ),
                                   title: 'Edit Residence Country');
                             },
-                            child: Icon(
-                              Icons.edit_outlined,
-                              size: 15,
-                              color: LoanTrackColors.PrimaryTwoVeryLight
-                                  .withOpacity(.5),
-                            ),
+                            child: Text('${user.get('countryOfResidence')}',
+                                style: bigBodyStyle(context)),
                           ),
                         ],
                       ),
@@ -1509,18 +1876,15 @@ SizedBox userProfile({double? height}) {
                       ),
                       /* color:
                           LoanTrackColors.PrimaryTwoVeryLight.withOpacity(.1), */
-                      child: Row(
+                      child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           const Text(
                             'City of Residence:',
                             style: TextStyle(
                                 color: LoanTrackColors.PrimaryTwoVeryLight),
                           ),
-                          Text('${user.get('cityOfResidence')}',
-                              style: const TextStyle(
-                                  color: LoanTrackColors.PrimaryTwoVeryLight)),
                           GestureDetector(
                             onTap: () {
                               LoanTrackModal.modal(context,
@@ -1573,11 +1937,9 @@ SizedBox userProfile({double? height}) {
                                   ),
                                   title: 'Edit City');
                             },
-                            child: Icon(
-                              Icons.edit_outlined,
-                              size: 15,
-                              color: LoanTrackColors.PrimaryTwoVeryLight
-                                  .withOpacity(.5),
+                            child: Text(
+                              '${user.get('cityOfResidence')}',
+                              style: bigBodyStyle(context),
                             ),
                           ),
                         ],
@@ -1594,18 +1956,15 @@ SizedBox userProfile({double? height}) {
                       ),
                       /* color:
                           LoanTrackColors.PrimaryTwoVeryLight.withOpacity(.1), */
-                      child: Row(
+                      child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           const Text(
                             'Nationality:',
                             style: TextStyle(
                                 color: LoanTrackColors.PrimaryTwoVeryLight),
                           ),
-                          Text('${user.get('nationality')}',
-                              style: const TextStyle(
-                                  color: LoanTrackColors.PrimaryTwoVeryLight)),
                           GestureDetector(
                             onTap: () {
                               LoanTrackModal.modal(context,
@@ -1639,7 +1998,7 @@ SizedBox userProfile({double? height}) {
                                                               context: context,
                                                               title: 'Failed',
                                                               errorMessage:
-                                                                  'An error occured while updating your nationality')
+                                                                  'An error occurred while updating your nationality')
                                                         });
 
                                                 Navigator.pop(context);
@@ -1657,12 +2016,8 @@ SizedBox userProfile({double? height}) {
                                   ),
                                   title: 'Edit Gender');
                             },
-                            child: Icon(
-                              Icons.edit_outlined,
-                              size: 15,
-                              color: LoanTrackColors.PrimaryTwoVeryLight
-                                  .withOpacity(.5),
-                            ),
+                            child: Text('${user.get('nationality')}',
+                                style: bigBodyStyle(context)),
                           ),
                         ],
                       ),
@@ -1678,18 +2033,15 @@ SizedBox userProfile({double? height}) {
                       ),
                       /* color:
                           LoanTrackColors.PrimaryTwoVeryLight.withOpacity(.1), */
-                      child: Row(
+                      child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           const Text(
                             'I\'m a Samaritan:',
                             style: TextStyle(
                                 color: LoanTrackColors.PrimaryTwoVeryLight),
                           ),
-                          Text('${user.get('isSamaritan')}',
-                              style: const TextStyle(
-                                  color: LoanTrackColors.PrimaryTwoVeryLight)),
                           GestureDetector(
                             onTap: () {
                               LoanTrackModal.modal(context,
@@ -1743,11 +2095,9 @@ SizedBox userProfile({double? height}) {
                                   ),
                                   title: 'Edit Samaritan Status');
                             },
-                            child: Icon(
-                              Icons.edit_outlined,
-                              size: 15,
-                              color: LoanTrackColors.PrimaryTwoVeryLight
-                                  .withOpacity(.5),
+                            child: Text(
+                              '${user.get('isSamaritan')}',
+                              style: bigBodyStyle(context),
                             ),
                           ),
                         ],

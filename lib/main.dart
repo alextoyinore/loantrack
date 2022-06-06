@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:loantrack/apps/home.dart';
 import 'package:loantrack/apps/loan_list_app.dart';
 import 'package:loantrack/apps/login_app.dart';
+import 'package:loantrack/apps/providers/loan_provider.dart';
 import 'package:loantrack/apps/providers/login_states.dart';
 import 'package:loantrack/apps/providers/preferences.dart';
 import 'package:loantrack/apps/providers/theme_provider.dart';
@@ -18,17 +19,12 @@ import 'helpers/colors.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-    statusBarBrightness: Brightness.light,
-    statusBarIconBrightness: Brightness.dark,
-    statusBarColor: Colors.transparent,
-  ));
-  // Run App
   runApp(
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => LoginState()),
         ChangeNotifierProvider(create: (_) => ThemeManager()),
+        ChangeNotifierProvider(create: (_) => LoanDetailsProviders()),
       ],
       child: const Main(),
     ),
@@ -43,11 +39,11 @@ class Main extends StatefulWidget {
 }
 
 class _MainState extends State<Main> {
-  String storedThemeName = '';
+  int storedThemeNumber = 0;
 
-  void getTheme() async {
+  Future<int> getTheme() async {
     ThemePreferences themePreferences = ThemePreferences();
-    storedThemeName = await themePreferences.getTheme();
+    return await themePreferences.getTheme();
   }
 
   @override
@@ -59,31 +55,48 @@ class _MainState extends State<Main> {
   @override
   Widget build(BuildContext context) {
     if (kDebugMode) {
-      print(storedThemeName);
+      print(storedThemeNumber);
     }
-    ThemeStates themeStates = context.watch<ThemeManager>().themeMode;
+
     var providedTheme = context.read<ThemeManager>().themeMode;
+
+    // Run App
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+      statusBarBrightness: (providedTheme == ThemeMode.light)
+          ? Brightness.dark
+          : Brightness.light,
+      statusBarIconBrightness: (providedTheme == ThemeMode.light)
+          ? Brightness.dark
+          : Brightness.light,
+      systemNavigationBarColor: (providedTheme == ThemeMode.light)
+          ? lightColorScheme.background
+          : darkColorScheme.background,
+      systemNavigationBarIconBrightness: (providedTheme == ThemeMode.light)
+          ? Brightness.dark
+          : Brightness.light,
+      statusBarColor: Colors.transparent,
+    ));
+
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Loantrack',
-      themeMode:
-          (storedThemeName == 'Light' || providedTheme == ThemeStates.light)
+      themeMode: (providedTheme == ThemeMode.dark)
+          ? ThemeMode.dark
+          : (providedTheme == ThemeMode.light)
               ? ThemeMode.light
-              : (storedThemeName == 'Dark' || providedTheme == ThemeStates.dark)
-                  ? ThemeMode.dark
-                  : ThemeMode.system,
+              : ThemeMode.system,
+
       // Light Theme
       theme: ThemeData(
         scaffoldBackgroundColor: lightColorScheme.background,
         colorScheme: lightColorScheme,
-        textTheme: GoogleFonts.jostTextTheme(
+        textTheme: GoogleFonts.quicksandTextTheme(
           Theme.of(context).textTheme,
         ),
         iconTheme: IconThemeData(color: lightColorScheme.primary),
         appBarTheme: Theme.of(context).appBarTheme.copyWith(
               systemOverlayStyle: SystemUiOverlayStyle.dark,
-              foregroundColor: lightColorScheme.primary,
-              backgroundColor: Colors.white,
+              backgroundColor: lightColorScheme.background,
             ),
         bottomNavigationBarTheme: BottomNavigationBarThemeData(
           backgroundColor: lightColorScheme.background,
@@ -107,8 +120,7 @@ class _MainState extends State<Main> {
         ),
         appBarTheme: Theme.of(context).appBarTheme.copyWith(
               systemOverlayStyle: SystemUiOverlayStyle.light,
-              foregroundColor: darkColorScheme.primary,
-              backgroundColor: Colors.black,
+              backgroundColor: darkColorScheme.background,
             ),
         navigationBarTheme: NavigationBarThemeData(
           backgroundColor: darkColorScheme.background,

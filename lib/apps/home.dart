@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:loantrack/apps/loan_list_app.dart';
 import 'package:loantrack/apps/settings_app.dart';
 import 'package:loantrack/apps/widgets/homeview.dart';
-import 'package:loantrack/apps/widgets/newsview.dart';
 import 'package:loantrack/apps/widgets/user_profile.dart';
 
 import '../data/authentications.dart';
@@ -22,17 +21,13 @@ class _LoanTrackHomeState extends State<LoanTrackHome> {
 
   @override
   Widget build(BuildContext context) {
-    double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
 
     List<Widget> _widgetOptions = <Widget>[
       const HomeView(),
       LoanTrackingPage(
         isHome: true,
-        loanListHeight: screenHeight / 1.53,
-      ),
-      const Center(
-        child: NewsView(),
+        loanListHeight: screenHeight / 1.4,
       ),
       const Center(
         child: UserProfile(),
@@ -79,10 +74,6 @@ class _LoanTrackHomeState extends State<LoanTrackHome> {
             BottomNavigationBarItem(
               icon: Icon(Icons.history_edu),
               label: 'History',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.newspaper_outlined),
-              label: 'News',
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.person_outline),
