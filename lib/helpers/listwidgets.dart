@@ -1261,7 +1261,9 @@ SizedBox userProfile({double? height}) {
               itemCount: snapshot.data!.docs.length,
               itemBuilder: (context, index) {
                 DocumentSnapshot user = snapshot.data!.docs[index];
-                double netIncome = double.parse(user.get('totalMonthlyIncome'));
+                double netIncome = (user.get('totalMonthlyIncome') != '')
+                    ? double.parse(user.get('totalMonthlyIncome'))
+                    : 0;
                 String maritalStatus = user.get('married') ?? '';
 
                 // Add net income to provider

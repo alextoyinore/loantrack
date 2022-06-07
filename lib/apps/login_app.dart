@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:loantrack/apps/messages/notifications.dart';
 import 'package:loantrack/apps/providers/login_states.dart';
 import 'package:loantrack/apps/widgets/button.dart';
 import 'package:loantrack/data/authentications.dart';
@@ -31,6 +32,8 @@ class _LoanTrackLoginState extends State<LoanTrackLogin> with ChangeNotifier {
   //FirebaseAuthException e = FirebaseAuthException(code: 'network-not-found');
 
   AuthService authService = AuthService();
+
+  Notifications notifications = Notifications();
 
   @override
   void initState() {
@@ -179,16 +182,24 @@ class _LoanTrackLoginState extends State<LoanTrackLogin> with ChangeNotifier {
           separatorSpace20,
           LoanTrackButton.primary(
             whenPressed: () {
-              authService.checkEmailExists(
-                context: context,
-                email: emailController.text,
-                errorCallback: (e) => showErrorDialog(
-                  context: context,
-                  title: 'Invalid Email',
-                  errorMessage: 'This email is not valid. Kindly check '
-                      'that you have typed a valid email.',
-                ),
-              );
+              authService
+                  .checkEmailExists(
+                    context: context,
+                    email: emailController.text,
+                    errorCallback: (e) => showErrorDialog(
+                      context: context,
+                      title: 'Invalid Email',
+                      errorMessage: 'This email is not valid. Kindly check '
+                          'that you have typed a valid email.',
+                    ),
+                  )
+                  .whenComplete(
+                    () => notifications.showNotification(
+                      context: context,
+                      title: 'Email Found',
+                      body: 'We found your email.',
+                    ),
+                  );
             },
             context: context,
             label: 'Start Here',
@@ -259,15 +270,23 @@ class _LoanTrackLoginState extends State<LoanTrackLogin> with ChangeNotifier {
         separatorSpace20,
         LoanTrackButton.primary(
           whenPressed: () {
-            authService.signInWithEmailAndPassword(
-                context: context,
-                email: emailController.text,
-                password: passwordController.text,
-                errorCallback: (e) => showErrorDialog(
-                    context: context,
-                    title: 'Credential Error',
-                    errorMessage:
-                        'An error occurred. Verify that your password is correctly typed.'));
+            authService
+                .signInWithEmailAndPassword(
+                  context: context,
+                  email: emailController.text,
+                  password: passwordController.text,
+                  errorCallback: (e) => showErrorDialog(
+                      context: context,
+                      title: 'Credential Error',
+                      errorMessage:
+                          'An error occurred. Verify that your password is correctly typed.'),
+                )
+                .whenComplete(
+                  () => notifications.showNotification(
+                      context: context,
+                      title: 'Sign In Success',
+                      body: 'You have successfully signed in.'),
+                );
           },
           context: context,
           label: 'Log In',
@@ -375,13 +394,22 @@ class _LoanTrackLoginState extends State<LoanTrackLogin> with ChangeNotifier {
         separatorSpace20,
         LoanTrackButton.primary(
           whenPressed: () {
-            authService.registerAccount(
-                context: context,
-                email: emailController.text,
-                displayName: displayNameController.text,
-                password: passwordController.text,
-                errorCallback: (e) => showErrorDialog(
-                    context: context, title: 'Credential Error', e: e));
+            authService
+                .registerAccount(
+                  context: context,
+                  email: emailController.text,
+                  displayName: displayNameController.text,
+                  password: passwordController.text,
+                  errorCallback: (e) => showErrorDialog(
+                      context: context, title: 'Credential Error', e: e),
+                )
+                .whenComplete(
+                  () => notifications.showNotification(
+                      context: context,
+                      title: 'Welcome ' + displayNameController.text,
+                      body:
+                          'Your Loantrack account has been successfully created. Welcome onboard.'),
+                );
           },
           context: context,
           label: 'Create Account',
@@ -405,14 +433,23 @@ class _LoanTrackLoginState extends State<LoanTrackLogin> with ChangeNotifier {
         loginHeader(
           context: context,
           title: 'Email Verification',
-          message:
-              'We will send you a verification link. Click \'Request Link\' to get the email now.',
+          message: 'We will send you a verification link. '
+              'Click \'Request Link\' to get the email now.',
         ),
         separatorSpace20,
         LoanTrackButton.primary(
           whenPressed: () async {
             try {
-              await FirebaseAuth.instance.currentUser?.sendEmailVerification();
+              await FirebaseAuth.instance.currentUser
+                  ?.sendEmailVerification()
+                  .whenComplete(
+                    () => notifications.showNotification(
+                      context: context,
+                      title: 'Email Link Sent',
+                      body: 'We have sent you a verification email. '
+                          'Kindly check your email and follow the link.',
+                    ),
+                  );
               showSuccessDialog(
                   whenTapped: () {
                     Navigator.of(context).pop();
@@ -420,8 +457,8 @@ class _LoanTrackLoginState extends State<LoanTrackLogin> with ChangeNotifier {
                   },
                   context: context,
                   title: 'Verification Sent',
-                  successMessage:
-                      'A verification link has been sent to you. Kindly check your email and follow the instructions.');
+                  successMessage: 'A verification link has been sent to you. '
+                      'Kindly check your email and follow the instructions.');
             } on FirebaseAuthException catch (e) {
               showErrorDialog(context: context, title: 'Request Error', e: e);
             }

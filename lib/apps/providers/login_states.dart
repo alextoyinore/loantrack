@@ -1,4 +1,3 @@
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
 enum States {
@@ -11,14 +10,14 @@ enum States {
 }
 
 class LoginState with ChangeNotifier {
-  LoginState() {
+  /* LoginState() {
     init();
   }
 
   //Initialize Firebase
   Future<void> init() async {
     await Firebase.initializeApp();
-  }
+  }*/
 
   States _loginState = States.loggedOut;
   States get loginState => _loginState;

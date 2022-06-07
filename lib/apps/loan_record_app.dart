@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:loantrack/apps/messages/notifications.dart';
 import 'package:loantrack/apps/widgets/button.dart';
 import 'package:loantrack/data/applists.dart';
 import 'package:loantrack/data/database.dart';
@@ -56,6 +57,8 @@ class _LoanRecordState extends State<LoanRecord> {
   TextEditingController repaidWhenController = TextEditingController();
   TextEditingController balanceLeftController = TextEditingController();
   //TextEditingController noteController = TextEditingController();
+
+  Notifications notifications = Notifications();
 
   @override
   Widget build(BuildContext context) {
@@ -518,14 +521,14 @@ class _LoanRecordState extends State<LoanRecord> {
                           loanPurpose: loanPurposeController.text,
                           note: noteController.text)
                       .whenComplete(() {
-                    showSuccessDialog(
-                        context: context,
-                        title: 'Success',
-                        successMessage:
-                            'Loan record "${lenderController.text} - ${loanAmountController.text}" successfully created.',
-                        whenTapped: () {
-                          Navigator.pushNamed(context, '/home');
-                        });
+                    notifications.showNotification(
+                      context: context,
+                      title: 'New Loan Record',
+                      body:
+                          'Loan record "${lenderController.text} - ${loanAmountController.text}" successfully created.',
+                    );
+
+                    Navigator.pushNamed(context, '/home');
                   }).onError((error, stackTrace) {
                     showErrorDialog(
                         context: context,
@@ -806,14 +809,14 @@ class _LoanRecordState extends State<LoanRecord> {
                       : widget.documentSnapshot!.get('note'),
                 )
                     .whenComplete(() {
-                  showSuccessDialog(
-                      context: context,
-                      title: 'Success',
-                      successMessage:
-                          'You have successfully edited record - ${widget.documentSnapshot!.get('lender')} loan',
-                      whenTapped: () {
-                        Navigator.pushNamed(context, '/home');
-                      });
+                  notifications.showNotification(
+                    context: context,
+                    title: 'Loan Edited',
+                    body:
+                        'You have successfully edited record - ${widget.documentSnapshot!.get('lender')} loan',
+                  );
+
+                  Navigator.pushNamed(context, '/home');
                 }).onError((error, stackTrace) {
                   showErrorDialog(
                       context: context,
@@ -991,15 +994,15 @@ class _LoanRecordState extends State<LoanRecord> {
                         lenderType: widget.documentSnapshot!.get(
                           'lenderType',
                         ));
-                    //END OF UPDATING COLLECTION
-                    showSuccessDialog(
-                        context: context,
-                        title: 'Success',
-                        successMessage:
-                            'You have successfully added a repayment record to your ${widget.documentSnapshot!.get('lender')} loan',
-                        whenTapped: () {
-                          Navigator.pushNamed(context, '/home');
-                        });
+
+                    notifications.showNotification(
+                      context: context,
+                      title: 'New Repayment Record',
+                      body:
+                          'You have successfully added a repayment record to your ${widget.documentSnapshot!.get('lender')} loan',
+                    );
+
+                    Navigator.pushNamed(context, '/home');
                   }).onError((error, stackTrace) {
                     showErrorDialog(
                         context: context,

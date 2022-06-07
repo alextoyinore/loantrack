@@ -1,6 +1,9 @@
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:loantrack/apps/home.dart';
 import 'package:loantrack/apps/loan_list_app.dart';
@@ -15,10 +18,75 @@ import 'package:loantrack/apps/widgets/loandetail.dart';
 import 'package:provider/provider.dart';
 
 import 'apps/loan_record_app.dart';
+import 'apps/messages/notifications.dart';
 import 'helpers/colors.dart';
 
-void main() {
+const AndroidNotificationChannel channel = AndroidNotificationChannel(
+  'high_importance_channel',
+  'High Importance Notifications',
+  description: 'This channel is used for important notifications.',
+  importance: Importance.high,
+  playSound: true,
+);
+
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  await Firebase.initializeApp();
+  if (kDebugMode) {
+    print('A message just showed up: ${message.messageId}');
+  }
+}
+
+FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+    FlutterLocalNotificationsPlugin();
+
+Future selectNotification(String message) async {
+  if (message != null) {
+    return null;
+  } else {
+    return null;
+  }
+}
+
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+
+  // FOR SETTING UP NOTIFICATION ICON CORRECTLY
+
+  /*const AndroidInitializationSettings androidInitializationSettings =
+      AndroidInitializationSettings('ic_launcher');
+
+  IOSInitializationSettings iosInitializationSettings =
+      const IOSInitializationSettings(
+    requestAlertPermission: false,
+    requestBadgePermission: false,
+    requestSoundPermission: false,
+  );
+
+  InitializationSettings initializationSettings = InitializationSettings(
+    android: androidInitializationSettings,
+    iOS: iosInitializationSettings,
+    macOS: null,
+  );
+
+  await flutterLocalNotificationsPlugin.initialize(
+    initializationSettings,
+  );*/
+
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+  await flutterLocalNotificationsPlugin
+      .resolvePlatformSpecificImplementation<
+          AndroidFlutterLocalNotificationsPlugin>()
+      ?.createNotificationChannel(channel);
+
+  /// Update the iOS foreground notification presentation options to allow
+  /// heads up notifications.
+  await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
+    alert: true,
+    badge: true,
+    sound: true,
+  );
+
   runApp(
     MultiProvider(
       providers: [
@@ -49,10 +117,66 @@ class _MainState extends State<Main> {
     });
   }
 
+  Notifications notifications = Notifications();
+
   @override
   void initState() {
-    getThemeNumber();
     super.initState();
+
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      RemoteNotification? notification = message.notification;
+      AndroidNotification? android = message.notification?.android;
+      if (notification != null && android != null) {
+        flutterLocalNotificationsPlugin.show(
+          notification.hashCode,
+          notification.title,
+          notification.body,
+          NotificationDetails(
+            android: AndroidNotificationDetails(
+              channel.id,
+              channel.name,
+              channelDescription: channel.description,
+              color: Theme.of(context).colorScheme.primary,
+              playSound: true,
+              icon: '@mipmap/ic_notification',
+            ),
+          ),
+        );
+      }
+    });
+
+    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+      if (kDebugMode) {
+        print('A new onMessageOpenedApp event was published!');
+      }
+      RemoteNotification? notification = message.notification;
+      AndroidNotification? android = message.notification?.android;
+      if (notification != null && android != null) {
+        showDialog(
+            context: context,
+            builder: (_) {
+              return AlertDialog(
+                title: Text(notification.title!),
+                content: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(notification.body!),
+                    ],
+                  ),
+                ),
+              );
+            });
+      }
+    });
+
+    getThemeNumber();
+
+    notifications.showNotification(
+      context: context,
+      title: 'Welcome',
+      body: 'Welcome to Loantrack',
+    );
   }
 
   @override

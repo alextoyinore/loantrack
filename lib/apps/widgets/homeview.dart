@@ -20,6 +20,7 @@ import 'package:provider/provider.dart';
 import '../../helpers/listwidgets.dart';
 import '../../widgets/application_grid_view.dart';
 import '../../widgets/loan_track_modal.dart';
+import '../providers/preferences.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({Key? key}) : super(key: key);
@@ -33,8 +34,17 @@ class _HomeViewState extends State<HomeView> {
 
   int storedThemeNumber = 0;
 
+  Future<void> getThemeNumber() async {
+    ThemePreferences themePreferences = ThemePreferences();
+    int themeNumber = await themePreferences.getThemeNumber();
+    setState(() {
+      storedThemeNumber = themeNumber;
+    });
+  }
+
   @override
   void initState() {
+    getThemeNumber();
     super.initState();
   }
 
@@ -48,8 +58,14 @@ class _HomeViewState extends State<HomeView> {
     ScrollController sliderScrollController = ScrollController();
 
     // Watch theme
+    context.watch<ThemeManager>().themeNumber;
+    var newlySetTheme = context.read<ThemeManager>().themeNumber;
 
-    var providedTheme = context.read<ThemeManager>().themeNumber;
+    if (newlySetTheme > -1) {
+      setState(() {
+        storedThemeNumber = newlySetTheme;
+      });
+    }
 
     return Stack(
       children: [
@@ -524,13 +540,12 @@ class _HomeViewState extends State<HomeView> {
                         ),
                       ],
                     ),
-                    (storedThemeNumber == 1 || providedTheme == ThemeMode.light)
+                    (storedThemeNumber == 1)
                         ? const Icon(
                             Icons.light_mode,
                             size: 20,
                           )
-                        : (storedThemeNumber == 2 ||
-                                providedTheme == ThemeMode.dark)
+                        : (storedThemeNumber == 2)
                             ? const Icon(Icons.nightlight)
                             : const Icon(Icons.contrast),
                   ],

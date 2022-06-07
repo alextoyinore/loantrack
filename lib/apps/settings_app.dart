@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:loantrack/apps/providers/login_states.dart';
+import 'package:loantrack/apps/providers/preferences.dart';
 import 'package:loantrack/apps/providers/theme_provider.dart';
 import 'package:loantrack/apps/widgets/updateprofile.dart';
 import 'package:loantrack/data/applists.dart';
@@ -20,8 +21,19 @@ class AppSettings extends StatefulWidget {
 }
 
 class _AppSettingsState extends State<AppSettings> {
+  int storedThemeNumber = 0;
+
+  Future<void> getThemeNumber() async {
+    ThemePreferences themePreferences = ThemePreferences();
+    int themeNumber = await themePreferences.getThemeNumber();
+    setState(() {
+      storedThemeNumber = themeNumber;
+    });
+  }
+
   @override
   void initState() {
+    getThemeNumber();
     super.initState();
   }
 
@@ -29,6 +41,24 @@ class _AppSettingsState extends State<AppSettings> {
 
   @override
   Widget build(BuildContext context) {
+    // Watch theme
+    context.watch<ThemeManager>().themeNumber;
+    var newlySetTheme = context.read<ThemeManager>().themeNumber;
+
+    if (newlySetTheme > -1) {
+      setState(() {
+        storedThemeNumber = newlySetTheme;
+      });
+    }
+
+    if (storedThemeNumber == 1) {
+      themeName = 'Light';
+    } else if (storedThemeNumber == 2) {
+      themeName = 'Dark';
+    } else {
+      themeName = 'System';
+    }
+
     return WillPopScope(
       onWillPop: () async {
         return false;
