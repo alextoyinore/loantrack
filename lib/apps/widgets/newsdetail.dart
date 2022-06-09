@@ -85,7 +85,7 @@ class _NewsDetailState extends State<NewsDetail> {
                     separatorSpace20,
                     Text(
                       widget.news.get('excerpt'),
-                      style: descriptionStyle(context),
+                      style: bodyStyle(context),
                       softWrap: true,
                       //textAlign: TextAlign.justify,
                     ),

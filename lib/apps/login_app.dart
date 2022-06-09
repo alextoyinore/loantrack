@@ -182,24 +182,23 @@ class _LoanTrackLoginState extends State<LoanTrackLogin> with ChangeNotifier {
           separatorSpace20,
           LoanTrackButton.primary(
             whenPressed: () {
-              authService
-                  .checkEmailExists(
-                    context: context,
-                    email: emailController.text,
-                    errorCallback: (e) => showErrorDialog(
-                      context: context,
-                      title: 'Invalid Email',
-                      errorMessage: 'This email is not valid. Kindly check '
-                          'that you have typed a valid email.',
-                    ),
-                  )
-                  .whenComplete(
+              authService.checkEmailExists(
+                context: context,
+                email: emailController.text,
+                errorCallback: (e) => showErrorDialog(
+                  context: context,
+                  title: 'Invalid Email',
+                  errorMessage: 'This email is not valid. Kindly check '
+                      'that you have typed a valid email.',
+                ),
+              );
+              /*.whenComplete(
                     () => notifications.showNotification(
                       context: context,
                       title: 'Email Found',
                       body: 'We found your email.',
                     ),
-                  );
+                  );*/
             },
             context: context,
             label: 'Start Here',
@@ -270,23 +269,22 @@ class _LoanTrackLoginState extends State<LoanTrackLogin> with ChangeNotifier {
         separatorSpace20,
         LoanTrackButton.primary(
           whenPressed: () {
-            authService
-                .signInWithEmailAndPassword(
+            authService.signInWithEmailAndPassword(
+              context: context,
+              email: emailController.text,
+              password: passwordController.text,
+              errorCallback: (e) => showErrorDialog(
                   context: context,
-                  email: emailController.text,
-                  password: passwordController.text,
-                  errorCallback: (e) => showErrorDialog(
-                      context: context,
-                      title: 'Credential Error',
-                      errorMessage:
-                          'An error occurred. Verify that your password is correctly typed.'),
-                )
-                .whenComplete(
+                  title: 'Credential Error',
+                  errorMessage:
+                      'An error occurred. Verify that your password is correctly typed.'),
+            );
+            /*.whenComplete(
                   () => notifications.showNotification(
                       context: context,
                       title: 'Sign In Success',
                       body: 'You have successfully signed in.'),
-                );
+                );*/
           },
           context: context,
           label: 'Log In',
