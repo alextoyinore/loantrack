@@ -145,7 +145,8 @@ class _MainState extends State<Main> {
     notifications.showNotification(
       context: context,
       title: 'Welcome',
-      body: 'Welcome to Loantrack',
+      body:
+          'Welcome to Loantrack. Nigeria\'s best loan consumer management app.',
     );
   }
 
@@ -184,7 +185,7 @@ class _MainState extends State<Main> {
               ? darkColorScheme.background
               : bg,
       systemNavigationBarIconBrightness:
-          (storedThemeNumber == 2) ? Brightness.dark : Brightness.light,
+          (storedThemeNumber == 2) ? Brightness.light : Brightness.dark,
       statusBarColor: Colors.transparent,
     ));
 

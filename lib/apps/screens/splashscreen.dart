@@ -14,14 +14,6 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-  @override
-  void initState() {
-    //implement initState
-    super.initState();
-    startTime();
-    isOnboarding();
-  }
-
   startTime() async {
     var duration = const Duration(seconds: 4);
     return Timer(duration, toLoginOrOnboarding);
@@ -49,7 +41,16 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   @override
+  void initState() {
+    //implement initState
+    super.initState();
+    startTime();
+    isOnboarding();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    print(onboarding);
     return Scaffold(
       body: Container(
         color: Theme.of(context).colorScheme.background,

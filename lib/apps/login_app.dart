@@ -288,6 +288,7 @@ class _LoanTrackLoginState extends State<LoanTrackLogin> with ChangeNotifier {
                       title: 'Sign In Success',
                       body: 'You have successfully signed in.'),
                 );*/
+            onboardingPreferences.setOnboarding(false);
           },
           context: context,
           label: 'Log In',
@@ -313,8 +314,6 @@ class _LoanTrackLoginState extends State<LoanTrackLogin> with ChangeNotifier {
                         context: context,
                         whenTapped: () => Navigator.of(context).pop(),
                         title: 'Email sent'));
-
-                onboardingPreferences.setOnboarding(false);
               },
               child: Text(
                 'Forgot Password?',
