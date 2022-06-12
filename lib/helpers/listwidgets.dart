@@ -22,11 +22,13 @@ import 'package:provider/provider.dart';
 
 import '../apps/providers/loan_provider.dart';
 
-SizedBox LoanList(
-    {required double width,
-    required double height,
-    int? numberOfItems,
-    required String userId}) {
+SizedBox LoanList({
+  required double width,
+  required double height,
+  int? numberOfItems,
+  required String userId,
+  bool? toRepayment,
+}) {
   return SizedBox(
     width: width,
     height: height,
@@ -72,12 +74,22 @@ SizedBox LoanList(
                     document.get('amountRepaid') / document.get('loanAmount');
                 return GestureDetector(
                   onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => LoanDetail(
-                                  document: document,
-                                )));
+                    if (toRepayment! == false) {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => LoanDetail(
+                                    document: document,
+                                  )));
+                    } else {
+                      Navigator.push(
+                          context,
+                          CupertinoPageRoute(
+                              builder: (context) => LoanRecord(
+                                    edit: false,
+                                    documentSnapshot: document,
+                                  )));
+                    }
                   },
                   onLongPress: () {
                     LoanTrackModal.modal(
@@ -418,305 +430,336 @@ SizedBox LoanSlider(
                 DocumentSnapshot document = snapshot.data!.docs[index];
                 double progress =
                     document.get('amountRepaid') / document.get('loanAmount');
-                return GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => LoanDetail(
-                                  document: document,
-                                )));
-                  },
-                  onLongPress: () {
-                    LoanTrackModal.modal(
-                      context,
-                      height: MediaQuery.of(context).size.height / 2.5,
-                      content: Container(
-                        child: Column(
-                            children: List.generate(
-                                AppLists.loanListOptionItem.length,
-                                (index) => GestureDetector(
-                                      onTap: () {
-                                        switch (index) {
-                                          case 0:
-                                            Navigator.push(
-                                                context,
-                                                CupertinoPageRoute(
-                                                    builder: (context) =>
-                                                        LoanDetail(
-                                                          document: document,
-                                                        )));
-                                            // Navigator.pop(context);
-                                            break;
-                                          case 1:
-                                            Navigator.push(
-                                                context,
-                                                CupertinoPageRoute(
-                                                    builder: (context) =>
-                                                        LoanRecord(
-                                                          edit: false,
-                                                          documentSnapshot:
-                                                              document,
-                                                        )));
-                                            //Navigator.pop(context);
-                                            break;
-                                          case 2:
-                                            Navigator.push(
-                                                context,
-                                                CupertinoPageRoute(
-                                                    builder: (context) =>
-                                                        LoanRecord(
-                                                          edit: true,
-                                                          documentSnapshot:
-                                                              document,
-                                                        )));
-                                            //Navigator.pop(context);
-                                            break;
-                                          case 3:
-                                            FirebaseFirestore.instance
-                                                .collection('archive')
-                                                .add({
-                                              'userId': FirebaseAuth
-                                                  .instance.currentUser!.uid,
-                                              'loanId': document.id,
-                                              'loanAmount':
-                                                  document.get('loanAmount'),
-                                              'amountRepaid':
-                                                  document.get('amountRepaid'),
-                                              'interestRate':
-                                                  document.get('interestRate'),
-                                              'dailyOverdueCharge': document
-                                                  .get('dailyOverdueCharge'),
-                                              'applyWhen':
-                                                  document.get('applyWhen'),
-                                              'dueWhen':
-                                                  document.get('dueWhen'),
-                                              'lastRepaidWhen':
-                                                  document.get('lastPaidWhen'),
-                                              'entryDate':
-                                                  document.get('entryDate'),
-                                              'modifiedWhen':
-                                                  document.get('modifiedWhen'),
-                                              'lenderType':
-                                                  document.get('lenderType'),
-                                              'lender': document.get('lender'),
-                                              'loanPurpose':
-                                                  document.get('loanPurpose'),
-                                              'note': document.get('note'),
-                                            }).whenComplete(
-                                              () => const SnackBar(
-                                                backgroundColor: LoanTrackColors
-                                                    .PrimaryOneVeryLight,
-                                                duration:
-                                                    Duration(milliseconds: 500),
-                                                content: Text(
-                                                    'Loan record archived.'),
+                return (document.get('loanAmount') >
+                        document.get('amountRepaid'))
+                    ? GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => LoanDetail(
+                                        document: document,
+                                      )));
+                        },
+                        onLongPress: () {
+                          LoanTrackModal.modal(
+                            context,
+                            height: MediaQuery.of(context).size.height / 2.5,
+                            content: Container(
+                              child: Column(
+                                  children: List.generate(
+                                      AppLists.loanListOptionItem.length,
+                                      (index) => GestureDetector(
+                                            onTap: () {
+                                              switch (index) {
+                                                case 0:
+                                                  Navigator.push(
+                                                      context,
+                                                      CupertinoPageRoute(
+                                                          builder: (context) =>
+                                                              LoanDetail(
+                                                                document:
+                                                                    document,
+                                                              )));
+                                                  // Navigator.pop(context);
+                                                  break;
+                                                case 1:
+                                                  Navigator.push(
+                                                      context,
+                                                      CupertinoPageRoute(
+                                                          builder: (context) =>
+                                                              LoanRecord(
+                                                                edit: false,
+                                                                documentSnapshot:
+                                                                    document,
+                                                              )));
+                                                  //Navigator.pop(context);
+                                                  break;
+                                                case 2:
+                                                  Navigator.push(
+                                                      context,
+                                                      CupertinoPageRoute(
+                                                          builder: (context) =>
+                                                              LoanRecord(
+                                                                edit: true,
+                                                                documentSnapshot:
+                                                                    document,
+                                                              )));
+                                                  //Navigator.pop(context);
+                                                  break;
+                                                case 3:
+                                                  FirebaseFirestore.instance
+                                                      .collection('archive')
+                                                      .add({
+                                                    'userId': FirebaseAuth
+                                                        .instance
+                                                        .currentUser!
+                                                        .uid,
+                                                    'loanId': document.id,
+                                                    'loanAmount': document
+                                                        .get('loanAmount'),
+                                                    'amountRepaid': document
+                                                        .get('amountRepaid'),
+                                                    'interestRate': document
+                                                        .get('interestRate'),
+                                                    'dailyOverdueCharge':
+                                                        document.get(
+                                                            'dailyOverdueCharge'),
+                                                    'applyWhen': document
+                                                        .get('applyWhen'),
+                                                    'dueWhen':
+                                                        document.get('dueWhen'),
+                                                    'lastRepaidWhen': document
+                                                        .get('lastPaidWhen'),
+                                                    'entryDate': document
+                                                        .get('entryDate'),
+                                                    'modifiedWhen': document
+                                                        .get('modifiedWhen'),
+                                                    'lenderType': document
+                                                        .get('lenderType'),
+                                                    'lender':
+                                                        document.get('lender'),
+                                                    'loanPurpose': document
+                                                        .get('loanPurpose'),
+                                                    'note':
+                                                        document.get('note'),
+                                                  }).whenComplete(
+                                                    () => const SnackBar(
+                                                      backgroundColor:
+                                                          LoanTrackColors
+                                                              .PrimaryOneVeryLight,
+                                                      duration: Duration(
+                                                          milliseconds: 500),
+                                                      content: Text(
+                                                          'Loan record archived.'),
+                                                    ),
+                                                  );
+                                                  // Navigator.pop(context);
+                                                  break;
+                                                case 4:
+                                                  FirebaseFirestore.instance
+                                                      .collection('archive')
+                                                      .add({
+                                                    'userId': FirebaseAuth
+                                                        .instance
+                                                        .currentUser!
+                                                        .uid,
+                                                    'loanId': document.id,
+                                                    'loanAmount': document
+                                                        .get('loanAmount'),
+                                                    'amountRepaid': document
+                                                        .get('amountRepaid'),
+                                                    'interestRate': document
+                                                        .get('interestRate'),
+                                                    'dailyOverdueCharge':
+                                                        document.get(
+                                                            'dailyOverdueCharge'),
+                                                    'applyWhen': document
+                                                        .get('applyWhen'),
+                                                    'dueWhen':
+                                                        document.get('dueWhen'),
+                                                    'lastRepaidWhen': document
+                                                        .get('lastPaidWhen'),
+                                                    'entryDate': document
+                                                        .get('entryDate'),
+                                                    'modifiedWhen': document
+                                                        .get('modifiedWhen'),
+                                                    'lenderType': document
+                                                        .get('lenderType'),
+                                                    'lender':
+                                                        document.get('lender'),
+                                                    'loanPurpose': document
+                                                        .get('loanPurpose'),
+                                                    'note':
+                                                        document.get('note'),
+                                                  }).whenComplete(
+                                                    () => const SnackBar(
+                                                      backgroundColor:
+                                                          LoanTrackColors
+                                                              .PrimaryOneVeryLight,
+                                                      duration: Duration(
+                                                          milliseconds: 500),
+                                                      content: Text(
+                                                          'Loan record archived.'),
+                                                    ),
+                                                  );
+                                                  FirebaseFirestore.instance
+                                                      .collection('loans')
+                                                      .doc(document.id)
+                                                      .delete();
+                                                // Navigator.pop(context);
+                                                //break;
+                                              }
+                                            },
+                                            child: ListTile(
+                                              title: Text(
+                                                AppLists
+                                                    .loanListOptionItem[index],
+                                                style: const TextStyle(
+                                                  color: LoanTrackColors
+                                                      .PrimaryTwoVeryLight,
+                                                ),
                                               ),
-                                            );
-                                            // Navigator.pop(context);
-                                            break;
-                                          case 4:
-                                            FirebaseFirestore.instance
-                                                .collection('archive')
-                                                .add({
-                                              'userId': FirebaseAuth
-                                                  .instance.currentUser!.uid,
-                                              'loanId': document.id,
-                                              'loanAmount':
-                                                  document.get('loanAmount'),
-                                              'amountRepaid':
-                                                  document.get('amountRepaid'),
-                                              'interestRate':
-                                                  document.get('interestRate'),
-                                              'dailyOverdueCharge': document
-                                                  .get('dailyOverdueCharge'),
-                                              'applyWhen':
-                                                  document.get('applyWhen'),
-                                              'dueWhen':
-                                                  document.get('dueWhen'),
-                                              'lastRepaidWhen':
-                                                  document.get('lastPaidWhen'),
-                                              'entryDate':
-                                                  document.get('entryDate'),
-                                              'modifiedWhen':
-                                                  document.get('modifiedWhen'),
-                                              'lenderType':
-                                                  document.get('lenderType'),
-                                              'lender': document.get('lender'),
-                                              'loanPurpose':
-                                                  document.get('loanPurpose'),
-                                              'note': document.get('note'),
-                                            }).whenComplete(
-                                              () => const SnackBar(
-                                                backgroundColor: LoanTrackColors
-                                                    .PrimaryOneVeryLight,
-                                                duration:
-                                                    Duration(milliseconds: 500),
-                                                content: Text(
-                                                    'Loan record archived.'),
-                                              ),
-                                            );
-                                            FirebaseFirestore.instance
-                                                .collection('loans')
-                                                .doc(document.id)
-                                                .delete();
-                                          // Navigator.pop(context);
-                                          //break;
-                                        }
-                                      },
-                                      child: ListTile(
-                                        title: Text(
-                                          AppLists.loanListOptionItem[index],
-                                          style: const TextStyle(
-                                            color: LoanTrackColors
-                                                .PrimaryTwoVeryLight,
-                                          ),
-                                        ),
-                                      ),
-                                    ))),
-                      ),
-                      title: 'Options',
-                    );
-                  },
-                  child: Container(
-                    width: MediaQuery.of(context).size.width / 2.4,
-                    margin: const EdgeInsets.only(right: 20),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: Theme.of(context)
-                          .colorScheme
-                          .secondary
-                          .withOpacity(.05),
-                    ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(
-                            top: 10.0,
-                            left: 10,
-                            right: 10,
+                                            ),
+                                          ))),
+                            ),
+                            title: 'Options',
+                          );
+                        },
+                        child: Container(
+                          width: MediaQuery.of(context).size.width / 2.4,
+                          margin:
+                              (numberOfItems != null && index < numberOfItems)
+                                  ? EdgeInsets.only(right: 10)
+                                  : EdgeInsets.zero,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: Theme.of(context)
+                                .colorScheme
+                                .secondary
+                                .withOpacity(.05),
                           ),
-                          child: Text(
-                            snapshot.data!.docs[index]
-                                .get('lender')
-                                .toUpperCase(),
-                            style: sectionHeaderStyle(context),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                          child: Text(
-                            'Loan Balance',
-                            style: smallerDescriptionStyle(context),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                          child: Text(
-                            (snapshot.data!.docs[index].get('loanAmount') -
-                                    snapshot.data!.docs[index]
-                                        .get('amountRepaid'))
-                                .toString(),
-                            style: featureTitleStyle(context),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                          child: Text(
-                            'Amount Repaid',
-                            style: smallerDescriptionStyle(context),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                          child: Text(
-                            snapshot.data!.docs[index]
-                                .get('amountRepaid')
-                                .toString(),
-                            style: smallerTitleStyle(context),
-                          ),
-                        ),
-                        (progress >= 1)
-                            ? const Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 10.0),
-                                child: Text(
-                                  'PAID',
-                                  style: TextStyle(
-                                      color: LoanTrackColors.PrimaryOne,
-                                      fontSize: 12),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                  top: 10.0,
+                                  left: 10,
+                                  right: 10,
                                 ),
-                              )
-                            : (progress == 0)
-                                ? const Padding(
-                                    padding:
-                                        EdgeInsets.symmetric(horizontal: 10.0),
-                                    child: Text('UNPAID',
+                                child: Text(
+                                  snapshot.data!.docs[index]
+                                      .get('lender')
+                                      .toUpperCase(),
+                                  style: sectionHeaderStyle(context),
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 10.0),
+                                child: Text(
+                                  'Loan Balance',
+                                  style: smallerDescriptionStyle(context),
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 10.0),
+                                child: Text(
+                                  (snapshot.data!.docs[index]
+                                              .get('loanAmount') -
+                                          snapshot.data!.docs[index]
+                                              .get('amountRepaid'))
+                                      .toString(),
+                                  style: featureTitleStyle(context),
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 10.0),
+                                child: Text(
+                                  'Amount Repaid',
+                                  style: smallerDescriptionStyle(context),
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 10.0),
+                                child: Text(
+                                  snapshot.data!.docs[index]
+                                      .get('amountRepaid')
+                                      .toString(),
+                                  style: smallerTitleStyle(context),
+                                ),
+                              ),
+                              (progress >= 1)
+                                  ? const Padding(
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: 10.0),
+                                      child: Text(
+                                        'PAID',
                                         style: TextStyle(
-                                            color: LoanTrackColors2.PrimaryOne,
+                                            color: LoanTrackColors.PrimaryOne,
                                             fontSize: 12),
-                                        softWrap: true),
-                                  )
-                                : Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 10.0),
-                                    child: Text(
-                                        snapshot.data!.docs[index]
-                                            .get('lastPaidWhen'),
-                                        style: const TextStyle(
-                                            color: LoanTrackColors2.PrimaryOne,
-                                            fontSize: 12),
-                                        softWrap: true),
+                                      ),
+                                    )
+                                  : (progress == 0)
+                                      ? const Padding(
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 10.0),
+                                          child: Text('UNPAID',
+                                              style: TextStyle(
+                                                  color: LoanTrackColors2
+                                                      .PrimaryOne,
+                                                  fontSize: 12),
+                                              softWrap: true),
+                                        )
+                                      : Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 10.0),
+                                          child: Text(
+                                              snapshot.data!.docs[index]
+                                                  .get('lastPaidWhen'),
+                                              style: const TextStyle(
+                                                  color: LoanTrackColors2
+                                                      .PrimaryOne,
+                                                  fontSize: 12),
+                                              softWrap: true),
+                                        ),
+                              Stack(children: [
+                                Container(
+                                  width: MediaQuery.of(context).size.width / 2,
+                                  height: 6,
+                                  decoration: BoxDecoration(
+                                    color: (progress >= 0.5)
+                                        ? Theme.of(context)
+                                            .colorScheme
+                                            .primary
+                                            .withOpacity(.1)
+                                        : Theme.of(context)
+                                            .colorScheme
+                                            .primary
+                                            .withOpacity(.05),
+                                    borderRadius: const BorderRadius.only(
+                                      bottomRight: Radius.circular(10),
+                                      bottomLeft: Radius.circular(10),
+                                    ),
                                   ),
-                        Stack(children: [
-                          Container(
-                            width: MediaQuery.of(context).size.width / 2,
-                            height: 6,
-                            decoration: BoxDecoration(
-                              color: (progress >= 0.5)
-                                  ? Theme.of(context)
-                                      .colorScheme
-                                      .primary
-                                      .withOpacity(.1)
-                                  : Theme.of(context)
-                                      .colorScheme
-                                      .primary
-                                      .withOpacity(.05),
-                              borderRadius: const BorderRadius.only(
-                                bottomRight: Radius.circular(10),
-                                bottomLeft: Radius.circular(10),
-                              ),
-                            ),
+                                ),
+                                Container(
+                                  width: MediaQuery.of(context).size.width /
+                                      2 *
+                                      progress,
+                                  height: 6,
+                                  decoration: BoxDecoration(
+                                    color: (progress >= 0.5)
+                                        ? Theme.of(context)
+                                            .colorScheme
+                                            .primary
+                                            .withOpacity(.3)
+                                        : Theme.of(context)
+                                            .colorScheme
+                                            .secondary
+                                            .withOpacity(.1),
+                                    borderRadius: BorderRadius.only(
+                                      bottomRight: (progress >= 1)
+                                          ? const Radius.circular(10)
+                                          : const Radius.circular(0),
+                                      bottomLeft: const Radius.circular(10),
+                                    ),
+                                  ),
+                                ),
+                              ]),
+                            ],
                           ),
-                          Container(
-                            width: MediaQuery.of(context).size.width /
-                                2 *
-                                progress,
-                            height: 6,
-                            decoration: BoxDecoration(
-                              color: (progress >= 0.5)
-                                  ? Theme.of(context)
-                                      .colorScheme
-                                      .primary
-                                      .withOpacity(.3)
-                                  : Theme.of(context)
-                                      .colorScheme
-                                      .secondary
-                                      .withOpacity(.1),
-                              borderRadius: BorderRadius.only(
-                                bottomRight: (progress >= 1)
-                                    ? const Radius.circular(10)
-                                    : const Radius.circular(0),
-                                bottomLeft: const Radius.circular(10),
-                              ),
-                            ),
-                          ),
-                        ]),
-                      ],
-                    ),
-                  ),
-                );
+                        ),
+                      )
+                    : SizedBox(
+                        width: 0,
+                        height: 0,
+                      );
               });
         }),
   );
@@ -839,18 +882,22 @@ Container RepaymentBulletedList(
               .snapshots(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
-          return const Center(
+          return Center(
               child: Text(
             'No data',
-            style: TextStyle(fontSize: 14, color: LoanTrackColors.PrimaryOne),
+            style: TextStyle(
+                fontSize: 14,
+                color: Theme.of(context).colorScheme.onBackground),
           ));
         }
 
         if (snapshot.data!.docs.isEmpty) {
-          return const Center(
+          return Center(
             child: Text(
               'No data',
-              style: TextStyle(fontSize: 14, color: LoanTrackColors.PrimaryOne),
+              style: TextStyle(
+                  fontSize: 14,
+                  color: Theme.of(context).colorScheme.onBackground),
             ),
           );
         }
@@ -968,7 +1015,7 @@ SizedBox BlogList({required double height}) {
                   );
                 },
                 child: Container(
-                  height: MediaQuery.of(context).size.height / 2.2,
+                  height: MediaQuery.of(context).size.height / 2.4,
                   margin:
                       const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
                   //decoration: BoxDecoration(color: Colors.white, boxShadow: []),
@@ -1111,9 +1158,10 @@ SizedBox NewsList({required double height}) {
                   );
                 },
                 child: Container(
-                  height: MediaQuery.of(context).size.height / 2.2,
-                  margin:
-                      const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+                  height: MediaQuery.of(context).size.height / 2.4,
+                  margin: const EdgeInsets.symmetric(
+                    horizontal: 20,
+                  ),
                   //decoration: BoxDecoration(color: Colors.white, boxShadow: []),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,

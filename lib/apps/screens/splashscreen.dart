@@ -2,6 +2,9 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:loantrack/apps/login_app.dart';
+import 'package:loantrack/apps/screens/onboarding.dart';
+
+import '../providers/preferences.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -16,16 +19,33 @@ class _SplashScreenState extends State<SplashScreen> {
     //implement initState
     super.initState();
     startTime();
+    isOnboarding();
   }
 
   startTime() async {
     var duration = const Duration(seconds: 4);
-    return Timer(duration, toLogin);
+    return Timer(duration, toLoginOrOnboarding);
   }
 
-  toLogin() {
-    Navigator.pushReplacement(context,
-        MaterialPageRoute(builder: (context) => const LoanTrackLogin()));
+  bool onboarding = true;
+
+  AppPreferences onboardingPreference = AppPreferences();
+
+  Future<void> isOnboarding() async {
+    bool onboardingValue = await onboardingPreference.getOnboarding();
+    setState(() {
+      onboarding = onboardingValue;
+    });
+  }
+
+  toLoginOrOnboarding() {
+    if (onboarding) {
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => Onboarding()));
+    } else {
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => LoanTrackLogin()));
+    }
   }
 
   @override

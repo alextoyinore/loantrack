@@ -12,12 +12,14 @@ class LoanTrackingPage extends StatefulWidget {
       {Key? key,
       required this.loanListHeight,
       this.numberOfItems,
+      this.fromRepayment,
       required this.isHome})
       : super(key: key);
 
   double loanListHeight;
   bool isHome;
   int? numberOfItems;
+  bool? fromRepayment;
 
   @override
   State<LoanTrackingPage> createState() => _LoanTrackingPageState();
@@ -37,7 +39,11 @@ class _LoanTrackingPageState extends State<LoanTrackingPage> {
     return Scaffold(
       body: SafeArea(
         child: Container(
-          padding: const EdgeInsets.only(top: 24.0, left: 24, right: 24),
+          padding: const EdgeInsets.only(
+            top: 16.0,
+            left: 16,
+            right: 16,
+          ),
           //margin: const EdgeInsets.only(top: 20),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -66,7 +72,7 @@ class _LoanTrackingPageState extends State<LoanTrackingPage> {
               separatorSpace10,
 
               const Text(
-                'Select a loan from the list to \'Edit\' or \'Make Repayment\' ',
+                'Long press on a loan from the list to \'View\', \'Edit\', \'Delete\' or \'Make Repayment\' ',
                 style: TextStyle(color: LoanTrackColors.PrimaryTwoVeryLight),
               ),
               separatorSpace20,
@@ -74,6 +80,7 @@ class _LoanTrackingPageState extends State<LoanTrackingPage> {
               //Loan list
               SingleChildScrollView(
                 child: LoanList(
+                    toRepayment: (widget.fromRepayment!) ? true : false,
                     userId: userId,
                     width: screenWidth,
                     height: (widget.loanListHeight > 0)

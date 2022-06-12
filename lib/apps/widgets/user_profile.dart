@@ -18,7 +18,7 @@ class _UserProfileState extends State<UserProfile> {
     double screenHeight = MediaQuery.of(context).size.height;
     return Container(
       // height: screenHeight,
-      padding: const EdgeInsets.all(24),
+      padding: const EdgeInsets.all(16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -27,7 +27,7 @@ class _UserProfileState extends State<UserProfile> {
             style: titleStyle(context),
           ),
           separatorSpace20,
-          userProfile(height: screenHeight / 1.37),
+          userProfile(height: screenHeight / 1.4),
         ],
       ),
     );

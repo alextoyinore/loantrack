@@ -18,7 +18,7 @@ class NewsApp extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const SizedBox(
-                  height: 250,
+                  height: 230,
                 ),
                 NewsList(
                   height: screenHeight * .7,

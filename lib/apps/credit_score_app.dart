@@ -69,7 +69,7 @@ class _CreditScoreState extends State<CreditScore> {
             margin: EdgeInsets.only(top: screenHeight / 4 + 20),
             padding: const EdgeInsets.symmetric(
               vertical: 16,
-              horizontal: 24,
+              horizontal: 16,
             ),
             child: (creditscore < 0)
                 ? Container(
@@ -252,9 +252,10 @@ class _CreditScoreState extends State<CreditScore> {
           ),
           Container(
             padding: const EdgeInsets.symmetric(
-              horizontal: 24,
+              horizontal: 16,
+              vertical: 16,
             ),
-            height: screenHeight / 3.7,
+            height: screenHeight / 3.2,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [

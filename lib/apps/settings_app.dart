@@ -24,7 +24,7 @@ class _AppSettingsState extends State<AppSettings> {
   int storedThemeNumber = 0;
 
   Future<void> getThemeNumber() async {
-    ThemePreferences themePreferences = ThemePreferences();
+    AppPreferences themePreferences = AppPreferences();
     int themeNumber = await themePreferences.getThemeNumber();
     setState(() {
       storedThemeNumber = themeNumber;
@@ -65,7 +65,7 @@ class _AppSettingsState extends State<AppSettings> {
       },
       child: SingleChildScrollView(
         child: Container(
-          padding: const EdgeInsets.only(left: 24.0, right: 24, top: 24),
+          padding: const EdgeInsets.only(left: 16.0, right: 16, top: 24),
           height: MediaQuery.of(context).size.height,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -83,12 +83,16 @@ class _AppSettingsState extends State<AppSettings> {
               GestureDetector(
                 onTap: () {
                   LoanTrackModal.modal(context,
-                      content: const SingleChildScrollView(
+                      height: MediaQuery.of(context).size.height / 2,
+                      content: SingleChildScrollView(
                           child: Text(LocalData.aboutLoanTrack,
                               style: TextStyle(
-                                  //fontSize: 14,
+                                  fontSize: 18,
                                   height: 1.5,
-                                  color: LoanTrackColors.PrimaryTwoLight),
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .onBackground
+                                      .withOpacity(.5)),
                               softWrap: true)),
                       title: 'About');
                 },

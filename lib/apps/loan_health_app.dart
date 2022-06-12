@@ -68,7 +68,7 @@ class _LoanHealthState extends State<LoanHealth> {
             margin: EdgeInsets.only(top: screenHeight / 4 + 20),
             padding: const EdgeInsets.symmetric(
               vertical: 16,
-              horizontal: 24,
+              horizontal: 16,
             ),
             child: (health < 0)
                 ? Container(
@@ -243,9 +243,10 @@ class _LoanHealthState extends State<LoanHealth> {
           ),
           Container(
             padding: const EdgeInsets.symmetric(
-              horizontal: 24,
+              vertical: 16,
+              horizontal: 16,
             ),
-            height: screenHeight / 4,
+            height: screenHeight / 3.5,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [

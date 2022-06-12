@@ -41,7 +41,7 @@ class _ProfileUpdateState extends State<ProfileUpdate> {
       body: Stack(
         children: [
           SingleChildScrollView(
-            padding: const EdgeInsets.all(24),
+            padding: const EdgeInsets.all(16),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -593,7 +593,7 @@ class _ProfileUpdateState extends State<ProfileUpdate> {
                     },
                     child: const Icon(Icons.close)),
                 Container(
-                  padding: const EdgeInsets.all(24),
+                  padding: const EdgeInsets.all(16),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [

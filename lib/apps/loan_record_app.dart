@@ -101,7 +101,7 @@ class _LoanRecordState extends State<LoanRecord> {
           SingleChildScrollView(
             padding: const EdgeInsets.only(top: 270),
             child: Padding(
-              padding: const EdgeInsets.only(left: 24.0, top: 20, right: 24),
+              padding: const EdgeInsets.only(left: 16.0, top: 20, right: 16.0),
               child: (widget.documentSnapshot != null && !widget.edit)
                   ? RepaymentForm(context, screenHeight)
                   // BEGIN REPAYMENT VIEW

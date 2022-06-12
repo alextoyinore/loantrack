@@ -35,7 +35,7 @@ class _HomeViewState extends State<HomeView> {
   int storedThemeNumber = 0;
 
   Future<void> getThemeNumber() async {
-    ThemePreferences themePreferences = ThemePreferences();
+    AppPreferences themePreferences = AppPreferences();
     int themeNumber = await themePreferences.getThemeNumber();
     setState(() {
       storedThemeNumber = themeNumber;
@@ -72,7 +72,7 @@ class _HomeViewState extends State<HomeView> {
         SingleChildScrollView(
           controller: _controller,
           child: Container(
-            padding: const EdgeInsets.only(left: 24, top: 16, right: 24),
+            padding: const EdgeInsets.only(left: 16, top: 16, right: 16),
             //height: MediaQuery.of(context).size.height,
             child: Column(mainAxisSize: MainAxisSize.min, children: [
               const SizedBox(
@@ -125,14 +125,14 @@ class _HomeViewState extends State<HomeView> {
                             Navigator.pushNamed(context, '/loanRecord');
                           },
                           child: Container(
-                            width: screenWidth / 2.4,
+                            width: screenWidth / 2.3,
                             height: screenWidth / 2,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10),
                               color: Theme.of(context)
                                   .colorScheme
                                   .primary
-                                  .withOpacity(.05),
+                                  .withOpacity(.1),
                             ),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -194,13 +194,14 @@ class _HomeViewState extends State<HomeView> {
                               MaterialPageRoute(
                                 builder: (context) => LoanTrackingPage(
                                   isHome: false,
+                                  fromRepayment: true,
                                   loanListHeight: screenHeight * .73,
                                 ),
                               ),
                             );
                           },
                           child: Container(
-                            width: screenWidth / 2.4,
+                            width: screenWidth / 2.3,
                             height: screenWidth / 2,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10),
@@ -380,7 +381,7 @@ class _HomeViewState extends State<HomeView> {
                         backgroundColor: Theme.of(context).colorScheme.primary,
                       ),
                     ),
-                    horizontalSeparatorSpace20,
+                    horizontalSeparatorSpace10,
                     GestureDetector(
                       onTap: () {
                         Navigator.push(
@@ -400,7 +401,7 @@ class _HomeViewState extends State<HomeView> {
                         backgroundColor: LoanTrackColors.PrimaryOneVeryLight,
                       ),
                     ),
-                    horizontalSeparatorSpace20,
+                    horizontalSeparatorSpace10,
                     GestureDetector(
                       onTap: () {
                         Navigator.push(
@@ -420,7 +421,7 @@ class _HomeViewState extends State<HomeView> {
                         backgroundColor: LoanTrackColors2.PrimaryOne,
                       ),
                     ),
-                    horizontalSeparatorSpace20,
+                    horizontalSeparatorSpace10,
                     GestureDetector(
                       onTap: () {
                         Navigator.push(
@@ -441,7 +442,7 @@ class _HomeViewState extends State<HomeView> {
                             Theme.of(context).colorScheme.secondary,
                       ),
                     ),
-                    horizontalSeparatorSpace20,
+                    horizontalSeparatorSpace10,
                     GestureDetector(
                       onTap: () {
                         Navigator.push(
@@ -473,9 +474,9 @@ class _HomeViewState extends State<HomeView> {
         // Top Fixed Card
         Container(
           color: Theme.of(context).colorScheme.background,
-          height: screenHeight / 3.3,
+          height: screenHeight / 3.2,
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24.0),
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [

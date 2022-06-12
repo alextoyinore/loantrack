@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.thelettercompany.loantrack">
    <application
-        android:label="loantrack"
+        android:label="Loantrack"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

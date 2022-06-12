@@ -1,4 +1,4 @@
-# loantrack
+# Loantrack
 
 An app for tracking loans and a loan advisory platform
 

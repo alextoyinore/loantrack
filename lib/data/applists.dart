@@ -3,6 +3,15 @@ class AppLists {
   static List<String> inMemoryLoanDetails = [];
   static List<String> inMemoryUserDetails = [];
 
+  static List<String> onboardingMessages = [
+    'Live a live free of embarrassment and hassle. Tracking your loans can save you '
+        'from harassment and free you up to the live your life creating wealth.',
+    'Recording your repayments as soon as you repay them can free up money from you to live a happier life.'
+        'Life is short. You deserve to live it to the fullest.',
+    'A loan-free life is attainable. It begins here. Congratulations! '
+        'You made the best choice for yourself. See you on the good side of life.',
+  ];
+
   static List<String> homeScreenSliderImages = [
     'assets/images/sliders1.png',
     'assets/images/sliders2.png',

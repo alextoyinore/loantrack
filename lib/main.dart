@@ -39,39 +39,9 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();
 
-Future selectNotification(String message) async {
-  if (message != null) {
-    return null;
-  } else {
-    return null;
-  }
-}
-
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-
-  // FOR SETTING UP NOTIFICATION ICON CORRECTLY
-
-  /*const AndroidInitializationSettings androidInitializationSettings =
-      AndroidInitializationSettings('ic_launcher');
-
-  IOSInitializationSettings iosInitializationSettings =
-      const IOSInitializationSettings(
-    requestAlertPermission: false,
-    requestBadgePermission: false,
-    requestSoundPermission: false,
-  );
-
-  InitializationSettings initializationSettings = InitializationSettings(
-    android: androidInitializationSettings,
-    iOS: iosInitializationSettings,
-    macOS: null,
-  );
-
-  await flutterLocalNotificationsPlugin.initialize(
-    initializationSettings,
-  );*/
 
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   await flutterLocalNotificationsPlugin
@@ -110,7 +80,7 @@ class _MainState extends State<Main> {
   int storedThemeNumber = 0;
 
   Future<void> getThemeNumber() async {
-    ThemePreferences themePreferences = ThemePreferences();
+    AppPreferences themePreferences = AppPreferences();
     int themeNumber = await themePreferences.getThemeNumber();
     setState(() {
       storedThemeNumber = themeNumber;
@@ -194,6 +164,14 @@ class _MainState extends State<Main> {
       });
     }
 
+    Color bg = Color(0xFFAAAA);
+
+    if (TimeOfDay.now().hour > 18 || TimeOfDay.now().hour < 7) {
+      bg = darkColorScheme.background;
+    } else {
+      bg = lightColorScheme.background;
+    }
+
     // Run App
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
       statusBarBrightness:
@@ -202,9 +180,9 @@ class _MainState extends State<Main> {
           (storedThemeNumber == 1) ? Brightness.dark : Brightness.light,
       systemNavigationBarColor: (storedThemeNumber == 1)
           ? lightColorScheme.background
-          : (storedThemeNumber == 0)
-              ? seed.withOpacity(.8)
-              : darkColorScheme.background,
+          : (storedThemeNumber == 2)
+              ? darkColorScheme.background
+              : bg,
       systemNavigationBarIconBrightness:
           (storedThemeNumber == 2) ? Brightness.dark : Brightness.light,
       statusBarColor: Colors.transparent,
@@ -212,7 +190,7 @@ class _MainState extends State<Main> {
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Loantrack',
+      title: 'LoanTrack',
       themeMode: (storedThemeNumber == 1)
           ? ThemeMode.light
           : (storedThemeNumber == 2)
@@ -273,7 +251,7 @@ class _MainState extends State<Main> {
       ),
       initialRoute: '/',
       routes: {
-        '/': (context) => const SplashScreen(),
+        '/': (context) => SplashScreen(),
         '/login': (context) => const LoanTrackLogin(),
         '/home': (context) => LoanTrackHome(),
         '/loanRecord': (context) => LoanRecord(edit: false),

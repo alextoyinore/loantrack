@@ -23,7 +23,7 @@ class _ReadState extends State<Read> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const SizedBox(
-                  height: 230,
+                  height: 200,
                 ),
                 BlogList(
                   height: screenHeight * .7,
@@ -33,9 +33,9 @@ class _ReadState extends State<Read> {
           ),
           Container(
             color: Theme.of(context).colorScheme.background,
-            height: MediaQuery.of(context).size.height / 3.5,
+            height: MediaQuery.of(context).size.height / 3.58,
             child: Padding(
-              padding: const EdgeInsets.fromLTRB(24, 24, 24, 0),
+              padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [

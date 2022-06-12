@@ -26,8 +26,9 @@ class _LoanTrackHomeState extends State<LoanTrackHome> {
     List<Widget> _widgetOptions = <Widget>[
       const HomeView(),
       LoanTrackingPage(
+        fromRepayment: false,
         isHome: true,
-        loanListHeight: screenHeight / 1.4,
+        loanListHeight: screenHeight / 1.45,
       ),
       const Center(
         child: UserProfile(),

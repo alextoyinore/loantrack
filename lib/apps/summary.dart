@@ -33,7 +33,7 @@ class _SummaryState extends State<Summary> {
                 ),
                 Container(
                   height: screenHeight / 2,
-                  padding: const EdgeInsets.symmetric(horizontal: 24),
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -94,7 +94,7 @@ class _SummaryState extends State<Summary> {
             color: Theme.of(context).colorScheme.background,
             height: MediaQuery.of(context).size.height / 3.2,
             child: Padding(
-              padding: const EdgeInsets.fromLTRB(24, 24, 24, 0),
+              padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [

@@ -6,6 +6,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:loantrack/apps/messages/notifications.dart';
 import 'package:loantrack/apps/providers/login_states.dart';
+import 'package:loantrack/apps/providers/preferences.dart';
 import 'package:loantrack/apps/widgets/button.dart';
 import 'package:loantrack/data/authentications.dart';
 import 'package:loantrack/data/local.dart';
@@ -56,6 +57,8 @@ class _LoanTrackLoginState extends State<LoanTrackLogin> with ChangeNotifier {
       ),
     );
   }
+
+  AppPreferences onboardingPreferences = AppPreferences();
 
   @override
   Widget build(BuildContext context) {
@@ -209,7 +212,7 @@ class _LoanTrackLoginState extends State<LoanTrackLogin> with ChangeNotifier {
         ],
       ),
       Positioned(
-          bottom: 0,
+          bottom: 20,
           child: Row(
             children: [
               Icon(
@@ -232,7 +235,7 @@ class _LoanTrackLoginState extends State<LoanTrackLogin> with ChangeNotifier {
                   color: Theme.of(context)
                       .colorScheme
                       .onBackground
-                      .withOpacity(.3),
+                      .withOpacity(.2),
                 ),
               ),
             ],
@@ -310,6 +313,8 @@ class _LoanTrackLoginState extends State<LoanTrackLogin> with ChangeNotifier {
                         context: context,
                         whenTapped: () => Navigator.of(context).pop(),
                         title: 'Email sent'));
+
+                onboardingPreferences.setOnboarding(false);
               },
               child: Text(
                 'Forgot Password?',
