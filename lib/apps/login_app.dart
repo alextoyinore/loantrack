@@ -142,23 +142,24 @@ class _LoanTrackLoginState extends State<LoanTrackLogin> with ChangeNotifier {
         ),
         separatorSpace50,
         GestureDetector(
-            onTap: () {
-              LoanTrackModal.modal(context,
-                  content: const SingleChildScrollView(
-                    child: Text(LocalData.aboutLoanTrack,
-                        style: TextStyle(
-                            color: LoanTrackColors.PrimaryOne,
-                            fontSize: 14,
-                            height: 1.6)),
-                  ),
-                  title: 'About');
-            },
-            child: const Text(
-              'About',
-              style: TextStyle(
-                  color: LoanTrackColors.PrimaryTwoVeryLight,
-                  decoration: TextDecoration.underline),
-            ))
+          onTap: () {
+            LoanTrackModal.modal(context,
+                content: const SingleChildScrollView(
+                  child: Text(LocalData.aboutLoanTrack,
+                      style: TextStyle(
+                          color: LoanTrackColors.PrimaryOne,
+                          fontSize: 14,
+                          height: 1.6)),
+                ),
+                title: 'About');
+          },
+          child: const Text(
+            'About',
+            style: TextStyle(
+                color: LoanTrackColors.PrimaryTwoVeryLight,
+                decoration: TextDecoration.underline),
+          ),
+        )
       ],
     );
   }
@@ -168,7 +169,7 @@ class _LoanTrackLoginState extends State<LoanTrackLogin> with ChangeNotifier {
       Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          separatorSpace20,
+          separatorSpace40,
           loginHeader(
             context: context,
             message: 'Like your expenses, tracking your loans will help you '
@@ -212,7 +213,7 @@ class _LoanTrackLoginState extends State<LoanTrackLogin> with ChangeNotifier {
         ],
       ),
       Positioned(
-          bottom: 20,
+          bottom: 0,
           child: Row(
             children: [
               Icon(
@@ -247,7 +248,7 @@ class _LoanTrackLoginState extends State<LoanTrackLogin> with ChangeNotifier {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        separatorSpace20,
+        separatorSpace40,
         loginHeader(
             context: context,
             title: 'Password',
@@ -365,7 +366,7 @@ class _LoanTrackLoginState extends State<LoanTrackLogin> with ChangeNotifier {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        separatorSpace20,
+        separatorSpace40,
         loginHeader(
             title: 'Create Account',
             context: context,
@@ -431,7 +432,7 @@ class _LoanTrackLoginState extends State<LoanTrackLogin> with ChangeNotifier {
   sendingEmailVerificationScreen(BuildContext context) {
     return Column(
       children: [
-        separatorSpace20,
+        separatorSpace40,
         loginHeader(
           context: context,
           title: 'Email Verification',

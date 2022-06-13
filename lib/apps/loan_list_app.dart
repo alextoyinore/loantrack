@@ -12,7 +12,7 @@ class LoanTrackingPage extends StatefulWidget {
       {Key? key,
       required this.loanListHeight,
       this.numberOfItems,
-      this.fromRepayment,
+      this.fromRepayment = false,
       required this.isHome})
       : super(key: key);
 
@@ -85,7 +85,7 @@ class _LoanTrackingPageState extends State<LoanTrackingPage> {
                     width: screenWidth,
                     height: (widget.loanListHeight > 0)
                         ? widget.loanListHeight
-                        : screenHeight * .7),
+                        : screenHeight * .69),
               ),
               separatorSpace10,
             ],

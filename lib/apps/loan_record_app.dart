@@ -99,7 +99,7 @@ class _LoanRecordState extends State<LoanRecord> {
       child: Scaffold(
         body: Stack(children: [
           SingleChildScrollView(
-            padding: const EdgeInsets.only(top: 270),
+            padding: const EdgeInsets.only(top: 350),
             child: Padding(
               padding: const EdgeInsets.only(left: 16.0, top: 20, right: 16.0),
               child: (widget.documentSnapshot != null && !widget.edit)
@@ -115,7 +115,7 @@ class _LoanRecordState extends State<LoanRecord> {
           ),
           Container(
             color: Theme.of(context).colorScheme.background,
-            height: screenHeight / 2.8,
+            height: screenHeight / 2.3,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -1023,28 +1023,13 @@ class _LoanRecordState extends State<LoanRecord> {
           style: smallTitleStyle(context),
         ),
         separatorSpace10,
-        Container(
-          padding: const EdgeInsets.all(16),
-          decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.secondary.withOpacity(.01),
-            borderRadius: BorderRadius.circular(10),
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              //SizedBox(height: 20),
-              separatorSpace5,
-              separatorLine,
-              separatorSpace5,
+        separatorLine,
 
-              RepaymentBulletedList(
-                  loanId: widget.documentSnapshot!.id,
-                  height: screenHeight * .15,
-                  userId: _userUID,
-                  numberOfItems: 3)
-            ],
-          ),
-        ),
+        RepaymentBulletedList(
+            loanId: widget.documentSnapshot!.id,
+            height: screenHeight * .15,
+            userId: _userUID,
+            numberOfItems: 3),
 
         const SizedBox(height: 80),
         Text(

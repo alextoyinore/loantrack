@@ -1,4 +1,6 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:loantrack/apps/loan_list_app.dart';
 import 'package:loantrack/apps/settings_app.dart';
@@ -20,6 +22,36 @@ class _LoanTrackHomeState extends State<LoanTrackHome> {
   int _selectedIndex = 0;
 
   @override
+  void initState() {
+    super.initState();
+    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+      if (kDebugMode) {
+        print('A new onMessageOpenedApp event was published!');
+      }
+      RemoteNotification? notification = message.notification;
+      AndroidNotification? android = message.notification?.android;
+      if (notification != null && android != null) {
+        showDialog(
+          context: context,
+          builder: (_) {
+            return AlertDialog(
+              title: Text(notification.title!),
+              content: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(notification.body!),
+                  ],
+                ),
+              ),
+            );
+          },
+        );
+      }
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
 
@@ -28,7 +60,7 @@ class _LoanTrackHomeState extends State<LoanTrackHome> {
       LoanTrackingPage(
         fromRepayment: false,
         isHome: true,
-        loanListHeight: screenHeight / 1.45,
+        loanListHeight: screenHeight / 1.5,
       ),
       const Center(
         child: UserProfile(),

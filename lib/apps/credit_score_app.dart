@@ -255,7 +255,7 @@ class _CreditScoreState extends State<CreditScore> {
               horizontal: 16,
               vertical: 16,
             ),
-            height: screenHeight / 3.2,
+            height: screenHeight / 3.0,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [

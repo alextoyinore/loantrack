@@ -54,7 +54,7 @@ class _LoanDetailState extends State<LoanDetail> {
         Container(
           height: 400,
         ),
-        ShaderMask(
+        /*ShaderMask(
           shaderCallback: (rect) {
             return LinearGradient(
                 begin: Alignment.topCenter,
@@ -75,13 +75,13 @@ class _LoanDetailState extends State<LoanDetail> {
             height: 300,
             fit: BoxFit.cover,
           ),
-        ),
+        ),*/
         Container(
           height: screenHeight,
-          padding: const EdgeInsets.only(left: 24.0, right: 24, top: 16),
+          padding: const EdgeInsets.only(left: 16.0, right: 16, top: 16),
           child: SingleChildScrollView(
             child: Column(children: [
-              separatorSpace20,
+              separatorSpace40,
               GestureDetector(
                 onTap: () {
                   Navigator.pop(context);
@@ -196,6 +196,17 @@ class _LoanDetailState extends State<LoanDetail> {
               separatorSpace5,
               Row(
                 children: [
+                  OutlinedButton(
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => LoanRecord(
+                                      documentSnapshot: widget.document,
+                                      edit: true,
+                                    )));
+                      },
+                      child: const Text('Edit this record')),
                   (progress < 1)
                       ? OutlinedButton(
                           onPressed: () {
@@ -212,17 +223,6 @@ class _LoanDetailState extends State<LoanDetail> {
                   const SizedBox(
                     width: 10,
                   ),
-                  OutlinedButton(
-                      onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => LoanRecord(
-                                      documentSnapshot: widget.document,
-                                      edit: true,
-                                    )));
-                      },
-                      child: const Text('Edit this record')),
                 ],
               ),
               Container(
@@ -379,7 +379,7 @@ class _LoanDetailState extends State<LoanDetail> {
                         separatorSpace10,
                         Text(
                           widget.document!.get('note').toString(),
-                          style: bodyStyle(context),
+                          style: bodyDimmedStyle(context),
                         ),
                       ],
                     ),

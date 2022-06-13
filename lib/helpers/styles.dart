@@ -56,6 +56,14 @@ TextStyle smallerTitleStyle(BuildContext context) {
   );
 }
 
+TextStyle smallerTitleDimmedStyle(BuildContext context) {
+  return TextStyle(
+    fontSize: 13,
+    fontWeight: FontWeight.w300,
+    color: Theme.of(context).colorScheme.onBackground.withOpacity(.5),
+  );
+}
+
 TextStyle sectionHeaderStyle(BuildContext context) {
   return TextStyle(
     fontSize: 14,
@@ -69,6 +77,14 @@ TextStyle bodyStyle(BuildContext context) {
     fontSize: 18,
     fontWeight: FontWeight.w300,
     color: Theme.of(context).colorScheme.onBackground,
+  );
+}
+
+TextStyle bodyDimmedStyle(BuildContext context) {
+  return TextStyle(
+    fontSize: 18,
+    fontWeight: FontWeight.w300,
+    color: Theme.of(context).colorScheme.onBackground.withOpacity(.5),
   );
 }
 

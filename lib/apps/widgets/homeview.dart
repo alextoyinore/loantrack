@@ -75,8 +75,8 @@ class _HomeViewState extends State<HomeView> {
             padding: const EdgeInsets.only(left: 16, top: 16, right: 16),
             //height: MediaQuery.of(context).size.height,
             child: Column(mainAxisSize: MainAxisSize.min, children: [
-              const SizedBox(
-                height: 250,
+              SizedBox(
+                height: screenHeight / 3.5,
               ),
               // BEGIN LOAN CARD
               SizedBox(
@@ -195,7 +195,7 @@ class _HomeViewState extends State<HomeView> {
                                 builder: (context) => LoanTrackingPage(
                                   isHome: false,
                                   fromRepayment: true,
-                                  loanListHeight: screenHeight * .73,
+                                  loanListHeight: screenHeight * .68,
                                 ),
                               ),
                             );
@@ -289,12 +289,14 @@ class _HomeViewState extends State<HomeView> {
                     GestureDetector(
                       onTap: () {
                         Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => LoanTrackingPage(
-                                      isHome: false,
-                                      loanListHeight: screenHeight * .7,
-                                    )));
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => LoanTrackingPage(
+                              isHome: false,
+                              loanListHeight: screenHeight * .69,
+                            ),
+                          ),
+                        );
                       },
                       child: const Text(
                         'SEE ALL',
@@ -474,7 +476,7 @@ class _HomeViewState extends State<HomeView> {
         // Top Fixed Card
         Container(
           color: Theme.of(context).colorScheme.background,
-          height: screenHeight / 3.2,
+          height: screenHeight / 3.4,
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
             child: Column(
@@ -551,7 +553,7 @@ class _HomeViewState extends State<HomeView> {
                             : const Icon(Icons.contrast),
                   ],
                 ),
-                separatorSpace40,
+                separatorSpace30,
 
                 Text(
                   'CURRENT LOAN TOTAL',
@@ -634,7 +636,7 @@ class _HomeViewState extends State<HomeView> {
                               );
                       }),
                 ),
-                separatorSpace20,
+                separatorSpace5,
                 Text(
                   'TOP LENDERS',
                   style: sectionHeaderStyle(context),

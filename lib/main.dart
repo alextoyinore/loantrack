@@ -115,38 +115,13 @@ class _MainState extends State<Main> {
       }
     });
 
-    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
-      if (kDebugMode) {
-        print('A new onMessageOpenedApp event was published!');
-      }
-      RemoteNotification? notification = message.notification;
-      AndroidNotification? android = message.notification?.android;
-      if (notification != null && android != null) {
-        showDialog(
-            context: context,
-            builder: (_) {
-              return AlertDialog(
-                title: Text(notification.title!),
-                content: SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(notification.body!),
-                    ],
-                  ),
-                ),
-              );
-            });
-      }
-    });
-
     getThemeNumber();
 
     notifications.showNotification(
       context: context,
       title: 'Welcome',
       body:
-          'Welcome to Loantrack. Nigeria\'s best loan consumer management app.',
+          'Welcome to Loantrack. Nigeria\'s best personal loan management app.',
     );
   }
 

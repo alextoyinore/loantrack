@@ -31,7 +31,9 @@ class Notifications {
           importance: Importance.high,
           color: Theme.of(context).colorScheme.primary,
           playSound: true,
-          icon: 'mipmap/ic_launcher',
+          //ongoing: true,
+          icon: '@mipmap/ic_launcher',
+          styleInformation: BigTextStyleInformation(''),
         ),
       ),
     );

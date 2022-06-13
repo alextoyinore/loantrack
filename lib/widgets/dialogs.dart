@@ -12,7 +12,7 @@ void showErrorDialog(
     builder: (context) {
       return AlertDialog(
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(50),
+          borderRadius: BorderRadius.circular(20),
         ),
         backgroundColor: Theme.of(context).colorScheme.errorContainer,
         buttonPadding: EdgeInsets.zero,
@@ -67,6 +67,9 @@ void showSuccessDialog(
     context: context,
     builder: (context) {
       return AlertDialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+        ),
         backgroundColor: LoanTrackColors2.TetiaryOne,
         buttonPadding: EdgeInsets.zero,
         title: Text(
@@ -80,8 +83,9 @@ void showSuccessDialog(
               Text(
                 successMessage,
                 textAlign: TextAlign.left,
-                style: const TextStyle(
-                    fontSize: 16, color: LoanTrackColors.PrimaryTwoLight),
+                style: TextStyle(
+                  fontSize: 16,
+                ),
               ),
             ],
           ),

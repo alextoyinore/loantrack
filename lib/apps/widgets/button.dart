@@ -87,7 +87,7 @@ class LoanTrackButton {
         shape: MaterialStateProperty.all<RoundedRectangleBorder>(
           RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(100.0),
-            //side: const BorderSide(color: Colors.red),
+            side: const BorderSide(color: Colors.white),
           ),
         ),
         textStyle: MaterialStateProperty.all<TextStyle?>(
@@ -115,7 +115,7 @@ class LoanTrackButton {
               return Theme.of(context)
                   .colorScheme
                   .onBackground
-                  .withOpacity(0.2);
+                  .withOpacity(0.5);
             }
             return null;
             // Use the component's default.
@@ -129,7 +129,7 @@ class LoanTrackButton {
                   .onBackground
                   .withOpacity(0.5);
             }
-            return Theme.of(context).colorScheme.onBackground.withOpacity(0.2);
+            return Theme.of(context).colorScheme.onBackground.withOpacity(0.5);
             // Use the component's default.
           },
         ),
@@ -138,7 +138,8 @@ class LoanTrackButton {
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           const Text(
-            'Cancel',
+            'Continue',
+            style: TextStyle(color: Colors.white),
             textAlign: TextAlign.center,
             softWrap: true,
           ),
@@ -187,7 +188,7 @@ class LoanTrackButton {
         backgroundColor: MaterialStateProperty.resolveWith<Color?>(
           (Set<MaterialState> states) {
             if (states.contains(MaterialState.pressed)) {
-              return Theme.of(context).colorScheme.secondary.withOpacity(0.2);
+              return Theme.of(context).colorScheme.secondary.withOpacity(0.5);
             }
             return null;
             // Use the component's default.

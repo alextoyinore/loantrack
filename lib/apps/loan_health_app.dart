@@ -246,7 +246,7 @@ class _LoanHealthState extends State<LoanHealth> {
               vertical: 16,
               horizontal: 16,
             ),
-            height: screenHeight / 3.5,
+            height: screenHeight / 3.3,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [

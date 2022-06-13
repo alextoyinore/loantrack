@@ -923,41 +923,52 @@ Container RepaymentBulletedList(
                     },
                     child: Column(
                       children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Container(
-                              child: BulletedList(
-                                text: document
+                        Container(
+                          padding: EdgeInsets.all(20),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: Theme.of(context)
+                                .colorScheme
+                                .onBackground
+                                .withOpacity(.01),
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Container(
+                                child: Text(document
                                     .get('repaidWhen')
                                     .toString()
                                     .toUpperCase(),
-                                style: const TextStyle(
-                                    color: LoanTrackColors.PrimaryOne),
+                                  style: TextStyle(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onBackground),),
                               ),
-                            ),
-                            Text(document.get('amountRepaid').toString(),
-                                style: const TextStyle(
-                                    color: LoanTrackColors.PrimaryOne)),
-                            GestureDetector(
+                              Text(
+                                document.get('amountRepaid').toString(),
+                                style: TextStyle(
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onBackground),
+                              ),
+                              GestureDetector(
                                 onTap: () {
                                   FirebaseFirestore.instance
                                       .collection('repayments')
                                       .doc(document.id)
                                       .delete();
                                 },
-                                child: const Icon(
-                                  Icons.delete_outline,
-                                  size: 20,
-                                  color: LoanTrackColors.PrimaryTwoVeryLight,
-                                ))
-                          ],
+                                child: Icon(Icons.delete_outline,
+                                    size: 20,
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onBackground),
+                              ),
+                            ],
+                          ),
                         ),
-                        (index < snapshot.data!.docs.length - 1 ||
-                                (numberOfItems != null &&
-                                    index < numberOfItems - 1))
-                            ? separatorLine
-                            : const SizedBox(height: 0),
+                        separatorSpace10,
                       ],
                     ),
                   ));
@@ -1581,6 +1592,82 @@ SizedBox userProfile({double? height}) {
                                   title: 'Edit Gender');
                             },
                             child: Text('${user.get('gender')}',
+                                style: bigBodyStyle(context)),
+                          ),
+                        ],
+                      ),
+                    ),
+                    separatorSpace10,
+
+                    //Marital status
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 8.0,
+                        horizontal: 8,
+                      ),
+                      /* color:
+                          LoanTrackColors.PrimaryTwoVeryLight.withOpacity(.1), */
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            'Marital Status:',
+                            style: TextStyle(
+                                color: LoanTrackColors.PrimaryTwoVeryLight),
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              LoanTrackModal.modal(context,
+                                  content: Column(
+                                    children: List.generate(
+                                        AppLists.maritalStatus.length,
+                                        (index) => GestureDetector(
+                                              onTap: () {
+                                                FirebaseFirestore.instance
+                                                    .collection('users')
+                                                    .doc(user.id)
+                                                    .update({
+                                                      'married': AppLists
+                                                          .maritalStatus[index],
+                                                    })
+                                                    .whenComplete(() => {
+                                                          showSuccessDialog(
+                                                              context: context,
+                                                              title: 'Success',
+                                                              successMessage:
+                                                                  'You have successfully updated your marital status.',
+                                                              whenTapped: () {
+                                                                Navigator.pop(
+                                                                    context);
+                                                              })
+                                                        })
+                                                    .onError((error,
+                                                            stackTrace) =>
+                                                        {
+                                                          showErrorDialog(
+                                                              context: context,
+                                                              title: 'Failed',
+                                                              errorMessage:
+                                                                  'An error occured while updating your marital status.')
+                                                        });
+
+                                                Navigator.pop(context);
+                                              },
+                                              child: ListTile(
+                                                title: Text(
+                                                  AppLists.maritalStatus[index],
+                                                  style: const TextStyle(
+                                                    color: LoanTrackColors
+                                                        .PrimaryTwoVeryLight,
+                                                  ),
+                                                ),
+                                              ),
+                                            )),
+                                  ),
+                                  title: 'Edit Marital Status');
+                            },
+                            child: Text('${user.get('married')}',
                                 style: bigBodyStyle(context)),
                           ),
                         ],
