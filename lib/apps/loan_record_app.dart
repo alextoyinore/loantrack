@@ -7,7 +7,6 @@ import 'package:loantrack/apps/messages/notifications.dart';
 import 'package:loantrack/apps/widgets/button.dart';
 import 'package:loantrack/data/applists.dart';
 import 'package:loantrack/data/database.dart';
-import 'package:loantrack/helpers/colors.dart';
 import 'package:loantrack/helpers/listwidgets.dart';
 import 'package:loantrack/widgets/common_widgets.dart';
 import 'package:loantrack/widgets/date_picker.dart';
@@ -60,10 +59,18 @@ class _LoanRecordState extends State<LoanRecord> {
 
   Notifications notifications = Notifications();
 
+  final _key = GlobalKey();
+
   @override
   Widget build(BuildContext context) {
     // Screen Sizes
     double screenHeight = MediaQuery.of(context).size.height;
+    double screenWidth = MediaQuery.of(context).size.width;
+
+    if (screenWidth < 400) {
+      screenWidth = screenWidth + 10;
+      screenHeight = screenHeight + 60;
+    }
 
     // DUE and CURRENT AMOUNT
     int due = 0;
@@ -98,10 +105,10 @@ class _LoanRecordState extends State<LoanRecord> {
       },
       child: Scaffold(
         body: Stack(children: [
-          SingleChildScrollView(
-            padding: const EdgeInsets.only(top: 350),
-            child: Padding(
-              padding: const EdgeInsets.only(left: 16.0, top: 20, right: 16.0),
+          Container(
+            height: screenHeight,
+            padding: const EdgeInsets.only(left: 16.0, right: 16.0),
+            child: SingleChildScrollView(
               child: (widget.documentSnapshot != null && !widget.edit)
                   ? RepaymentForm(context, screenHeight)
                   // BEGIN REPAYMENT VIEW
@@ -114,8 +121,9 @@ class _LoanRecordState extends State<LoanRecord> {
             ),
           ),
           Container(
+            key: _key,
             color: Theme.of(context).colorScheme.background,
-            height: screenHeight / 2.3,
+            height: screenHeight / 3.7,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -139,26 +147,26 @@ class _LoanRecordState extends State<LoanRecord> {
                 ),
                 separatorSpace20,
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 24),
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
                   child: (widget.documentSnapshot != null &&
                           widget.edit == false)
                       ? Text(
-                          'Adding New Repayment Record',
+                          'Repayment',
                           style: titleStyle(context),
                         )
                       : (widget.documentSnapshot != null && widget.edit == true)
                           ? Text(
-                              'Editing Loan Record',
+                              'Edit Loan',
                               style: titleStyle(context),
                             )
                           : Text(
-                              'Adding New Loan Record',
+                              'New Loan',
                               style: titleStyle(context),
                             ),
                 ),
                 separatorSpace10,
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
                   child: (widget.documentSnapshot != null &&
                           widget.edit == false)
                       ? Text(
@@ -177,7 +185,9 @@ class _LoanRecordState extends State<LoanRecord> {
                 ),
               ],
             ),
-          )
+          ),
+
+          //separatorSpace20,
         ]),
       ),
     );
@@ -189,6 +199,9 @@ class _LoanRecordState extends State<LoanRecord> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        SizedBox(
+          height: MediaQuery.of(context).size.height / 3.7,
+        ),
         separatorSpace20,
         //The Money Section Title
         Text(
@@ -199,18 +212,20 @@ class _LoanRecordState extends State<LoanRecord> {
 
         //Amount Field
         Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             LoanTrackTextField(
               controller: loanAmountController,
               label: 'Loan Amount',
-              color: LoanTrackColors.PrimaryOne,
+              color: Theme.of(context).colorScheme.onBackground,
               keyboardType: const TextInputType.numberWithOptions(),
             ),
             separatorSpace5,
-            const Text('Total remitted + Service Charge',
+            Text('Total remitted + Service Charge',
                 style: TextStyle(
-                    fontSize: 12, color: LoanTrackColors.PrimaryTwoVeryLight)),
+                  fontSize: 12,
+                  color: Theme.of(context).colorScheme.onBackground,
+                )),
           ],
         ),
         separatorSpace20,
@@ -218,19 +233,23 @@ class _LoanRecordState extends State<LoanRecord> {
         // Repaid Amount and Rate field
 
         Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             LoanTrackTextField(
               controller: repaidController,
               label: 'Amount Repaid',
-              color: LoanTrackColors.PrimaryOne,
+              color: Theme.of(context).colorScheme.onBackground,
               keyboardType: const TextInputType.numberWithOptions(),
             ),
             separatorSpace5,
-            const Text(
-                'Total amount you have repaid to the loaner before creating this record. Enter Zero(0) if inapplicable',
-                style: TextStyle(
-                    fontSize: 12, color: LoanTrackColors.PrimaryTwoVeryLight)),
+            Text(
+              'Total amount you have repaid to the loaner before creating this record. Enter Zero(0) if inapplicable',
+              style: TextStyle(
+                fontSize: 12,
+                color: Theme.of(context).colorScheme.onBackground,
+              ),
+              textAlign: TextAlign.center,
+            ),
           ],
         ),
         separatorSpace20,
@@ -238,7 +257,7 @@ class _LoanRecordState extends State<LoanRecord> {
         LoanTrackTextField(
           controller: rateController,
           label: 'Initial Interest Rate',
-          color: LoanTrackColors.PrimaryOne,
+          color: Theme.of(context).colorScheme.onBackground,
           keyboardType: const TextInputType.numberWithOptions(decimal: true),
         ),
 
@@ -247,7 +266,7 @@ class _LoanRecordState extends State<LoanRecord> {
         LoanTrackTextField(
           controller: overdueController,
           label: 'Daily Overdue Charge',
-          color: LoanTrackColors.PrimaryOne,
+          color: Theme.of(context).colorScheme.onBackground,
           keyboardType: const TextInputType.numberWithOptions(decimal: true),
         ),
 
@@ -266,7 +285,7 @@ class _LoanRecordState extends State<LoanRecord> {
           children: [
             // Apply when
             Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 LoanTrackDatePicker(
                   isPayment: false,
@@ -275,16 +294,17 @@ class _LoanRecordState extends State<LoanRecord> {
                   yearsInFuture: 0,
                 ),
                 separatorSpace5,
-                const Text('Format: YYYY-MM-DD',
+                Text('Format: YYYY-MM-DD',
                     style: TextStyle(
-                        fontSize: 12,
-                        color: LoanTrackColors.PrimaryTwoVeryLight)),
+                      fontSize: 12,
+                      color: Theme.of(context).colorScheme.onBackground,
+                    )),
               ],
             ),
             separatorSpace20,
             // Due when
             Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 LoanTrackDatePicker(
                   isPayment: false,
@@ -293,10 +313,11 @@ class _LoanRecordState extends State<LoanRecord> {
                   yearsInFuture: 10,
                 ),
                 separatorSpace5,
-                const Text('Format: YYYY-MM-DD',
+                Text('Format: YYYY-MM-DD',
                     style: TextStyle(
-                        fontSize: 12,
-                        color: LoanTrackColors.PrimaryTwoVeryLight)),
+                      fontSize: 12,
+                      color: Theme.of(context).colorScheme.onBackground,
+                    )),
               ],
             ),
           ],
@@ -305,7 +326,7 @@ class _LoanRecordState extends State<LoanRecord> {
 
         //Last payment date
         Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             LoanTrackDatePicker(
               isPayment: false,
@@ -314,10 +335,14 @@ class _LoanRecordState extends State<LoanRecord> {
               yearsInFuture: 0,
             ),
             separatorSpace5,
-            const Text(
-                'Format: YYYY-MM-DD. * If no repayments have been made, kindly select the application date',
-                style: TextStyle(
-                    fontSize: 12, color: LoanTrackColors.PrimaryTwoVeryLight)),
+            Text(
+              'Format: YYYY-MM-DD. * If no repayments have been made, kindly select the application date',
+              style: TextStyle(
+                fontSize: 12,
+                color: Theme.of(context).colorScheme.onBackground,
+              ),
+              textAlign: TextAlign.center,
+            ),
           ],
         ),
         separatorSpace80,
@@ -333,7 +358,7 @@ class _LoanRecordState extends State<LoanRecord> {
           children: [
             //Loaner Type
             Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 GestureDetector(
                   onTap: () => LoanTrackModal.modal(
@@ -354,9 +379,10 @@ class _LoanRecordState extends State<LoanRecord> {
                                   child: ListTile(
                                     title: Text(
                                       AppLists.lenderType[index],
-                                      style: const TextStyle(
-                                        color:
-                                            LoanTrackColors.PrimaryTwoVeryLight,
+                                      style: TextStyle(
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .onBackground,
                                       ),
                                     ),
                                   ),
@@ -367,33 +393,38 @@ class _LoanRecordState extends State<LoanRecord> {
                     enable: false,
                     controller: lenderTypeController,
                     label: 'Lender Type',
-                    color: LoanTrackColors.PrimaryOne,
+                    color: Theme.of(context).colorScheme.onBackground,
                     //icon: Icon(Icons.note),
                   ),
                 ),
                 separatorSpace5,
-                const Text('Online App, Family & Friends, Bank & MFB',
+                Text('Online App, Family & Friends, Bank & MFB',
                     style: TextStyle(
-                        fontSize: 12,
-                        color: LoanTrackColors.PrimaryTwoVeryLight)),
+                      fontSize: 12,
+                      color: Theme.of(context).colorScheme.onBackground,
+                    )),
               ],
             ),
             separatorSpace20,
             // Lender
             Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 LoanTrackTextField(
                   controller: lenderController,
                   label: 'Lender',
-                  color: LoanTrackColors.PrimaryOne,
+                  color: Theme.of(context).colorScheme.onBackground,
                   //icon: Icon(Icons.note),
                 ),
                 separatorSpace5,
-                const Text(
-                    'Enter Lender name or select one from the  list if available and applicable',
-                    style: TextStyle(
-                        fontSize: 12,
-                        color: LoanTrackColors.PrimaryTwoVeryLight)),
+                Text(
+                  'Enter Lender name or select one from the  list if available and applicable',
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: Theme.of(context).colorScheme.onBackground,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
               ],
             )
           ],
@@ -421,8 +452,9 @@ class _LoanRecordState extends State<LoanRecord> {
                           child: ListTile(
                             title: Text(
                               AppLists.loanPurpose[index],
-                              style: const TextStyle(
-                                color: LoanTrackColors.PrimaryTwoVeryLight,
+                              style: TextStyle(
+                                color:
+                                    Theme.of(context).colorScheme.onBackground,
                               ),
                             ),
                           ),
@@ -433,7 +465,7 @@ class _LoanRecordState extends State<LoanRecord> {
             enable: false,
             controller: loanPurposeController,
             label: 'Loan Purpose',
-            color: LoanTrackColors.PrimaryOne,
+            color: Theme.of(context).colorScheme.onBackground,
             //icon: Icon(Icons.note),
           ),
         ),
@@ -449,7 +481,7 @@ class _LoanRecordState extends State<LoanRecord> {
         LoanTrackTextField(
           label: 'Note',
           controller: noteController,
-          color: LoanTrackColors.PrimaryOne,
+          color: Theme.of(context).colorScheme.onBackground,
         ),
 
         separatorSpace20,
@@ -525,7 +557,7 @@ class _LoanRecordState extends State<LoanRecord> {
                       context: context,
                       title: 'New Loan Record',
                       body:
-                          'Loan record "${lenderController.text} - ${loanAmountController.text}" successfully created.',
+                          'The record of your loan of "${loanAmountController.text} with ${lenderController.text} " has been successfully created.',
                     );
 
                     Navigator.pushNamed(context, '/home');
@@ -555,6 +587,9 @@ class _LoanRecordState extends State<LoanRecord> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        SizedBox(
+          height: MediaQuery.of(context).size.height / 3.7,
+        ),
         const SizedBox(height: 20),
         //The Money Section Title
         Text(
@@ -570,13 +605,15 @@ class _LoanRecordState extends State<LoanRecord> {
             LoanTrackTextField(
               controller: loanAmountController,
               label: 'Loan Amount',
-              color: LoanTrackColors.PrimaryOne,
+              color: Theme.of(context).colorScheme.onBackground,
               keyboardType: const TextInputType.numberWithOptions(),
             ),
             const SizedBox(height: 5),
-            const Text('Total remitted + Service Charge',
+            Text('Total remitted + Service Charge',
                 style: TextStyle(
-                    fontSize: 12, color: LoanTrackColors.PrimaryTwoVeryLight)),
+                  fontSize: 12,
+                  color: Theme.of(context).colorScheme.onBackground,
+                )),
           ],
         ),
         const SizedBox(height: 20),
@@ -589,14 +626,16 @@ class _LoanRecordState extends State<LoanRecord> {
             LoanTrackTextField(
               controller: repaidController,
               label: 'Amount Repaid',
-              color: LoanTrackColors.PrimaryOne,
+              color: Theme.of(context).colorScheme.onBackground,
               keyboardType: const TextInputType.numberWithOptions(),
             ),
             const SizedBox(height: 5),
-            const Text(
+            Text(
                 'Total amount you have repaid to the loaner before creating this record. Enter Zero(0) if inapplicable',
                 style: TextStyle(
-                    fontSize: 12, color: LoanTrackColors.PrimaryTwoVeryLight)),
+                  fontSize: 12,
+                  color: Theme.of(context).colorScheme.onBackground,
+                )),
           ],
         ),
         const SizedBox(height: 20),
@@ -604,7 +643,7 @@ class _LoanRecordState extends State<LoanRecord> {
         LoanTrackTextField(
           controller: rateController,
           label: 'Initial Interest Rate',
-          color: LoanTrackColors.PrimaryOne,
+          color: Theme.of(context).colorScheme.onBackground,
           keyboardType: const TextInputType.numberWithOptions(decimal: true),
         ),
 
@@ -613,7 +652,7 @@ class _LoanRecordState extends State<LoanRecord> {
         LoanTrackTextField(
           controller: overdueController,
           label: 'Daily Overdue Charge',
-          color: LoanTrackColors.PrimaryOne,
+          color: Theme.of(context).colorScheme.onBackground,
           keyboardType: const TextInputType.numberWithOptions(decimal: true),
         ),
 
@@ -639,10 +678,11 @@ class _LoanRecordState extends State<LoanRecord> {
                   yearsInFuture: 0,
                 ),
                 const SizedBox(height: 5),
-                const Text('Format: YYYY-MM-DD',
+                Text('Format: YYYY-MM-DD',
                     style: TextStyle(
-                        fontSize: 12,
-                        color: LoanTrackColors.PrimaryTwoVeryLight)),
+                      fontSize: 12,
+                      color: Theme.of(context).colorScheme.onBackground,
+                    )),
               ],
             ),
             const SizedBox(height: 20),
@@ -657,10 +697,11 @@ class _LoanRecordState extends State<LoanRecord> {
                   yearsInFuture: 10,
                 ),
                 const SizedBox(height: 5),
-                const Text('Format: YYYY-MM-DD',
+                Text('Format: YYYY-MM-DD',
                     style: TextStyle(
-                        fontSize: 12,
-                        color: LoanTrackColors.PrimaryTwoVeryLight)),
+                      fontSize: 12,
+                      color: Theme.of(context).colorScheme.onBackground,
+                    )),
               ],
             ),
           ],
@@ -678,9 +719,11 @@ class _LoanRecordState extends State<LoanRecord> {
               yearsInFuture: 0,
             ),
             const SizedBox(height: 5),
-            const Text('Format: YYYY-MM-DD',
+            Text('Format: YYYY-MM-DD',
                 style: TextStyle(
-                    fontSize: 12, color: LoanTrackColors.PrimaryTwoVeryLight)),
+                  fontSize: 12,
+                  color: Theme.of(context).colorScheme.onBackground,
+                )),
           ],
         ),
         const SizedBox(height: 80),
@@ -701,14 +744,15 @@ class _LoanRecordState extends State<LoanRecord> {
                 LoanTrackTextField(
                   controller: lenderTypeController,
                   label: 'Lender Type',
-                  color: LoanTrackColors.PrimaryOne,
+                  color: Theme.of(context).colorScheme.onBackground,
                   //icon: Icon(Icons.note),
                 ),
                 const SizedBox(height: 5),
-                const Text('Online App, Family & Friends, Bank & MFB',
+                Text('Online App, Family & Friends, Bank & MFB',
                     style: TextStyle(
-                        fontSize: 12,
-                        color: LoanTrackColors.PrimaryTwoVeryLight)),
+                      fontSize: 12,
+                      color: Theme.of(context).colorScheme.onBackground,
+                    )),
               ],
             ),
             const SizedBox(height: 20),
@@ -718,15 +762,16 @@ class _LoanRecordState extends State<LoanRecord> {
                 LoanTrackTextField(
                   controller: lenderController,
                   label: 'Lender',
-                  color: LoanTrackColors.PrimaryOne,
+                  color: Theme.of(context).colorScheme.onBackground,
                   //icon: Icon(Icons.note),
                 ),
                 const SizedBox(height: 5),
-                const Text(
+                Text(
                     'Enter Lender name or select one from the  list if available and applicable',
                     style: TextStyle(
-                        fontSize: 12,
-                        color: LoanTrackColors.PrimaryTwoVeryLight)),
+                      fontSize: 12,
+                      color: Theme.of(context).colorScheme.onBackground,
+                    )),
               ],
             )
           ],
@@ -738,7 +783,7 @@ class _LoanRecordState extends State<LoanRecord> {
         LoanTrackTextField(
           controller: loanPurposeController,
           label: 'Loan Purpose',
-          color: LoanTrackColors.PrimaryOne,
+          color: Theme.of(context).colorScheme.onBackground,
           //icon: Icon(Icons.note),
         ),
 
@@ -753,7 +798,7 @@ class _LoanRecordState extends State<LoanRecord> {
         LoanTrackTextField(
           label: 'Note',
           controller: noteController,
-          color: LoanTrackColors.PrimaryOne,
+          color: Theme.of(context).colorScheme.onBackground,
         ),
 
         const SizedBox(height: 40),
@@ -813,7 +858,7 @@ class _LoanRecordState extends State<LoanRecord> {
                     context: context,
                     title: 'Loan Edited',
                     body:
-                        'You have successfully edited record - ${widget.documentSnapshot!.get('lender')} loan',
+                        'You have successfully edited the record of your loan with - ${widget.documentSnapshot!.get('lender')} loan',
                   );
 
                   Navigator.pushNamed(context, '/home');
@@ -838,6 +883,9 @@ class _LoanRecordState extends State<LoanRecord> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        SizedBox(
+          height: MediaQuery.of(context).size.height / 3.7,
+        ),
         const SizedBox(height: 20),
         //The Money Section Title
         Text(
@@ -853,13 +901,15 @@ class _LoanRecordState extends State<LoanRecord> {
               controller: loanController,
               label: 'The Loan',
               enable: false,
-              color: LoanTrackColors.PrimaryOne,
+              color: Theme.of(context).colorScheme.onBackground,
               keyboardType: const TextInputType.numberWithOptions(),
             ),
             const SizedBox(height: 5),
-            const Text('The loan you have to repay',
+            Text('The loan you have to repay',
                 style: TextStyle(
-                    fontSize: 12, color: LoanTrackColors.PrimaryTwoVeryLight)),
+                  fontSize: 12,
+                  color: Theme.of(context).colorScheme.onBackground,
+                )),
           ],
         ),
         const SizedBox(height: 20),
@@ -871,13 +921,15 @@ class _LoanRecordState extends State<LoanRecord> {
             LoanTrackTextField(
               controller: amountRepaidController,
               label: 'Amount You Repaid',
-              color: LoanTrackColors.PrimaryOne,
+              color: Theme.of(context).colorScheme.onBackground,
               keyboardType: const TextInputType.numberWithOptions(),
             ),
             const SizedBox(height: 5),
-            const Text('The amount you paid against this loan',
+            Text('The amount you paid against this loan',
                 style: TextStyle(
-                    fontSize: 12, color: LoanTrackColors.PrimaryTwoVeryLight)),
+                  fontSize: 12,
+                  color: Theme.of(context).colorScheme.onBackground,
+                )),
           ],
         ),
         const SizedBox(height: 20),
@@ -893,9 +945,11 @@ class _LoanRecordState extends State<LoanRecord> {
               yearsInFuture: 0,
             ),
             const SizedBox(height: 5),
-            const Text('Format: YYYY-MM-DD',
+            Text('Format: YYYY-MM-DD',
                 style: TextStyle(
-                    fontSize: 12, color: LoanTrackColors.PrimaryTwoVeryLight)),
+                  fontSize: 12,
+                  color: Theme.of(context).colorScheme.onBackground,
+                )),
           ],
         ),
 
@@ -906,7 +960,7 @@ class _LoanRecordState extends State<LoanRecord> {
           controller: balanceLeftController,
           label: 'Balance Left',
           enable: false,
-          color: LoanTrackColors.PrimaryOne,
+          color: Theme.of(context).colorScheme.onBackground,
           keyboardType: TextInputType.datetime,
         ),
 
@@ -921,7 +975,7 @@ class _LoanRecordState extends State<LoanRecord> {
         LoanTrackTextField(
           controller: noteController,
           label: 'Note',
-          color: LoanTrackColors.PrimaryOne,
+          color: Theme.of(context).colorScheme.onBackground,
         ),
 
         const SizedBox(height: 40),
@@ -999,7 +1053,7 @@ class _LoanRecordState extends State<LoanRecord> {
                       context: context,
                       title: 'New Repayment Record',
                       body:
-                          'You have successfully added a repayment record to your ${widget.documentSnapshot!.get('lender')} loan',
+                          'You have successfully added a repayment to the record of your ${widget.documentSnapshot!.get('loanAmount')} loan with ${widget.documentSnapshot!.get('lender')}.',
                     );
 
                     Navigator.pushNamed(context, '/home');

@@ -93,6 +93,13 @@ class _MainState extends State<Main> {
   void initState() {
     super.initState();
 
+    //App orientation lock
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitUp,
+    ]);
+
+// Firebase messaging
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
       RemoteNotification? notification = message.notification;
       AndroidNotification? android = message.notification?.android;
@@ -106,7 +113,7 @@ class _MainState extends State<Main> {
               channel.id,
               channel.name,
               channelDescription: channel.description,
-              color: Theme.of(context).colorScheme.primary,
+              color: Color(0xFF6750A4),
               playSound: true,
               icon: '@mipmap/ic_notification',
             ),
@@ -121,7 +128,7 @@ class _MainState extends State<Main> {
       context: context,
       title: 'Welcome',
       body:
-          'Welcome to Loantrack. Nigeria\'s best personal loan management app.',
+          'Welcome to Loantrack. Africa\'s best personal loan management app.',
     );
   }
 
@@ -166,7 +173,7 @@ class _MainState extends State<Main> {
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'LoanTrack',
+      title: 'Loantrack',
       themeMode: (storedThemeNumber == 1)
           ? ThemeMode.light
           : (storedThemeNumber == 2)
@@ -188,8 +195,9 @@ class _MainState extends State<Main> {
         bottomNavigationBarTheme: BottomNavigationBarThemeData(
           backgroundColor: lightColorScheme.background,
           selectedItemColor: lightColorScheme.primary,
-          selectedLabelStyle: TextStyle(color: lightColorScheme.primary),
-          unselectedItemColor: lightColorScheme.secondary.withOpacity(.2),
+          selectedLabelStyle:
+              TextStyle(color: Theme.of(context).colorScheme.primary),
+          unselectedItemColor: lightColorScheme.onBackground.withOpacity(.8),
           showUnselectedLabels: true,
           elevation: 1,
           enableFeedback: false,
@@ -216,8 +224,9 @@ class _MainState extends State<Main> {
         bottomNavigationBarTheme: BottomNavigationBarThemeData(
           backgroundColor: darkColorScheme.background,
           selectedItemColor: seed,
-          selectedLabelStyle: TextStyle(color: darkColorScheme.primary),
-          unselectedItemColor: darkColorScheme.secondary.withOpacity(.3),
+          selectedLabelStyle:
+              TextStyle(color: Theme.of(context).colorScheme.primary),
+          unselectedItemColor: darkColorScheme.onBackground.withOpacity(.8),
           showUnselectedLabels: true,
           elevation: 1,
           enableFeedback: false,

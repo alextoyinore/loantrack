@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:loantrack/apps/loan_record_app.dart';
+import 'package:loantrack/apps/providers/preferences.dart';
 import 'package:loantrack/apps/widgets/blogdetail.dart';
 import 'package:loantrack/apps/widgets/button.dart';
 import 'package:loantrack/apps/widgets/loandetail.dart';
@@ -72,6 +73,12 @@ SizedBox LoanList({
                 DocumentSnapshot document = snapshot.data!.docs[index];
                 double progress =
                     document.get('amountRepaid') / document.get('loanAmount');
+
+                DateTime dueWhen =
+                    DateTime.parse(document.get('dueWhen').toString());
+                Duration duration = DateTime.now().difference(dueWhen);
+                int due = duration.inDays;
+
                 return GestureDetector(
                   onTap: () {
                     if (toRepayment! == false) {
@@ -231,9 +238,10 @@ SizedBox LoanList({
                                       child: ListTile(
                                         title: Text(
                                           AppLists.loanListOptionItem[index],
-                                          style: const TextStyle(
-                                            color: LoanTrackColors
-                                                .PrimaryTwoVeryLight,
+                                          style: TextStyle(
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .onBackground,
                                           ),
                                         ),
                                       ),
@@ -245,10 +253,15 @@ SizedBox LoanList({
                   child: Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
-                      color: Theme.of(context)
-                          .colorScheme
-                          .secondary
-                          .withOpacity(.05),
+                      color: (progress < 0.5)
+                          ? Theme.of(context)
+                              .colorScheme
+                              .primary
+                              .withOpacity(.05)
+                          : Theme.of(context)
+                              .colorScheme
+                              .secondary
+                              .withOpacity(.05),
                     ),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -277,9 +290,9 @@ SizedBox LoanList({
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 10.0),
                           child: Text(
-                            (snapshot.data!.docs[index].get('loanAmount') -
-                                    snapshot.data!.docs[index]
-                                        .get('amountRepaid'))
+                            (document.get('loanAmount') -
+                                    document.get('amountRepaid') +
+                                    (document.get('dailyOverdueCharge') * due))
                                 .toString(),
                             style: featureTitleStyle(context),
                           ),
@@ -301,22 +314,26 @@ SizedBox LoanList({
                           ),
                         ),
                         (progress >= 1)
-                            ? const Padding(
+                            ? Padding(
                                 padding: EdgeInsets.symmetric(horizontal: 10.0),
                                 child: Text(
                                   'PAID',
                                   style: TextStyle(
-                                      color: LoanTrackColors.PrimaryOne,
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .secondary,
                                       fontSize: 12),
                                 ),
                               )
                             : (progress == 0)
-                                ? const Padding(
+                                ? Padding(
                                     padding:
                                         EdgeInsets.symmetric(horizontal: 10.0),
                                     child: Text('UNPAID',
                                         style: TextStyle(
-                                            color: LoanTrackColors2.PrimaryOne,
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .primary,
                                             fontSize: 12),
                                         softWrap: true),
                                   )
@@ -326,8 +343,10 @@ SizedBox LoanList({
                                     child: Text(
                                         snapshot.data!.docs[index]
                                             .get('lastPaidWhen'),
-                                        style: const TextStyle(
-                                            color: LoanTrackColors2.PrimaryOne,
+                                        style: TextStyle(
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .onBackground,
                                             fontSize: 12),
                                         softWrap: true),
                                   ),
@@ -339,7 +358,7 @@ SizedBox LoanList({
                               color: (progress >= 0.5)
                                   ? Theme.of(context)
                                       .colorScheme
-                                      .primary
+                                      .secondary
                                       .withOpacity(.1)
                                   : Theme.of(context)
                                       .colorScheme
@@ -360,11 +379,11 @@ SizedBox LoanList({
                               color: (progress >= 0.5)
                                   ? Theme.of(context)
                                       .colorScheme
-                                      .primary
+                                      .secondary
                                       .withOpacity(.5)
                                   : Theme.of(context)
                                       .colorScheme
-                                      .secondary
+                                      .primary
                                       .withOpacity(.5),
                               borderRadius: BorderRadius.only(
                                 bottomRight: (progress >= 1)
@@ -430,6 +449,10 @@ SizedBox LoanSlider(
                 DocumentSnapshot document = snapshot.data!.docs[index];
                 double progress =
                     document.get('amountRepaid') / document.get('loanAmount');
+                DateTime dueWhen =
+                    DateTime.parse(document.get('dueWhen').toString());
+                Duration duration = DateTime.now().difference(dueWhen);
+                int due = duration.inDays;
                 return (document.get('loanAmount') >
                         document.get('amountRepaid'))
                     ? GestureDetector(
@@ -595,9 +618,10 @@ SizedBox LoanSlider(
                                               title: Text(
                                                 AppLists
                                                     .loanListOptionItem[index],
-                                                style: const TextStyle(
-                                                  color: LoanTrackColors
-                                                      .PrimaryTwoVeryLight,
+                                                style: TextStyle(
+                                                  color: Theme.of(context)
+                                                      .colorScheme
+                                                      .onBackground,
                                                 ),
                                               ),
                                             ),
@@ -607,17 +631,20 @@ SizedBox LoanSlider(
                           );
                         },
                         child: Container(
-                          width: MediaQuery.of(context).size.width / 2.4,
-                          margin:
-                              (numberOfItems != null && index < numberOfItems)
-                                  ? EdgeInsets.only(right: 10)
-                                  : EdgeInsets.zero,
+                          width: MediaQuery.of(context).size.width / 2.3,
+                          //height: MediaQuery.of(context).size.height / 4,
+                          margin: EdgeInsets.only(right: 10),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10),
-                            color: Theme.of(context)
-                                .colorScheme
-                                .secondary
-                                .withOpacity(.05),
+                            color: (progress < 0.5)
+                                ? Theme.of(context)
+                                    .colorScheme
+                                    .primary
+                                    .withOpacity(.05)
+                                : Theme.of(context)
+                                    .colorScheme
+                                    .secondary
+                                    .withOpacity(.05),
                           ),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -648,10 +675,10 @@ SizedBox LoanSlider(
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 10.0),
                                 child: Text(
-                                  (snapshot.data!.docs[index]
-                                              .get('loanAmount') -
-                                          snapshot.data!.docs[index]
-                                              .get('amountRepaid'))
+                                  (document.get('loanAmount') -
+                                          document.get('amountRepaid') +
+                                          (document.get('dailyOverdueCharge') *
+                                              due))
                                       .toString(),
                                   style: featureTitleStyle(context),
                                 ),
@@ -675,24 +702,27 @@ SizedBox LoanSlider(
                                 ),
                               ),
                               (progress >= 1)
-                                  ? const Padding(
+                                  ? Padding(
                                       padding: EdgeInsets.symmetric(
                                           horizontal: 10.0),
                                       child: Text(
                                         'PAID',
                                         style: TextStyle(
-                                            color: LoanTrackColors.PrimaryOne,
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .secondary,
                                             fontSize: 12),
                                       ),
                                     )
                                   : (progress == 0)
-                                      ? const Padding(
+                                      ? Padding(
                                           padding: EdgeInsets.symmetric(
                                               horizontal: 10.0),
                                           child: Text('UNPAID',
                                               style: TextStyle(
-                                                  color: LoanTrackColors2
-                                                      .PrimaryOne,
+                                                  color: Theme.of(context)
+                                                      .colorScheme
+                                                      .primary,
                                                   fontSize: 12),
                                               softWrap: true),
                                         )
@@ -702,21 +732,22 @@ SizedBox LoanSlider(
                                           child: Text(
                                               snapshot.data!.docs[index]
                                                   .get('lastPaidWhen'),
-                                              style: const TextStyle(
-                                                  color: LoanTrackColors2
-                                                      .PrimaryOne,
+                                              style: TextStyle(
+                                                  color: Theme.of(context)
+                                                      .colorScheme
+                                                      .onBackground,
                                                   fontSize: 12),
                                               softWrap: true),
                                         ),
                               Stack(children: [
                                 Container(
                                   width: MediaQuery.of(context).size.width / 2,
-                                  height: 6,
+                                  height: 5,
                                   decoration: BoxDecoration(
                                     color: (progress >= 0.5)
                                         ? Theme.of(context)
                                             .colorScheme
-                                            .primary
+                                            .secondary
                                             .withOpacity(.1)
                                         : Theme.of(context)
                                             .colorScheme
@@ -732,17 +763,17 @@ SizedBox LoanSlider(
                                   width: MediaQuery.of(context).size.width /
                                       2 *
                                       progress,
-                                  height: 6,
+                                  height: 5,
                                   decoration: BoxDecoration(
                                     color: (progress >= 0.5)
                                         ? Theme.of(context)
                                             .colorScheme
-                                            .primary
-                                            .withOpacity(.3)
+                                            .secondary
+                                            .withOpacity(.5)
                                         : Theme.of(context)
                                             .colorScheme
-                                            .secondary
-                                            .withOpacity(.1),
+                                            .primary
+                                            .withOpacity(.5),
                                     borderRadius: BorderRadius.only(
                                       bottomRight: (progress >= 1)
                                           ? const Radius.circular(10)
@@ -916,10 +947,10 @@ Container RepaymentBulletedList(
                   padding: const EdgeInsets.symmetric(vertical: 3),
                   child: GestureDetector(
                     onTap: () {
-                      // Navigator.push(context,
-                      //     MaterialPageRoute(builder: (context) {
-                      //   return LoanDetail(document: document.get('loanId'));
-                      // }));
+                      /*Navigator.push(context,
+                          MaterialPageRoute(builder: (context) {
+                        return LoanDetail(document: document);
+                      }));*/
                     },
                     child: Column(
                       children: [
@@ -936,14 +967,16 @@ Container RepaymentBulletedList(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Container(
-                                child: Text(document
-                                    .get('repaidWhen')
-                                    .toString()
-                                    .toUpperCase(),
+                                child: Text(
+                                  document
+                                      .get('repaidWhen')
+                                      .toString()
+                                      .toUpperCase(),
                                   style: TextStyle(
                                       color: Theme.of(context)
                                           .colorScheme
-                                          .onBackground),),
+                                          .onBackground),
+                                ),
                               ),
                               Text(
                                 document.get('amountRepaid').toString(),
@@ -1265,6 +1298,7 @@ SizedBox NewsList({required double height}) {
 }
 
 SizedBox userProfile({double? height}) {
+  AppPreferences preferences = AppPreferences();
   DatabaseService db = DatabaseService();
   return SizedBox(
     height: height,
@@ -1272,7 +1306,7 @@ SizedBox userProfile({double? height}) {
         stream: db.users
             .where(
               'userId',
-              isEqualTo: db.userId,
+              isEqualTo: FirebaseAuth.instance.currentUser!.uid,
             )
             .snapshots(),
         builder: (context, snapshot) {
@@ -1296,6 +1330,7 @@ SizedBox userProfile({double? height}) {
                         fontSize: 14,
                         color: Theme.of(context).colorScheme.onBackground),
                   ),
+                  separatorSpace10,
                   GestureDetector(
                     onTap: () {
                       Navigator.push(
@@ -1307,7 +1342,7 @@ SizedBox userProfile({double? height}) {
                     child: Text(
                       'Update your profile now',
                       style: TextStyle(
-                        color: Theme.of(context).colorScheme.onBackground,
+                        color: seed,
                       ),
                     ),
                   )
@@ -1327,6 +1362,9 @@ SizedBox userProfile({double? height}) {
 
                 // Add net income to provider
                 context.read<LoanDetailsProviders>().setNetIncome(netIncome);
+
+                //print(netIncome);
+                //print(maritalStatus);
                 // Add maritalStatus to provider
                 context
                     .read<LoanDetailsProviders>()
@@ -1381,42 +1419,40 @@ SizedBox userProfile({double? height}) {
                                               .colorScheme
                                               .onBackground),
                                       separatorSpace10,
-                                      GestureDetector(
-                                        onTap: () {
-                                          FirebaseFirestore.instance
-                                              .collection('users')
-                                              .doc(user.id)
-                                              .update({
-                                                'firstname':
-                                                    firstnameController.text,
-                                                'lastname':
-                                                    lastnameController.text,
-                                              })
-                                              .whenComplete(() => {
-                                                    showSuccessDialog(
-                                                        context: context,
-                                                        title: 'Success',
-                                                        successMessage:
-                                                            'You have successfully updated your first name and last name',
-                                                        whenTapped: () {
-                                                          Navigator.pop(
-                                                              context);
-                                                        })
-                                                  })
-                                              .onError((error, stackTrace) => {
-                                                    showErrorDialog(
-                                                        context: context,
-                                                        title: 'Error',
-                                                        errorMessage:
-                                                            'An error occurred while updating your first name and last name'),
-                                                  });
-                                          Navigator.pop(context);
-                                        },
-                                        child: LoanTrackButton.primary(
-                                            whenPressed: () {},
-                                            context: context,
-                                            label: 'Continue'),
-                                      ),
+                                      LoanTrackButton.primary(
+                                          whenPressed: () {
+                                            FirebaseFirestore.instance
+                                                .collection('users')
+                                                .doc(user.id)
+                                                .update({
+                                                  'firstname':
+                                                      firstnameController.text,
+                                                  'lastname':
+                                                      lastnameController.text,
+                                                })
+                                                .whenComplete(() => {
+                                                      showSuccessDialog(
+                                                          context: context,
+                                                          title: 'Success',
+                                                          successMessage:
+                                                              'You have successfully updated your name to ${firstnameController.text} ${lastnameController.text}',
+                                                          whenTapped: () {
+                                                            Navigator.pop(
+                                                                context);
+                                                          })
+                                                    })
+                                                .onError(
+                                                    (error, stackTrace) => {
+                                                          showErrorDialog(
+                                                              context: context,
+                                                              title: 'Error',
+                                                              errorMessage:
+                                                                  'An error occurred while updating your first name and last name'),
+                                                        });
+                                            Navigator.pop(context);
+                                          },
+                                          context: context,
+                                          label: 'Continue'),
                                     ],
                                   ),
                                 ),
@@ -1473,39 +1509,37 @@ SizedBox userProfile({double? height}) {
                                                   .PrimaryTwoVeryLight
                                               .withOpacity(.1)),
                                       separatorSpace10,
-                                      GestureDetector(
-                                        onTap: () {
-                                          FirebaseFirestore.instance
-                                              .collection('users')
-                                              .doc(user.id)
-                                              .update({
-                                                'age': ageController.text,
-                                              })
-                                              .whenComplete(() => {
-                                                    showSuccessDialog(
-                                                        context: context,
-                                                        title: 'Success',
-                                                        successMessage:
-                                                            'You have successfully updated your age',
-                                                        whenTapped: () {
-                                                          Navigator.pop(
-                                                              context);
-                                                        })
-                                                  })
-                                              .onError((error, stackTrace) => {
-                                                    showErrorDialog(
-                                                        context: context,
-                                                        title: 'Error',
-                                                        errorMessage:
-                                                            'An error occured while updating your age'),
-                                                  });
-                                          Navigator.pop(context);
-                                        },
-                                        child: LoanTrackButton.primary(
-                                            whenPressed: () {},
-                                            context: context,
-                                            label: 'Continue'),
-                                      ),
+                                      LoanTrackButton.primary(
+                                          whenPressed: () {
+                                            FirebaseFirestore.instance
+                                                .collection('users')
+                                                .doc(user.id)
+                                                .update({
+                                                  'age': ageController.text,
+                                                })
+                                                .whenComplete(() => {
+                                                      showSuccessDialog(
+                                                          context: context,
+                                                          title: 'Success',
+                                                          successMessage:
+                                                              'You have successfully updated your age',
+                                                          whenTapped: () {
+                                                            Navigator.pop(
+                                                                context);
+                                                          })
+                                                    })
+                                                .onError(
+                                                    (error, stackTrace) => {
+                                                          showErrorDialog(
+                                                              context: context,
+                                                              title: 'Error',
+                                                              errorMessage:
+                                                                  'An error occurred while updating your age'),
+                                                        });
+                                            Navigator.pop(context);
+                                          },
+                                          context: context,
+                                          label: 'Continue'),
                                     ],
                                   ),
                                 ),
@@ -1649,9 +1683,10 @@ SizedBox userProfile({double? height}) {
                                                               context: context,
                                                               title: 'Failed',
                                                               errorMessage:
-                                                                  'An error occured while updating your marital status.')
+                                                                  'An error occurred while updating your marital status.')
                                                         });
-
+                                                preferences.setMaritalStatus(
+                                                    maritalStatus[index]);
                                                 Navigator.pop(context);
                                               },
                                               child: ListTile(
@@ -1711,40 +1746,38 @@ SizedBox userProfile({double? height}) {
                                                   .PrimaryTwoVeryLight
                                               .withOpacity(.1)),
                                       separatorSpace10,
-                                      GestureDetector(
-                                        onTap: () {
-                                          FirebaseFirestore.instance
-                                              .collection('users')
-                                              .doc(user.id)
-                                              .update({
-                                                'occupation':
-                                                    occupationController.text,
-                                              })
-                                              .whenComplete(() => {
-                                                    showSuccessDialog(
-                                                        context: context,
-                                                        title: 'Success',
-                                                        successMessage:
-                                                            'You have successfully updated your occupation',
-                                                        whenTapped: () {
-                                                          Navigator.pop(
-                                                              context);
-                                                        })
-                                                  })
-                                              .onError((error, stackTrace) => {
-                                                    showErrorDialog(
-                                                        context: context,
-                                                        title: 'Error',
-                                                        errorMessage:
-                                                            'An error occured while updating your occupation details'),
-                                                  });
-                                          Navigator.pop(context);
-                                        },
-                                        child: LoanTrackButton.primary(
-                                            whenPressed: () {},
-                                            context: context,
-                                            label: 'Continue'),
-                                      ),
+                                      LoanTrackButton.primary(
+                                          whenPressed: () {
+                                            FirebaseFirestore.instance
+                                                .collection('users')
+                                                .doc(user.id)
+                                                .update({
+                                                  'occupation':
+                                                      occupationController.text,
+                                                })
+                                                .whenComplete(() => {
+                                                      showSuccessDialog(
+                                                          context: context,
+                                                          title: 'Success',
+                                                          successMessage:
+                                                              'You have successfully updated your occupation to ${occupationController.text}',
+                                                          whenTapped: () {
+                                                            Navigator.pop(
+                                                                context);
+                                                          })
+                                                    })
+                                                .onError(
+                                                    (error, stackTrace) => {
+                                                          showErrorDialog(
+                                                              context: context,
+                                                              title: 'Error',
+                                                              errorMessage:
+                                                                  'An error occurred while updating your occupation details'),
+                                                        });
+                                            Navigator.pop(context);
+                                          },
+                                          context: context,
+                                          label: 'Continue'),
                                     ],
                                   ),
                                 ),
@@ -1876,40 +1909,41 @@ SizedBox userProfile({double? height}) {
                                                   .PrimaryTwoVeryLight
                                               .withOpacity(.1)),
                                       separatorSpace10,
-                                      GestureDetector(
-                                        onTap: () {
-                                          FirebaseFirestore.instance
-                                              .collection('users')
-                                              .doc(user.id)
-                                              .update({
-                                                'totalMonthlyIncome':
-                                                    monthlyController.text,
-                                              })
-                                              .whenComplete(() => {
-                                                    showSuccessDialog(
-                                                        context: context,
-                                                        title: 'Success',
-                                                        successMessage:
-                                                            'You have successfully updated your monthly income',
-                                                        whenTapped: () {
-                                                          Navigator.pop(
-                                                              context);
-                                                        })
-                                                  })
-                                              .onError((error, stackTrace) => {
-                                                    showErrorDialog(
-                                                        context: context,
-                                                        title: 'Error',
-                                                        errorMessage:
-                                                            'An error occured while updating your monthly income'),
-                                                  });
-                                          Navigator.pop(context);
-                                        },
-                                        child: LoanTrackButton.primary(
-                                            whenPressed: () {},
-                                            context: context,
-                                            label: 'Continue'),
-                                      ),
+                                      LoanTrackButton.primary(
+                                          whenPressed: () {
+                                            FirebaseFirestore.instance
+                                                .collection('users')
+                                                .doc(user.id)
+                                                .update({
+                                                  'totalMonthlyIncome':
+                                                      monthlyController.text,
+                                                })
+                                                .whenComplete(() => {
+                                                      showSuccessDialog(
+                                                          context: context,
+                                                          title: 'Success',
+                                                          successMessage:
+                                                              'You have successfully updated your monthly income to ${monthlyController.text}',
+                                                          whenTapped: () {
+                                                            Navigator.pop(
+                                                                context);
+                                                          })
+                                                    })
+                                                .onError(
+                                                    (error, stackTrace) => {
+                                                          showErrorDialog(
+                                                              context: context,
+                                                              title: 'Error',
+                                                              errorMessage:
+                                                                  'An error occurred while updating your monthly income'),
+                                                        });
+                                            preferences.setMonthlyIncome(
+                                                double.parse(
+                                                    monthlyController.text));
+                                            Navigator.pop(context);
+                                          },
+                                          context: context,
+                                          label: 'Continue'),
                                     ],
                                   ),
                                 ),
@@ -1978,7 +2012,7 @@ SizedBox userProfile({double? height}) {
                                                               context: context,
                                                               title: 'Error',
                                                               errorMessage:
-                                                                  'An error occured while updating your gender details')
+                                                                  'An error occurred while updating your gender details')
                                                         });
 
                                                 Navigator.pop(context);
@@ -2214,7 +2248,7 @@ SizedBox userProfile({double? height}) {
                                                               context: context,
                                                               title: 'Failed',
                                                               errorMessage:
-                                                                  'An error occured while updating your Samaritan status')
+                                                                  'An error occurred while updating your Samaritan status')
                                                         });
 
                                                 Navigator.pop(context);

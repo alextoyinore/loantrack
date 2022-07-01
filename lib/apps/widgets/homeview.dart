@@ -2,6 +2,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:loantrack/apps/credit_score_app.dart';
 import 'package:loantrack/apps/loan_health_app.dart';
@@ -10,7 +11,7 @@ import 'package:loantrack/apps/news_app.dart';
 import 'package:loantrack/apps/providers/loan_provider.dart';
 import 'package:loantrack/apps/providers/theme_provider.dart';
 import 'package:loantrack/apps/read_app.dart';
-import 'package:loantrack/apps/summary.dart';
+import 'package:loantrack/apps/summarys.dart';
 import 'package:loantrack/data/applists.dart';
 import 'package:loantrack/helpers/colors.dart';
 import 'package:loantrack/helpers/styles.dart';
@@ -53,6 +54,15 @@ class _HomeViewState extends State<HomeView> {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
 
+    if (kDebugMode) {
+      print('screen width = $screenWidth');
+    }
+
+    if (screenWidth < 400) {
+      //screenWidth = screenWidth + 10;
+      screenHeight = screenHeight + 60;
+    }
+
     String userId = FirebaseAuth.instance.currentUser!.uid;
 
     ScrollController sliderScrollController = ScrollController();
@@ -76,8 +86,11 @@ class _HomeViewState extends State<HomeView> {
             //height: MediaQuery.of(context).size.height,
             child: Column(mainAxisSize: MainAxisSize.min, children: [
               SizedBox(
-                height: screenHeight / 3.5,
+                height: (screenWidth < 400)
+                    ? screenHeight / 3.6
+                    : screenHeight / 4.1,
               ),
+
               // BEGIN LOAN CARD
               SizedBox(
                 width: screenWidth,
@@ -85,31 +98,33 @@ class _HomeViewState extends State<HomeView> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     SizedBox(
-                        width: screenWidth,
-                        height: screenHeight / 4,
-                        child: CarouselSlider(
-                          items: AppLists.homeScreenSliderImages
-                              .map((item) => Container(
-                                    width: screenWidth,
-                                    height: screenHeight / 4,
-                                    margin: const EdgeInsets.only(right: 5),
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(10),
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .primary
-                                            .withOpacity(.1),
-                                        image: DecorationImage(
-                                          image: AssetImage(item),
-                                          fit: BoxFit.cover,
-                                        )),
-                                  ))
-                              .toList(),
-                          options: CarouselOptions(
-                            autoPlay: true,
-                            viewportFraction: 1,
-                          ),
-                        )),
+                      width: screenWidth,
+                      height: screenHeight / 5,
+                      child: CarouselSlider(
+                        items: AppLists.homeScreenSliderImages
+                            .map((item) => Container(
+                                  width: screenWidth,
+                                  height: screenHeight / 5,
+                                  margin: const EdgeInsets.only(right: 5),
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10),
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .primary
+                                          .withOpacity(.1),
+                                      image: DecorationImage(
+                                        image: AssetImage(item),
+                                        fit: BoxFit.cover,
+                                      )),
+                                ))
+                            .toList(),
+                        options: CarouselOptions(
+                          autoPlay: true,
+                          viewportFraction: 1,
+                        ),
+                      ),
+                    ),
+                    //END CAROUSEL
                     separatorSpace20,
                     Text(
                       'NEW RECORD',
@@ -175,7 +190,7 @@ class _HomeViewState extends State<HomeView> {
                                     color: Theme.of(context)
                                         .colorScheme
                                         .primary
-                                        .withOpacity(.2),
+                                        .withOpacity(.5),
                                     borderRadius: const BorderRadius.only(
                                       bottomLeft: Radius.circular(10),
                                       bottomRight: Radius.circular(10),
@@ -195,7 +210,9 @@ class _HomeViewState extends State<HomeView> {
                                 builder: (context) => LoanTrackingPage(
                                   isHome: false,
                                   fromRepayment: true,
-                                  loanListHeight: screenHeight * .68,
+                                  loanListHeight: (screenWidth < 400)
+                                      ? screenHeight * .724
+                                      : screenHeight * .72,
                                 ),
                               ),
                             );
@@ -282,9 +299,13 @@ class _HomeViewState extends State<HomeView> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Text(
+                    Text(
                       'TRACKING',
-                      style: TextStyle(color: LoanTrackColors.PrimaryTwoLight),
+                      style: TextStyle(
+                          color: Theme.of(context)
+                              .colorScheme
+                              .onBackground
+                              .withOpacity(.7)),
                     ),
                     GestureDetector(
                       onTap: () {
@@ -293,15 +314,18 @@ class _HomeViewState extends State<HomeView> {
                           MaterialPageRoute(
                             builder: (context) => LoanTrackingPage(
                               isHome: false,
-                              loanListHeight: screenHeight * .69,
+                              loanListHeight: screenHeight * .724,
                             ),
                           ),
                         );
                       },
-                      child: const Text(
+                      child: Text(
                         'SEE ALL',
-                        style:
-                            TextStyle(color: LoanTrackColors.PrimaryTwoLight),
+                        style: TextStyle(
+                            color: Theme.of(context)
+                                .colorScheme
+                                .onBackground
+                                .withOpacity(.7)),
                       ),
                     )
                   ],
@@ -312,7 +336,7 @@ class _HomeViewState extends State<HomeView> {
 
               LoanSlider(
                   width: screenWidth,
-                  height: screenHeight / 4.5,
+                  height: screenHeight / 4.6,
                   userId: userId,
                   numberOfItems: 5),
               //END LOAN PROGRESS
@@ -369,7 +393,7 @@ class _HomeViewState extends State<HomeView> {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => const Summary()));
+                                builder: (context) => const Summarys()));
                       },
                       child: LoanTrackProductLinkBox(
                         icon: Icon(Icons.calculate_outlined,
@@ -476,7 +500,7 @@ class _HomeViewState extends State<HomeView> {
         // Top Fixed Card
         Container(
           color: Theme.of(context).colorScheme.background,
-          height: screenHeight / 3.4,
+          height: (screenWidth < 400) ? screenHeight / 3.6 : screenHeight / 4.1,
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
             child: Column(
@@ -559,14 +583,15 @@ class _HomeViewState extends State<HomeView> {
                   'CURRENT LOAN TOTAL',
                   style: sectionHeaderStyle(context),
                 ),
-                separatorSpace5,
+                // separatorSpace10,
                 // LOAN TOTAL STREAM
 
                 GestureDetector(
                   onTap: () {
                     Navigator.push(
                       context,
-                      CupertinoPageRoute(builder: (context) => const Summary()),
+                      CupertinoPageRoute(
+                          builder: (context) => const Summarys()),
                     );
                   },
                   child: StreamBuilder<QuerySnapshot>(
@@ -636,7 +661,7 @@ class _HomeViewState extends State<HomeView> {
                               );
                       }),
                 ),
-                separatorSpace5,
+                separatorSpace10,
                 Text(
                   'TOP LENDERS',
                   style: sectionHeaderStyle(context),

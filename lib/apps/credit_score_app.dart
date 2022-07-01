@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:loantrack/apps/providers/loan_provider.dart';
+import 'package:loantrack/apps/providers/preferences.dart';
 import 'package:loantrack/apps/widgets/updateprofile.dart';
 import 'package:loantrack/helpers/colors.dart';
 import 'package:provider/provider.dart';
 
 import '../helpers/styles.dart';
 import '../widgets/common_widgets.dart';
+import 'loan_record_app.dart';
 
 class CreditScore extends StatefulWidget {
   const CreditScore({Key? key}) : super(key: key);
@@ -17,23 +19,52 @@ class CreditScore extends StatefulWidget {
 class _CreditScoreState extends State<CreditScore> {
   @override
   double creditscore = -1;
+
+  double totalMonthlyIncome = 0;
+  String marital = '';
+  Future<void> getUserData() async {
+    AppPreferences prefs = AppPreferences();
+    double monthlyIncome = await prefs.getMonthlyIncome();
+    String married = await prefs.getMaritalStatus();
+    setState(() {
+      totalMonthlyIncome = monthlyIncome;
+      marital = married;
+    });
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getUserData();
+  }
+
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
 
-    double netIncome = context.read<LoanDetailsProviders>().netIncome;
+    double netIncome = totalMonthlyIncome;
     double currentLoanTotal = context.read<LoanDetailsProviders>().loanTotal;
     double repaidTotal = context.read<LoanDetailsProviders>().repaidTotal;
-    String maritalStatus = context.read<LoanDetailsProviders>().maritalStatus;
+    String maritalStatus = marital;
+
+    if (repaidTotal > 1 && currentLoanTotal <= 0) {
+      repaidTotal = 1;
+    }
+
+    if (currentLoanTotal <= 0) {
+      currentLoanTotal = 1;
+      netIncome = 1;
+    }
+
+    if (repaidTotal <= 0) {
+      repaidTotal = 1;
+    }
 
     double incomeToLoanRatio = (netIncome / currentLoanTotal);
     double repaidToLoanRatio = (repaidTotal / currentLoanTotal);
 
-    /* if (maritalStatus == '') {
-      maritalStatus = 'Rather Not Say';
-    }
-*/
     int marriedRating = 0;
 
     switch (maritalStatus) {
@@ -57,10 +88,14 @@ class _CreditScoreState extends State<CreditScore> {
     double marriedFactor = marriedRating / 5;
 
     double marriedPercent = marriedFactor * 10;
-    double incomePercent = incomeToLoanRatio * 60;
-    double repaidPercent = repaidToLoanRatio * 30;
+    double incomePercent = incomeToLoanRatio * 40;
+    double repaidPercent = repaidToLoanRatio * 50;
 
     creditscore = (marriedPercent + incomePercent + repaidPercent);
+
+    if (creditscore.isNaN) {
+      creditscore = -1;
+    }
 
     return Scaffold(
       body: Stack(
@@ -76,33 +111,67 @@ class _CreditScoreState extends State<CreditScore> {
                     height: screenHeight - 200,
                     width: screenWidth,
                     child: Center(
-                      child: Column(
-                        children: [
-                          const Text(
-                            'We do not have enough data to compute your loan Credit Score',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              color: LoanTrackColors.PrimaryTwoVeryLight,
+                      child: (currentLoanTotal > 0)
+                          ? Column(
+                              children: [
+                                Text(
+                                  'We do not have enough data to compute your loan Credit Score',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onBackground,
+                                  ),
+                                ),
+                                separatorSpace10,
+                                GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                const ProfileUpdate()));
+                                  },
+                                  child: Text(
+                                    'Update your profile now',
+                                    style: TextStyle(
+                                      color:
+                                          Theme.of(context).colorScheme.primary,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            )
+                          : Column(
+                              children: [
+                                Text(
+                                  'You need to have at least one loan record for us to compute your Credit Score',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onBackground,
+                                  ),
+                                ),
+                                separatorSpace10,
+                                GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                LoanRecord(edit: false)));
+                                  },
+                                  child: Text(
+                                    'Add a new loan record',
+                                    style: TextStyle(
+                                      color:
+                                          Theme.of(context).colorScheme.primary,
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
-                          ),
-                          separatorSpace5,
-                          GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          const ProfileUpdate()));
-                            },
-                            child: const Text(
-                              'Update your profile now',
-                              style: TextStyle(
-                                color: LoanTrackColors.PrimaryOne,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
                     ),
                   )
                 : SingleChildScrollView(
@@ -140,13 +209,13 @@ class _CreditScoreState extends State<CreditScore> {
                                   color: (creditscore >= 50 &&
                                           creditscore <= 100)
                                       ? LoanTrackColors2.TetiaryOne.withOpacity(
-                                          .2)
+                                          .1)
                                       : (creditscore >= 25 && creditscore <= 49)
                                           ? LoanTrackColors.TetiaryOne
-                                              .withOpacity(.2)
+                                              .withOpacity(.1)
                                           : (creditscore < 24 &&
                                                   creditscore > -1)
-                                              ? Colors.red.withOpacity(.2)
+                                              ? Colors.red.withOpacity(.1)
                                               : Colors.transparent,
                                   width: screenWidth / 2.5,
                                   height: (creditscore / 100) *
@@ -190,10 +259,12 @@ class _CreditScoreState extends State<CreditScore> {
                                   color: LoanTrackColors2.TetiaryOne,
                                 ),
                                 horizontalSeparatorSpace20,
-                                const Text(
+                                Text(
                                   'Your score is good',
                                   style: TextStyle(
-                                    color: LoanTrackColors.PrimaryTwoVeryLight,
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onBackground,
                                   ),
                                 )
                               ],
@@ -210,11 +281,12 @@ class _CreditScoreState extends State<CreditScore> {
                                 horizontalSeparatorSpace20,
                                 SizedBox(
                                   width: screenWidth * .7,
-                                  child: const Text(
+                                  child: Text(
                                     'Your Credit Score is at an average. Consider keeping your borrowings below your net income.',
                                     style: TextStyle(
-                                      color:
-                                          LoanTrackColors.PrimaryTwoVeryLight,
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onBackground,
                                     ),
                                     softWrap: true,
                                   ),
@@ -233,11 +305,12 @@ class _CreditScoreState extends State<CreditScore> {
                                 horizontalSeparatorSpace20,
                                 SizedBox(
                                   width: screenWidth * .7,
-                                  child: const Text(
+                                  child: Text(
                                     'Your score is bad. Seriously consider paying off all loans before taking on any other loan.',
                                     style: TextStyle(
-                                      color:
-                                          LoanTrackColors.PrimaryTwoVeryLight,
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onBackground,
                                     ),
                                     softWrap: true,
                                   ),
@@ -277,11 +350,11 @@ class _CreditScoreState extends State<CreditScore> {
                   style: titleStyle(context),
                 ),
                 separatorSpace10,
-                const Text(
+                Text(
                   'Welcome to Credit Score. Here you can see at a glance how viable you are for a loan. Your score will give you an idea of your chances of securing a loan.',
                   softWrap: true,
                   style: TextStyle(
-                    color: LoanTrackColors.PrimaryTwoVeryLight,
+                    color: Theme.of(context).colorScheme.onBackground,
                   ),
                 ),
                 separatorSpace10,

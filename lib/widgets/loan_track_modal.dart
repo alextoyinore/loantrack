@@ -31,17 +31,19 @@ class LoanTrackModal {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     separatorSpace50,
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 20.0,
-                        vertical: 5,
+                    SingleChildScrollView(
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 20.0,
+                          vertical: 5,
+                        ),
+                        child: (e == null)
+                            ? content
+                            : Text(
+                                e.toString(),
+                                softWrap: true,
+                              ),
                       ),
-                      child: (e == null)
-                          ? content
-                          : Text(
-                              e.toString(),
-                              softWrap: true,
-                            ),
                     ),
                   ],
                 ),

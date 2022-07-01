@@ -1,7 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:loantrack/helpers/colors.dart';
 import 'package:loantrack/helpers/styles.dart';
 import 'package:loantrack/widgets/common_widgets.dart';
 
@@ -38,58 +37,72 @@ class _LoanTrackingPageState extends State<LoanTrackingPage> {
 
     return Scaffold(
       body: SafeArea(
-        child: Container(
-          padding: const EdgeInsets.only(
-            top: 16.0,
-            left: 16,
-            right: 16,
-          ),
-          //margin: const EdgeInsets.only(top: 20),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              (widget.isHome == false)
-                  ? GestureDetector(
-                      onTap: () {
-                        Navigator.pop(context);
-                      },
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: const [
-                          Icon(Icons.close),
-                        ],
-                      ),
-                    )
-                  : const SizedBox(
-                      height: 0,
-                    ),
-              (widget.isHome == false)
-                  ? separatorSpace10
-                  : const SizedBox(
-                      height: 0,
-                    ),
-              Text('Loan List', style: titleStyle(context)),
-              separatorSpace10,
-
-              const Text(
-                'Long press on a loan from the list to \'View\', \'Edit\', \'Delete\' or \'Make Repayment\' ',
-                style: TextStyle(color: LoanTrackColors.PrimaryTwoVeryLight),
+        child: Stack(
+          children: [
+            Container(
+              padding: const EdgeInsets.only(
+                top: 16.0,
+                left: 16,
+                right: 16,
               ),
-              separatorSpace20,
+              //margin: const EdgeInsets.only(top: 20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  (widget.isHome == false)
+                      ? GestureDetector(
+                          onTap: () {
+                            Navigator.pop(context);
+                          },
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: const [
+                              Icon(Icons.close),
+                            ],
+                          ),
+                        )
+                      : const SizedBox(
+                          height: 0,
+                        ),
+                  (widget.isHome == false)
+                      ? separatorSpace10
+                      : const SizedBox(
+                          height: 0,
+                        ),
+                  Text('Loan List', style: titleStyle(context)),
+                  separatorSpace10,
 
-              //Loan list
-              SingleChildScrollView(
-                child: LoanList(
-                    toRepayment: (widget.fromRepayment!) ? true : false,
-                    userId: userId,
-                    width: screenWidth,
-                    height: (widget.loanListHeight > 0)
-                        ? widget.loanListHeight
-                        : screenHeight * .69),
+                  Text(
+                      'Long press on a loan from the list to \'View\', \'Edit\', \'Delete\' or \'Make Repayment\' ',
+                      style: smallDescriptionStyle(context)),
+                  separatorSpace20,
+                  //separatorSpace10,
+                ],
               ),
-              separatorSpace10,
-            ],
-          ),
+            ),
+
+            //Loan list
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: Column(
+                children: [
+                  SizedBox(
+                    height: 150,
+                  ),
+                  SingleChildScrollView(
+                    child: LoanList(
+                        toRepayment: (widget.fromRepayment!) ? true : false,
+                        userId: userId,
+                        width: screenWidth,
+                        height: (widget.loanListHeight > 0)
+                            ? widget.loanListHeight
+                            : screenHeight * .77),
+                  ),
+                ],
+              ),
+            ),
+            separatorSpace20,
+          ],
         ),
       ),
     );

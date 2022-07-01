@@ -17,6 +17,7 @@ import 'package:loantrack/widgets/dialogs.dart';
 import 'package:loantrack/widgets/loan_track_modal.dart';
 import 'package:loantrack/widgets/loan_track_textfield.dart';
 import 'package:provider/provider.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
 class LoanTrackLogin extends StatefulWidget {
   const LoanTrackLogin({Key? key}) : super(key: key);
@@ -30,7 +31,6 @@ class _LoanTrackLoginState extends State<LoanTrackLogin> with ChangeNotifier {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController displayNameController = TextEditingController();
-  //FirebaseAuthException e = FirebaseAuthException(code: 'network-not-found');
 
   AuthService authService = AuthService();
 
@@ -62,6 +62,13 @@ class _LoanTrackLoginState extends State<LoanTrackLogin> with ChangeNotifier {
 
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
+
+    if (kDebugMode) {
+      print('screen width = $screenWidth');
+    }
+
     var currentTime;
     States loginState = context.watch<LoginState>().loginState;
     return WillPopScope(
@@ -81,7 +88,7 @@ class _LoanTrackLoginState extends State<LoanTrackLogin> with ChangeNotifier {
       },
       child: Scaffold(
         body: Padding(
-          padding: const EdgeInsets.all(32.0),
+          padding: const EdgeInsets.only(top: 32.0, left: 32, right: 32),
           child: SingleChildScrollView(
             child: (loginState == States.loggedOut)
                 ? emailVerifier(context)
@@ -111,6 +118,7 @@ class _LoanTrackLoginState extends State<LoanTrackLogin> with ChangeNotifier {
         Image.asset(
           'assets/images/icon.png',
           scale: 2,
+          color: Theme.of(context).colorScheme.primary,
         ),
         separatorSpace40,
         Text(
@@ -180,10 +188,10 @@ class _LoanTrackLoginState extends State<LoanTrackLogin> with ChangeNotifier {
           LoanTrackTextField(
             controller: emailController,
             label: 'Email',
-            color: LoanTrackColors.PrimaryOne,
+            color: Theme.of(context).colorScheme.onBackground,
             //icon: const Icon(Icons.email, color: LoanTrackColors.PrimaryOne),
           ),
-          separatorSpace20,
+          separatorSpace30,
           LoanTrackButton.primary(
             whenPressed: () {
               authService.checkEmailExists(
@@ -196,38 +204,33 @@ class _LoanTrackLoginState extends State<LoanTrackLogin> with ChangeNotifier {
                       'that you have typed a valid email.',
                 ),
               );
-              /*.whenComplete(
-                    () => notifications.showNotification(
-                      context: context,
-                      title: 'Email Found',
-                      body: 'We found your email.',
-                    ),
-                  );*/
             },
             context: context,
             label: 'Start Here',
           ),
           SizedBox(
-            height: MediaQuery.of(context).size.height / 3,
+            height: (MediaQuery.of(context).size.width < 400)
+                ? (MediaQuery.of(context).size.height / 3.1)
+                : MediaQuery.of(context).size.height / 4,
           ),
         ],
       ),
       Positioned(
-          bottom: 0,
+          bottom: 10,
           child: Row(
             children: [
               Icon(
                 Icons.copyright,
                 size: 20,
                 color:
-                    Theme.of(context).colorScheme.onBackground.withOpacity(.2),
+                    Theme.of(context).colorScheme.onBackground.withOpacity(.5),
               ),
               horizontalSeparatorSpace5,
               Image.asset(
                 'assets/images/logo.png',
                 scale: 15,
                 color:
-                    Theme.of(context).colorScheme.onBackground.withOpacity(.2),
+                    Theme.of(context).colorScheme.onBackground.withOpacity(.5),
               ),
               horizontalSeparatorSpace5,
               Text(
@@ -236,7 +239,7 @@ class _LoanTrackLoginState extends State<LoanTrackLogin> with ChangeNotifier {
                   color: Theme.of(context)
                       .colorScheme
                       .onBackground
-                      .withOpacity(.2),
+                      .withOpacity(.5),
                 ),
               ),
             ],
@@ -259,18 +262,18 @@ class _LoanTrackLoginState extends State<LoanTrackLogin> with ChangeNotifier {
         LoanTrackTextField(
           controller: emailController,
           label: 'Email',
-          color: LoanTrackColors.PrimaryOne,
+          color: Theme.of(context).colorScheme.onBackground,
           //icon: const Icon(Icons.email, color: LoanTrackColors.PrimaryOne),
         ),
-        separatorSpace20,
+        separatorSpace30,
         LoanTrackTextField(
           controller: passwordController,
           label: 'Password',
           isHidden: true,
-          color: LoanTrackColors.PrimaryOne,
+          color: Theme.of(context).colorScheme.onBackground,
           //icon: const Icon(Icons.lock, color: LoanTrackColors.PrimaryOne),
         ),
-        separatorSpace20,
+        separatorSpace30,
         LoanTrackButton.primary(
           whenPressed: () {
             authService.signInWithEmailAndPassword(
@@ -283,18 +286,13 @@ class _LoanTrackLoginState extends State<LoanTrackLogin> with ChangeNotifier {
                   errorMessage:
                       'An error occurred. Verify that your password is correctly typed.'),
             );
-            /*.whenComplete(
-                  () => notifications.showNotification(
-                      context: context,
-                      title: 'Sign In Success',
-                      body: 'You have successfully signed in.'),
-                );*/
+
             onboardingPreferences.setOnboarding(false);
           },
           context: context,
           label: 'Log In',
         ),
-        separatorSpace20,
+        separatorSpace30,
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -395,6 +393,12 @@ class _LoanTrackLoginState extends State<LoanTrackLogin> with ChangeNotifier {
           //  icon: const Icon(Icons.lock, color: LoanTrackColors.PrimaryOne),
         ),
         separatorSpace20,
+        Text(
+          "By tapping 'Continue' you agree that you have read, understand, and agree to our privacy policy below and 'Terms of Service'.",
+          style: smallerDescriptionStyle(context),
+          //textAlign: TextAlign.center,
+        ),
+        separatorSpace20,
         LoanTrackButton.primary(
           whenPressed: () {
             authService
@@ -425,6 +429,46 @@ class _LoanTrackLoginState extends State<LoanTrackLogin> with ChangeNotifier {
           context: context,
           label: 'Cancel',
         ),
+        separatorSpace20,
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            TextButton(
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  builder: (_) {
+                    return AlertDialog(
+                      contentPadding: EdgeInsets.all(8),
+                      insetPadding: EdgeInsets.zero,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      title: Text(
+                        'Must Read',
+                        style: smallTitleStyle(context),
+                      ),
+                      content: Container(
+                        width: MediaQuery.of(context).size.width * .85,
+                        height: MediaQuery.of(context).size.height * .75,
+                        child: WebView(
+                          javascriptMode: JavascriptMode.unrestricted,
+                          initialUrl:
+                              'https://www.freeprivacypolicy.com/live/5268f758-eec0-459c-a293-5cd111b16241',
+                        ),
+                      ),
+                    );
+                  },
+                );
+              },
+              child: Text(
+                'Privacy Policy',
+                style: smallHeaderHighlightStyle(context),
+              ),
+            ),
+          ],
+        ),
+        separatorSpace20,
       ],
     );
   }

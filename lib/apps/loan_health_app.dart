@@ -1,5 +1,8 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:loantrack/apps/loan_record_app.dart';
 import 'package:loantrack/apps/providers/loan_provider.dart';
+import 'package:loantrack/apps/providers/preferences.dart';
 import 'package:loantrack/apps/widgets/updateprofile.dart';
 import 'package:loantrack/helpers/colors.dart';
 import 'package:loantrack/widgets/common_widgets.dart';
@@ -16,21 +19,58 @@ class LoanHealth extends StatefulWidget {
 
 class _LoanHealthState extends State<LoanHealth> {
   double health = -1;
+  double totalMonthlyIncome = 0;
+  String marital = '';
+  Future<void> getUserData() async {
+    AppPreferences prefs = AppPreferences();
+    double monthlyIncome = await prefs.getMonthlyIncome();
+    String married = await prefs.getMaritalStatus();
+    setState(() {
+      totalMonthlyIncome = monthlyIncome;
+      marital = married;
+    });
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getUserData();
+  }
+
   @override
   Widget build(BuildContext context) {
-    double netIncome = context.read<LoanDetailsProviders>().netIncome;
+    double netIncome = totalMonthlyIncome;
     double currentLoanTotal = context.read<LoanDetailsProviders>().loanTotal;
     double repaidTotal = context.read<LoanDetailsProviders>().repaidTotal;
-    String maritalStatus = context.read<LoanDetailsProviders>().maritalStatus;
+    String maritalStatus = marital;
 
-    /* if (maritalStatus == '') {
-      maritalStatus = 'Rather Not Say';
-    }*/
+    if (repaidTotal > 1 && currentLoanTotal <= 0) {
+      repaidTotal = 1;
+    }
+
+    if (currentLoanTotal <= 0) {
+      currentLoanTotal = 1;
+      netIncome = 1;
+    }
+
+    if (repaidTotal <= 0) {
+      repaidTotal = 1;
+    }
 
     double incomeToLoanRatio = (netIncome / currentLoanTotal);
     double repaidToLoanRatio = (repaidTotal / currentLoanTotal);
 
-    int marriedRating = 0;
+    if (kDebugMode) {
+      print('Net Income: $netIncome');
+      print('Total Repayment: $repaidTotal');
+      print('Current Loan Total: $currentLoanTotal');
+      print('Marital Status: $maritalStatus');
+      print('Income to loan ratio: $incomeToLoanRatio');
+      print('Repayment to Current Loan Total Ratio: $repaidToLoanRatio');
+    }
+
+    int marriedRating = 1;
 
     switch (maritalStatus) {
       case 'Single':
@@ -53,10 +93,14 @@ class _LoanHealthState extends State<LoanHealth> {
     double marriedFactor = marriedRating / 5;
 
     double marriedPercent = marriedFactor * 10;
-    double incomePercent = incomeToLoanRatio * 60;
-    double repaidPercent = repaidToLoanRatio * 30;
+    double incomePercent = incomeToLoanRatio * 40;
+    double repaidPercent = repaidToLoanRatio * 50;
 
     health = (marriedPercent + incomePercent + repaidPercent);
+
+    if (health.isNaN) {
+      health = -1;
+    }
 
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
@@ -75,33 +119,67 @@ class _LoanHealthState extends State<LoanHealth> {
                     height: screenHeight - 200,
                     width: screenWidth,
                     child: Center(
-                      child: Column(
-                        children: [
-                          const Text(
-                            'We do not have enough data to compute your loan health',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              color: LoanTrackColors.PrimaryTwoVeryLight,
+                      child: (currentLoanTotal > 0)
+                          ? Column(
+                              children: [
+                                Text(
+                                  'We do not have enough data to compute your loan health',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onBackground,
+                                  ),
+                                ),
+                                separatorSpace10,
+                                GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                const ProfileUpdate()));
+                                  },
+                                  child: Text(
+                                    'Update your profile now',
+                                    style: TextStyle(
+                                      color:
+                                          Theme.of(context).colorScheme.primary,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            )
+                          : Column(
+                              children: [
+                                Text(
+                                  'You need to have at least one loan record for us to compute your health details',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onBackground,
+                                  ),
+                                ),
+                                separatorSpace10,
+                                GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                LoanRecord(edit: false)));
+                                  },
+                                  child: Text(
+                                    'Add a new loan record',
+                                    style: TextStyle(
+                                      color:
+                                          Theme.of(context).colorScheme.primary,
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
-                          ),
-                          separatorSpace5,
-                          GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          const ProfileUpdate()));
-                            },
-                            child: const Text(
-                              'Update your profile now',
-                              style: TextStyle(
-                                color: LoanTrackColors.PrimaryOne,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
                     ),
                   )
                 : SingleChildScrollView(
@@ -135,12 +213,12 @@ class _LoanHealthState extends State<LoanHealth> {
                                 child: Container(
                                   color: (health >= 50 && health <= 100)
                                       ? LoanTrackColors2.TetiaryOne.withOpacity(
-                                          .2)
+                                          .1)
                                       : (health >= 25 && health <= 49)
                                           ? LoanTrackColors.TetiaryOne
-                                              .withOpacity(.2)
+                                              .withOpacity(.1)
                                           : (health < 24 && health > -1)
-                                              ? Colors.red.withOpacity(.2)
+                                              ? Colors.red.withOpacity(.1)
                                               : Colors.transparent,
                                   width: screenWidth / 2.5,
                                   height: (health / 100) *
@@ -181,10 +259,12 @@ class _LoanHealthState extends State<LoanHealth> {
                                   color: LoanTrackColors2.TetiaryOne,
                                 ),
                                 horizontalSeparatorSpace20,
-                                const Text(
+                                Text(
                                   'You are healthy',
                                   style: TextStyle(
-                                    color: LoanTrackColors.PrimaryTwoVeryLight,
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onBackground,
                                   ),
                                 )
                               ],
@@ -201,11 +281,12 @@ class _LoanHealthState extends State<LoanHealth> {
                                 horizontalSeparatorSpace20,
                                 SizedBox(
                                   width: screenWidth * .7,
-                                  child: const Text(
+                                  child: Text(
                                     'Your loan health is fair. Consider keeping your borrowings below your net income.',
                                     style: TextStyle(
-                                      color:
-                                          LoanTrackColors.PrimaryTwoVeryLight,
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onBackground,
                                     ),
                                     softWrap: true,
                                   ),
@@ -224,11 +305,12 @@ class _LoanHealthState extends State<LoanHealth> {
                                 horizontalSeparatorSpace20,
                                 SizedBox(
                                   width: screenWidth * .7,
-                                  child: const Text(
+                                  child: Text(
                                     'Seriously work towards paying off all loans before even considering any other loan.',
                                     style: TextStyle(
-                                      color:
-                                          LoanTrackColors.PrimaryTwoVeryLight,
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onBackground,
                                     ),
                                     softWrap: true,
                                   ),
@@ -268,11 +350,11 @@ class _LoanHealthState extends State<LoanHealth> {
                   style: titleStyle(context),
                 ),
                 separatorSpace10,
-                const Text(
+                Text(
                   'Welcome to Loan Health. Here you can see at a glance how well you are doing with your lending habits.',
                   softWrap: true,
                   style: TextStyle(
-                    color: LoanTrackColors.PrimaryTwoVeryLight,
+                    color: Theme.of(context).colorScheme.onBackground,
                   ),
                 ),
                 separatorSpace10,

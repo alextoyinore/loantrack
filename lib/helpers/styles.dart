@@ -20,7 +20,7 @@ TextStyle smallTitleStyle(BuildContext context) {
   return TextStyle(
     fontSize: 28,
     fontWeight: FontWeight.w300,
-    color: Theme.of(context).colorScheme.onBackground.withOpacity(.5),
+    color: Theme.of(context).colorScheme.onBackground,
   );
 }
 
@@ -60,7 +60,7 @@ TextStyle smallerTitleDimmedStyle(BuildContext context) {
   return TextStyle(
     fontSize: 13,
     fontWeight: FontWeight.w300,
-    color: Theme.of(context).colorScheme.onBackground.withOpacity(.5),
+    color: Theme.of(context).colorScheme.onBackground,
   );
 }
 
@@ -84,7 +84,7 @@ TextStyle bodyDimmedStyle(BuildContext context) {
   return TextStyle(
     fontSize: 18,
     fontWeight: FontWeight.w300,
-    color: Theme.of(context).colorScheme.onBackground.withOpacity(.5),
+    color: Theme.of(context).colorScheme.onBackground,
   );
 }
 
@@ -100,7 +100,7 @@ TextStyle descriptionStyle(BuildContext context) {
   return TextStyle(
     fontSize: 14,
     fontWeight: FontWeight.w300,
-    color: Theme.of(context).colorScheme.onBackground.withOpacity(.5),
+    color: Theme.of(context).colorScheme.onBackground.withOpacity(.8),
   );
 }
 
@@ -108,7 +108,7 @@ TextStyle smallDescriptionStyle(BuildContext context) {
   return TextStyle(
     fontSize: 12,
     fontWeight: FontWeight.w300,
-    color: Theme.of(context).colorScheme.onBackground.withOpacity(.5),
+    color: Theme.of(context).colorScheme.onBackground,
   );
 }
 
@@ -116,7 +116,7 @@ TextStyle smallerDescriptionStyle(BuildContext context) {
   return TextStyle(
     fontSize: 10,
     fontWeight: FontWeight.w300,
-    color: Theme.of(context).colorScheme.onBackground.withOpacity(.5),
+    color: Theme.of(context).colorScheme.onBackground,
   );
 }
 

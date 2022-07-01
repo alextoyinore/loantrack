@@ -1,9 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:loantrack/helpers/colors.dart';
-import 'package:loantrack/widgets/common_widgets.dart';
 import 'package:loantrack/helpers/listwidgets.dart';
-import 'package:loantrack/widgets/loan_track_modal.dart';
+import 'package:loantrack/widgets/common_widgets.dart';
+
+import '../helpers/styles.dart';
 
 class RepaymentHistory extends StatefulWidget {
   const RepaymentHistory({Key? key}) : super(key: key);
@@ -20,40 +20,48 @@ class _RepaymentHistoryState extends State<RepaymentHistory> {
         body: SingleChildScrollView(
       child: Column(
         children: [
-          separatorSpace50,
+          separatorSpace30,
           Container(
-            width: double.infinity,
-            padding: const EdgeInsets.symmetric(horizontal: 24.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                GestureDetector(
-                  onTap: () => Navigator.pop(context),
-                  child:
-                      Icon(Icons.arrow_back, color: LoanTrackColors.PrimaryOne),
-                ),
-                const Text('Repayment History',
-                    style: TextStyle(
-                        color: LoanTrackColors.PrimaryOne, fontSize: 20)),
-                GestureDetector(
-                  onTap: () => LoanTrackModal.modal(context,
-                      content: const Text(
-                          'In this app you can track all your loan repayments at a glance'),
-                      title: 'About Repayment App'),
-                  child: const Icon(
-                    Icons.info,
-                    color: LoanTrackColors.PrimaryTwoVeryLight,
+            color: Theme.of(context).colorScheme.background,
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  separatorSpace20,
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(Icons.close),
+                      ],
+                    ),
                   ),
-                )
-              ],
+                  separatorSpace10,
+                  Text(
+                    'All Repayments',
+                    style: titleStyle(context),
+                  ),
+                  separatorSpace10,
+                  Text(
+                    'Welcome to the Repayments App. Here you can see a history of all your repayments.',
+                    style: descriptionStyle(context),
+                  ),
+                  separatorSpace20,
+                ],
+              ),
             ),
           ),
           Container(
-            margin: const EdgeInsets.symmetric(horizontal: 24.0),
+            margin: const EdgeInsets.symmetric(horizontal: 16.0),
             child: RepaymentBulletedList(
-                height: MediaQuery.of(context).size.height * .7,
+                height: MediaQuery.of(context).size.height * .6,
                 userId: userId),
           ),
+          separatorSpace200,
         ],
       ),
     ));

@@ -80,7 +80,8 @@ class _LoanDetailState extends State<LoanDetail> {
           height: screenHeight,
           padding: const EdgeInsets.only(left: 16.0, right: 16, top: 16),
           child: SingleChildScrollView(
-            child: Column(children: [
+            child:
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               separatorSpace40,
               GestureDetector(
                 onTap: () {
@@ -186,7 +187,7 @@ class _LoanDetailState extends State<LoanDetail> {
                       style: TextStyle(
                         color: (due > 0 && progress < 1)
                             ? Theme.of(context).colorScheme.error
-                            : Theme.of(context).colorScheme.primary,
+                            : Theme.of(context).colorScheme.secondary,
                       ),
                       textAlign: TextAlign.center,
                     ),
@@ -207,6 +208,7 @@ class _LoanDetailState extends State<LoanDetail> {
                                     )));
                       },
                       child: const Text('Edit this record')),
+                  horizontalSeparatorSpace10,
                   (progress < 1)
                       ? OutlinedButton(
                           onPressed: () {
@@ -221,7 +223,7 @@ class _LoanDetailState extends State<LoanDetail> {
                           child: const Text('Add a repayment record'))
                       : const SizedBox(height: 0),
                   const SizedBox(
-                    width: 10,
+                    width: 0,
                   ),
                 ],
               ),

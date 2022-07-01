@@ -18,7 +18,7 @@ class LoanTrackButton {
         ),
         textStyle: MaterialStateProperty.all<TextStyle?>(
           const TextStyle(
-            fontSize: 25,
+            fontSize: 20,
             fontWeight: FontWeight.w300,
           ),
         ),
@@ -69,7 +69,7 @@ class LoanTrackButton {
           ),
           Icon(
             Icons.arrow_forward_ios_rounded,
-            color: Theme.of(context).colorScheme.onSecondary.withOpacity(.5),
+            color: Theme.of(context).colorScheme.onBackground.withOpacity(.7),
           )
         ],
       ),
@@ -92,7 +92,7 @@ class LoanTrackButton {
         ),
         textStyle: MaterialStateProperty.all<TextStyle?>(
           const TextStyle(
-            fontSize: 25,
+            fontSize: 20,
             fontWeight: FontWeight.w300,
           ),
         ),
@@ -112,10 +112,7 @@ class LoanTrackButton {
         backgroundColor: MaterialStateProperty.resolveWith<Color?>(
           (Set<MaterialState> states) {
             if (states.contains(MaterialState.pressed)) {
-              return Theme.of(context)
-                  .colorScheme
-                  .onBackground
-                  .withOpacity(0.5);
+              return Theme.of(context).colorScheme.background.withOpacity(0.5);
             }
             return null;
             // Use the component's default.
@@ -137,9 +134,11 @@ class LoanTrackButton {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          const Text(
-            'Continue',
-            style: TextStyle(color: Colors.white),
+          Text(
+            'Cancel',
+            style: TextStyle(
+                color:
+                    Theme.of(context).colorScheme.onBackground.withOpacity(.5)),
             textAlign: TextAlign.center,
             softWrap: true,
           ),

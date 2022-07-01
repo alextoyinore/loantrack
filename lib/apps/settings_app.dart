@@ -41,6 +41,8 @@ class _AppSettingsState extends State<AppSettings> {
 
   @override
   Widget build(BuildContext context) {
+    double screenHeight = MediaQuery.of(context).size.height;
+    double screenWidth = MediaQuery.of(context).size.width;
     // Watch theme
     context.watch<ThemeManager>().themeNumber;
     var newlySetTheme = context.read<ThemeManager>().themeNumber;
@@ -65,6 +67,7 @@ class _AppSettingsState extends State<AppSettings> {
       },
       child: SingleChildScrollView(
         child: Container(
+          width: screenWidth,
           padding: const EdgeInsets.only(left: 16.0, right: 16, top: 24),
           height: MediaQuery.of(context).size.height,
           child: Column(
@@ -178,16 +181,21 @@ class _AppSettingsState extends State<AppSettings> {
                   const SizedBox(
                     width: 20,
                   ),
-                  Text(
-                    'Theme',
-                    style: bodyStyle(context),
-                  ),
-                  const SizedBox(
-                    width: 20,
-                  ),
-                  Text(
-                    themeName,
-                    style: bodyStyle(context),
+                  Container(
+                    width: screenWidth / 1.3,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Theme',
+                          style: bodyStyle(context),
+                        ),
+                        Text(
+                          themeName,
+                          style: bodyStyle(context),
+                        ),
+                      ],
+                    ),
                   ),
                 ]),
               ),

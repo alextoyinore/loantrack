@@ -9,6 +9,7 @@ import 'package:loantrack/apps/repayment_list_app.dart';
 
 import '../apps/loan_health_app.dart';
 import '../apps/news_app.dart';
+import '../apps/summarys.dart';
 import '../apps/widgets/updateprofile.dart';
 import 'apps.dart';
 
@@ -33,9 +34,10 @@ class LocalData {
         name: 'Health',
         destinationWidget: const LoanHealth()),
     Apps(
-        iconData: Icons.phone_in_talk,
-        name: 'Read',
-        destinationWidget: const Read()),
+        iconData: Icons.book_sharp,
+        name: 'Summary',
+        destinationWidget: const Summarys()),
+    Apps(iconData: Icons.book, name: 'Read', destinationWidget: const Read()),
     Apps(
         iconData: Icons.money,
         name: 'New Loan',

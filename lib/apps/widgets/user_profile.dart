@@ -27,7 +27,9 @@ class _UserProfileState extends State<UserProfile> {
             style: titleStyle(context),
           ),
           separatorSpace20,
-          userProfile(height: screenHeight / 1.4),
+          SingleChildScrollView(
+            child: userProfile(height: screenHeight * .75),
+          ),
         ],
       ),
     );
