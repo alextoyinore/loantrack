@@ -5,9 +5,9 @@ class AppLists {
 
   static List<String> onboardingMessages = [
     'Live a live free of embarrassment and hassle. Tracking your loans can save you '
-        'from harassment and free you up to the live your life creating wealth.',
-    'Recording your repayments as soon as you repay them can free up money from you to live a happier life.'
-        'Life is short. You deserve to live it to the fullest.',
+        'from harassment and free you up to live your life creating wealth and happiness.',
+    'Recording your repayments as soon as you repay them can help you focus the rest of your '
+        'funds towards creating a happier life for you and your family. ',
     'A loan-free life is attainable. It begins here. Congratulations! '
         'You made the best choice for yourself. See you on the good side of life.',
   ];

@@ -149,7 +149,7 @@ class _MainState extends State<Main> {
 
     Color bg = Color(0xFFAAAA);
 
-    if (TimeOfDay.now().hour > 18 || TimeOfDay.now().hour < 7) {
+    if (TimeOfDay.now().hour > 18 || TimeOfDay.now().hour < 6) {
       bg = darkColorScheme.background;
     } else {
       bg = lightColorScheme.background;

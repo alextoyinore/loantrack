@@ -72,6 +72,28 @@ class _OnboardingState extends State<Onboarding> {
                   ),
                 );
               }),
+          (currentPage != 2)
+              ? Positioned(
+                  top: MediaQuery.of(context).size.height - 80,
+                  child: Container(
+                    width: MediaQuery.of(context).size.width,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'Swipe up',
+                          style: TextStyle(
+                            color: Colors.white.withOpacity(.3),
+                            fontSize: 18,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ))
+              : SizedBox(
+                  width: 0,
+                  height: 0,
+                ),
           Positioned(
               top: MediaQuery.of(context).size.height - 200,
               width: MediaQuery.of(context).size.width,

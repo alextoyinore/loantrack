@@ -182,9 +182,11 @@ class _AppSettingsState extends State<AppSettings> {
                     width: 20,
                   ),
                   Container(
+                    alignment: Alignment.center,
                     width: screenWidth / 1.3,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Text(
                           'Theme',

@@ -225,7 +225,7 @@ class _HomeViewState extends State<HomeView> {
                               color: Theme.of(context)
                                   .colorScheme
                                   .secondary
-                                  .withOpacity(.05),
+                                  .withOpacity(.1),
                             ),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -270,7 +270,7 @@ class _HomeViewState extends State<HomeView> {
                                     color: Theme.of(context)
                                         .colorScheme
                                         .secondary
-                                        .withOpacity(.2),
+                                        .withOpacity(.5),
                                     borderRadius: const BorderRadius.only(
                                       bottomLeft: Radius.circular(10),
                                       bottomRight: Radius.circular(10),
@@ -478,14 +478,14 @@ class _HomeViewState extends State<HomeView> {
                       },
                       child: const LoanTrackProductLinkBox(
                         icon: Icon(Icons.newspaper,
-                            size: 30, color: LoanTrackColors2.TetiaryOne),
+                            size: 30, color: LoanTrackColors.TetiaryOne),
                         label: Text('NEWS',
                             style: TextStyle(
-                                color: LoanTrackColors2.TetiaryOne,
+                                color: LoanTrackColors.TetiaryOne,
                                 fontSize: 14),
                             textAlign: TextAlign.center,
                             softWrap: true),
-                        backgroundColor: LoanTrackColors2.TetiaryOne,
+                        backgroundColor: LoanTrackColors.TetiaryOne,
                       ),
                     ),
                   ],
@@ -500,7 +500,7 @@ class _HomeViewState extends State<HomeView> {
         // Top Fixed Card
         Container(
           color: Theme.of(context).colorScheme.background,
-          height: (screenWidth < 400) ? screenHeight / 3.6 : screenHeight / 4.1,
+          height: (screenWidth < 400) ? screenHeight / 3.5 : screenHeight / 4,
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
             child: Column(
@@ -577,7 +577,7 @@ class _HomeViewState extends State<HomeView> {
                             : const Icon(Icons.contrast),
                   ],
                 ),
-                separatorSpace30,
+                separatorSpace20,
 
                 Text(
                   'CURRENT LOAN TOTAL',
@@ -661,12 +661,11 @@ class _HomeViewState extends State<HomeView> {
                               );
                       }),
                 ),
-                separatorSpace10,
                 Text(
                   'TOP LENDERS',
                   style: sectionHeaderStyle(context),
                 ),
-                separatorSpace10,
+                separatorSpace5,
                 LoanBulletedList(height: 25, numberOfItems: 5, userId: userId),
               ],
             ),

@@ -87,7 +87,7 @@ class _LoanTrackingPageState extends State<LoanTrackingPage> {
               child: Column(
                 children: [
                   SizedBox(
-                    height: 150,
+                    height: 180,
                   ),
                   SingleChildScrollView(
                     child: LoanList(
@@ -96,7 +96,7 @@ class _LoanTrackingPageState extends State<LoanTrackingPage> {
                         width: screenWidth,
                         height: (widget.loanListHeight > 0)
                             ? widget.loanListHeight
-                            : screenHeight * .77),
+                            : screenHeight * .75),
                   ),
                 ],
               ),

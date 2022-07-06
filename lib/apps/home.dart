@@ -67,7 +67,7 @@ class _LoanTrackHomeState extends State<LoanTrackHome> {
         fromRepayment: false,
         isHome: true,
         loanListHeight:
-            (screenWidth < 400) ? screenHeight / 1.41 : screenHeight / 1.4,
+            (screenWidth < 400) ? screenHeight / 1.41 : screenHeight / 1.45,
       ),
       const Center(
         child: UserProfile(),

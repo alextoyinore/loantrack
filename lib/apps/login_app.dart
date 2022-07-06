@@ -17,7 +17,6 @@ import 'package:loantrack/widgets/dialogs.dart';
 import 'package:loantrack/widgets/loan_track_modal.dart';
 import 'package:loantrack/widgets/loan_track_textfield.dart';
 import 'package:provider/provider.dart';
-import 'package:webview_flutter/webview_flutter.dart';
 
 class LoanTrackLogin extends StatefulWidget {
   const LoanTrackLogin({Key? key}) : super(key: key);
@@ -31,6 +30,7 @@ class _LoanTrackLoginState extends State<LoanTrackLogin> with ChangeNotifier {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController displayNameController = TextEditingController();
+  //FirebaseAuthException e = FirebaseAuthException(code: 'network-not-found');
 
   AuthService authService = AuthService();
 
@@ -62,13 +62,6 @@ class _LoanTrackLoginState extends State<LoanTrackLogin> with ChangeNotifier {
 
   @override
   Widget build(BuildContext context) {
-    double screenWidth = MediaQuery.of(context).size.width;
-    double screenHeight = MediaQuery.of(context).size.height;
-
-    if (kDebugMode) {
-      print('screen width = $screenWidth');
-    }
-
     var currentTime;
     States loginState = context.watch<LoginState>().loginState;
     return WillPopScope(
@@ -88,7 +81,7 @@ class _LoanTrackLoginState extends State<LoanTrackLogin> with ChangeNotifier {
       },
       child: Scaffold(
         body: Padding(
-          padding: const EdgeInsets.only(top: 32.0, left: 32, right: 32),
+          padding: const EdgeInsets.all(32.0),
           child: SingleChildScrollView(
             child: (loginState == States.loggedOut)
                 ? emailVerifier(context)
@@ -118,7 +111,6 @@ class _LoanTrackLoginState extends State<LoanTrackLogin> with ChangeNotifier {
         Image.asset(
           'assets/images/icon.png',
           scale: 2,
-          color: Theme.of(context).colorScheme.primary,
         ),
         separatorSpace40,
         Text(
@@ -150,24 +142,23 @@ class _LoanTrackLoginState extends State<LoanTrackLogin> with ChangeNotifier {
         ),
         separatorSpace50,
         GestureDetector(
-          onTap: () {
-            LoanTrackModal.modal(context,
-                content: const SingleChildScrollView(
-                  child: Text(LocalData.aboutLoanTrack,
-                      style: TextStyle(
-                          color: LoanTrackColors.PrimaryOne,
-                          fontSize: 14,
-                          height: 1.6)),
-                ),
-                title: 'About');
-          },
-          child: const Text(
-            'About',
-            style: TextStyle(
-                color: LoanTrackColors.PrimaryTwoVeryLight,
-                decoration: TextDecoration.underline),
-          ),
-        )
+            onTap: () {
+              LoanTrackModal.modal(context,
+                  content: const SingleChildScrollView(
+                    child: Text(LocalData.aboutLoanTrack,
+                        style: TextStyle(
+                            color: LoanTrackColors.PrimaryOne,
+                            fontSize: 14,
+                            height: 1.6)),
+                  ),
+                  title: 'About');
+            },
+            child: const Text(
+              'About',
+              style: TextStyle(
+                  color: LoanTrackColors.PrimaryTwoVeryLight,
+                  decoration: TextDecoration.underline),
+            ))
       ],
     );
   }
@@ -177,7 +168,7 @@ class _LoanTrackLoginState extends State<LoanTrackLogin> with ChangeNotifier {
       Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          separatorSpace40,
+          separatorSpace20,
           loginHeader(
             context: context,
             message: 'Like your expenses, tracking your loans will help you '
@@ -188,10 +179,10 @@ class _LoanTrackLoginState extends State<LoanTrackLogin> with ChangeNotifier {
           LoanTrackTextField(
             controller: emailController,
             label: 'Email',
-            color: Theme.of(context).colorScheme.onBackground,
+            color: LoanTrackColors.PrimaryOne,
             //icon: const Icon(Icons.email, color: LoanTrackColors.PrimaryOne),
           ),
-          separatorSpace30,
+          separatorSpace20,
           LoanTrackButton.primary(
             whenPressed: () {
               authService.checkEmailExists(
@@ -204,33 +195,38 @@ class _LoanTrackLoginState extends State<LoanTrackLogin> with ChangeNotifier {
                       'that you have typed a valid email.',
                 ),
               );
+              /*.whenComplete(
+                    () => notifications.showNotification(
+                      context: context,
+                      title: 'Email Found',
+                      body: 'We found your email.',
+                    ),
+                  );*/
             },
             context: context,
             label: 'Start Here',
           ),
           SizedBox(
-            height: (MediaQuery.of(context).size.width < 400)
-                ? (MediaQuery.of(context).size.height / 3.1)
-                : MediaQuery.of(context).size.height / 4,
+            height: MediaQuery.of(context).size.height / 3,
           ),
         ],
       ),
       Positioned(
-          bottom: 10,
+          bottom: 20,
           child: Row(
             children: [
               Icon(
                 Icons.copyright,
                 size: 20,
                 color:
-                    Theme.of(context).colorScheme.onBackground.withOpacity(.5),
+                    Theme.of(context).colorScheme.onBackground.withOpacity(.2),
               ),
               horizontalSeparatorSpace5,
               Image.asset(
                 'assets/images/logo.png',
                 scale: 15,
                 color:
-                    Theme.of(context).colorScheme.onBackground.withOpacity(.5),
+                    Theme.of(context).colorScheme.onBackground.withOpacity(.2),
               ),
               horizontalSeparatorSpace5,
               Text(
@@ -239,7 +235,7 @@ class _LoanTrackLoginState extends State<LoanTrackLogin> with ChangeNotifier {
                   color: Theme.of(context)
                       .colorScheme
                       .onBackground
-                      .withOpacity(.5),
+                      .withOpacity(.2),
                 ),
               ),
             ],
@@ -251,7 +247,7 @@ class _LoanTrackLoginState extends State<LoanTrackLogin> with ChangeNotifier {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        separatorSpace40,
+        separatorSpace20,
         loginHeader(
             context: context,
             title: 'Password',
@@ -262,18 +258,18 @@ class _LoanTrackLoginState extends State<LoanTrackLogin> with ChangeNotifier {
         LoanTrackTextField(
           controller: emailController,
           label: 'Email',
-          color: Theme.of(context).colorScheme.onBackground,
+          color: LoanTrackColors.PrimaryOne,
           //icon: const Icon(Icons.email, color: LoanTrackColors.PrimaryOne),
         ),
-        separatorSpace30,
+        separatorSpace20,
         LoanTrackTextField(
           controller: passwordController,
           label: 'Password',
           isHidden: true,
-          color: Theme.of(context).colorScheme.onBackground,
+          color: LoanTrackColors.PrimaryOne,
           //icon: const Icon(Icons.lock, color: LoanTrackColors.PrimaryOne),
         ),
-        separatorSpace30,
+        separatorSpace20,
         LoanTrackButton.primary(
           whenPressed: () {
             authService.signInWithEmailAndPassword(
@@ -286,13 +282,17 @@ class _LoanTrackLoginState extends State<LoanTrackLogin> with ChangeNotifier {
                   errorMessage:
                       'An error occurred. Verify that your password is correctly typed.'),
             );
-
-            onboardingPreferences.setOnboarding(false);
+            /*.whenComplete(
+                  () => notifications.showNotification(
+                      context: context,
+                      title: 'Sign In Success',
+                      body: 'You have successfully signed in.'),
+                );*/
           },
           context: context,
           label: 'Log In',
         ),
-        separatorSpace30,
+        separatorSpace20,
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -313,6 +313,8 @@ class _LoanTrackLoginState extends State<LoanTrackLogin> with ChangeNotifier {
                         context: context,
                         whenTapped: () => Navigator.of(context).pop(),
                         title: 'Email sent'));
+
+                onboardingPreferences.setOnboarding(false);
               },
               child: Text(
                 'Forgot Password?',
@@ -364,7 +366,7 @@ class _LoanTrackLoginState extends State<LoanTrackLogin> with ChangeNotifier {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        separatorSpace40,
+        separatorSpace20,
         loginHeader(
             title: 'Create Account',
             context: context,
@@ -391,12 +393,6 @@ class _LoanTrackLoginState extends State<LoanTrackLogin> with ChangeNotifier {
           isHidden: true,
           color: LoanTrackColors.PrimaryOne,
           //  icon: const Icon(Icons.lock, color: LoanTrackColors.PrimaryOne),
-        ),
-        separatorSpace20,
-        Text(
-          "By tapping 'Continue' you agree that you have read, understand, and agree to our privacy policy below and 'Terms of Service'.",
-          style: smallerDescriptionStyle(context),
-          //textAlign: TextAlign.center,
         ),
         separatorSpace20,
         LoanTrackButton.primary(
@@ -429,46 +425,6 @@ class _LoanTrackLoginState extends State<LoanTrackLogin> with ChangeNotifier {
           context: context,
           label: 'Cancel',
         ),
-        separatorSpace20,
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            TextButton(
-              onPressed: () {
-                showDialog(
-                  context: context,
-                  builder: (_) {
-                    return AlertDialog(
-                      contentPadding: EdgeInsets.all(8),
-                      insetPadding: EdgeInsets.zero,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      title: Text(
-                        'Must Read',
-                        style: smallTitleStyle(context),
-                      ),
-                      content: Container(
-                        width: MediaQuery.of(context).size.width * .85,
-                        height: MediaQuery.of(context).size.height * .75,
-                        child: WebView(
-                          javascriptMode: JavascriptMode.unrestricted,
-                          initialUrl:
-                              'https://www.freeprivacypolicy.com/live/5268f758-eec0-459c-a293-5cd111b16241',
-                        ),
-                      ),
-                    );
-                  },
-                );
-              },
-              child: Text(
-                'Privacy Policy',
-                style: smallHeaderHighlightStyle(context),
-              ),
-            ),
-          ],
-        ),
-        separatorSpace20,
       ],
     );
   }
@@ -476,7 +432,7 @@ class _LoanTrackLoginState extends State<LoanTrackLogin> with ChangeNotifier {
   sendingEmailVerificationScreen(BuildContext context) {
     return Column(
       children: [
-        separatorSpace40,
+        separatorSpace20,
         loginHeader(
           context: context,
           title: 'Email Verification',

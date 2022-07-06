@@ -257,11 +257,11 @@ SizedBox LoanList({
                           ? Theme.of(context)
                               .colorScheme
                               .primary
-                              .withOpacity(.05)
+                              .withOpacity(.1)
                           : Theme.of(context)
                               .colorScheme
                               .secondary
-                              .withOpacity(.05),
+                              .withOpacity(.1),
                     ),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -640,11 +640,11 @@ SizedBox LoanSlider(
                                 ? Theme.of(context)
                                     .colorScheme
                                     .primary
-                                    .withOpacity(.05)
+                                    .withOpacity(.1)
                                 : Theme.of(context)
                                     .colorScheme
                                     .secondary
-                                    .withOpacity(.05),
+                                    .withOpacity(.1),
                           ),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
